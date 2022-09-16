@@ -30,7 +30,7 @@ alors changer le workspace par ce même repertoire
   - Projcet name : Tamagotchi
   - Main class : test.Test
 
-2. Allez dans l'onglet -> **Arguments -> VM Arguments**
-  `--module-path /chemin/du/repertoire/java-xx-openjfx/lib --add-modules javafx.controls`
+2. Allez dans l'onglet -> **Arguments -> VM Arguments** <br/>
+`--module-path /chemin/du/repertoire/java-xx-openjfx/lib --add-modules javafx.controls`
 3. Allez dans l'onglet -> **Common -> Display in favorites menus -> selectionner Run**
 5. Lancer le programme avec NOM_RUN
