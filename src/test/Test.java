@@ -64,6 +64,7 @@ public class Test extends Application {
                 System.out.println("clicked");
             }
         };
+        
         button.setOnAction(buttonHandler);
         button.addEventFilter(MouseEvent.MOUSE_ENTERED_TARGET, eventHandler);
         
