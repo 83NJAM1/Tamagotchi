@@ -83,6 +83,7 @@ public class Test extends Application {
     }
     
     public static void main(String[] args) {
+    	System.out.println("lel");
         launch();
     }
 	
