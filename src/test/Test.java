@@ -9,7 +9,7 @@ public class Test extends Application {
         stage.show();
     }
     public static void main(String[] args) {
-    	System.out.println("lol");
+    	System.out.println("lel");
         launch();
     }
 	
