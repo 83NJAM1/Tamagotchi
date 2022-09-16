@@ -1,5 +1,5 @@
 # Tamagotchi
-Jeu d'animaux de compagnie virtuel
+Jeu d'animaux de compagnie virtuels
 
 # Import du projet Git avec Eclipse
 
