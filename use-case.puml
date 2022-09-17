@@ -4,24 +4,33 @@
 
 rectangle Tamagotchi {
 
-    (On Start App)
+    p --> (On Start App)
     
     package Menu {
+        
+        p --> (Edit Options)
+        p --> (New Game)
+        p --> (Load)
+        p --> (Login Online)
         
         (Login Online) ..> (Authentification) : <<include>>
         (New Game) ..> (Choose Pet) : <<include>>
         (Load) ..> (Start Game) : <<include>>
         (Load) <.. (Login Online) : <<extend>> [if auth]
-        (On Start App) <.. (Load) : <<extend>> [if load file]
-        (On Start App) <.. (New Game) : <<extend>> [if no load file]
-        (Choose Pet) <.. (Customize Pet) : <<extend>> [if player want]
+        (On Start App) <.. (Load) : <<extend>> [if save file]
+        (On Start App) <.. (New Game) : <<extend>> [if no save file]
+        (Choose Pet) <.. (Customize Pet) : <<extend>> [if player wants]
         (Choose Pet) ..> (Start Game) : <<include>>
         (Edit Options)
-        
     }
 
     package Game {
-        (Open Menu)
+    
+        p --> (Change Room)
+        p --> (Feed)
+        p --> (Interact with Pet)
+        p --> (Open Menu)
+        
         (Change Room) ..> (Change player location) : <<include>>
         (Change Room) ..> (Load environment) : <<include>>
         (On State Change) ..> (Save) : <<include>>
@@ -34,17 +43,6 @@ rectangle Tamagotchi {
         (Interact with Pet) ..> (On State Change) : <<include>>
         (Interact with Pet) ..> (MiniGame) : <<extend>>
     }
-    
-    p --> (Edit Options)
-    p --> (On Start App)
-    p --> (Login Online)
-    p --> (New Game)
-    p --> (Load)
-    p --> (Change Room)
-    p --> (Feed)
-    p --> (Interact with Pet)
-    p --> (Open Menu)
 }
 
 @enduml
-
