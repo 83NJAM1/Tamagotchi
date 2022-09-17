@@ -1,12 +1,13 @@
 # Tamagotchi
 Projet étudiant dans lequel on doit réaliser un jeu tamagotchi soit un jeu d'animaux de compagnie virtuels.
-![usecase-diagram](use-case.svg)
+[![usecase-diagram](use-case.svg)](https://raw.githubusercontent.com/83NJAM1/Tamagotchi/main/use-case.svg)
 
 # Import du projet Git avec Eclipse
 
 ## 1 NOTE
-**Pour de meilleur explications voir directement [la doc javafx](https://openjfx.io/openjfx-docs/#IDE-Eclipse)** <br/>
+**Pour de meilleur explications voir directement [la doc javafx](https://openjfx.io/openjfx-docs/#IDE-Eclipse)**. <br/>
 **[Wiki](https://fr.wikipedia.org/wiki/Markdown) à propos du readme.md (md pour MarkDown) **
+
 ### JavaFX
 1. Il faut télécharger JavaFX ([openjfx.io](https://openjfx.io/#fh5co-intro)) ou l'installer via votre distribution linux <br/>
 `sudo apt install openjfx`
@@ -19,10 +20,13 @@ Projet étudiant dans lequel on doit réaliser un jeu tamagotchi soit un jeu d'a
 5. Le nom du projet doit être le même que le repository, donc **Tamagotchi**.
 
 ### 1 Configuration project
+
 #### après l'import
 Dans eclipse -> **project -> properties -> java build path -> Classpath (click)**
+
 #### pendant l'import
 Dans l'onglet Libraries -> **Classpath (click)**
+
 ### suivi de
 1. **Add Library -> User Library -> User Libraries -> New** 
 2. une fenêtre s'affiche, au champ `User library name` entrer le nom de la lib (ex: javafx).
