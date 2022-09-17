@@ -1,5 +1,6 @@
 # Tamagotchi
 Projet étudiant dans lequel on doit réaliser un jeu tamagotchi soit un jeu d'animaux de compagnie virtuels.
+![usecase-diagram](use-case.svg)
 
 # Import du projet Git avec Eclipse
 
