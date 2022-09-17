@@ -9,12 +9,12 @@ import javafx.scene.Node;
 
 public class MyLayout extends StackPane{
 	
-	private StackPane center;
 	private BorderPane border;
 	private HBox top;
 	private HBox bottom;
 	private VBox left;
 	private VBox right;
+	private StackPane center;
 	
 	public MyLayout() {		
     	border = new BorderPane();
@@ -53,5 +53,4 @@ public class MyLayout extends StackPane{
 	public void addCenter(Node object) {
 		center.getChildren().add(object);
 	}
-	
 }
