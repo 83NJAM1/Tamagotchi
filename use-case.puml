@@ -1,0 +1,50 @@
+@startuml
+
+:Player: as p
+
+rectangle Tamagotchi {
+
+    (On Start App)
+    
+    package Menu {
+        
+        (Login Online) ..> (Authentification) : <<include>>
+        (New Game) ..> (Choose Pet) : <<include>>
+        (Load) ..> (Start Game) : <<include>>
+        (Load) <.. (Login Online) : <<extend>> [if auth]
+        (On Start App) <.. (Load) : <<extend>> [if load file]
+        (On Start App) <.. (New Game) : <<extend>> [if no load file]
+        (Choose Pet) <.. (Customize Pet) : <<extend>> [if player want]
+        (Choose Pet) ..> (Start Game) : <<include>>
+        (Edit Options)
+        
+    }
+
+    package Game {
+        (Open Menu)
+        (Change Room) ..> (Change player location) : <<include>>
+        (Change Room) ..> (Load environment) : <<include>>
+        (On State Change) ..> (Save) : <<include>>
+        (Give) ..> (On State Change) : <<include>>
+        (Cook) ..> (Give) : <<include>>
+        (Fridge) ..> (Give) : <<include>>
+        (Feed) <.. (Cook) : <<extend>>\n[if in kitchen]
+        (Feed) <.. (Fridge) : <<extend>>\n[if in kitchen]
+        (MiniGame) <.. (Sport) : <<extend>>\n[if outside]
+        (Interact with Pet) ..> (On State Change) : <<include>>
+        (Interact with Pet) ..> (MiniGame) : <<extend>>
+    }
+    
+    p --> (Edit Options)
+    p --> (On Start App)
+    p --> (Login Online)
+    p --> (New Game)
+    p --> (Load)
+    p --> (Change Room)
+    p --> (Feed)
+    p --> (Interact with Pet)
+    p --> (Open Menu)
+}
+
+@enduml
+
