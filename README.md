@@ -1,34 +1,39 @@
 # Tamagotchi
-Jeu d'animaux de compagnie virtuels
+Projet étudiant dans lequel on doit réaliser un jeu tamagotchi soit un jeu d'animaux de compagnie virtuels.
 
 # Import du projet Git avec Eclipse
 
 ## 1 NOTE
-Si eclipse import les projets git dans `/home/nom_utilisateur/git`
-alors changer le workspace par ce même repertoire
+**Pour de meilleur explications voir directement [la doc javafx](https://openjfx.io/openjfx-docs/#IDE-Eclipse)**
 
-## 2 Option workspace
-1. Aller dans **fichier -> importer -> git -> projet from git (classic) -> URI**
+### JavaFX
+1. Il faut télécharger JavaFX ([openjfx.io](https://openjfx.io/#fh5co-intro)) ou l'installer via votre distribution linux <br/>
+`sudo apt install openjfx`
+
+## 2 Import du projet
+1. Aller dans **File -> import -> Git -> projects from Git -> Clone URI**
 2. Entrer l'url du projet git
 3. Entrer vos identifiants github
-4. Choisir import with wizard projet puis créer un projet java avec le même nom que celui du git soit `Tamagotchi` -> valider
+4. Next -> **master/main branch (check) -> Location : YOUR_WORKSPACE_LOCATION -> Import using the new Project wizard -> Java -> Java Project**<br/>
+5. Le nom du projet doit être le même que le repository, donc **Tamagotchi**.
 
-## 3 OpenJFX
-1. Ensuite il faut télécharger JavaFX ([openjfx.io](https://openjfx.io/#fh5co-intro)) ou l'installer via votre distribution linux <br />
-`sudo apt install openjfx` <br />
+### 1 Configuration project
+#### après l'import
+Dans eclipse -> **project -> properties -> java build path -> Classpath (click)**
+#### pendant l'import
+Dans l'onglet Libraries -> **Classpath (click)**
+### suivi de
+1. **Add Library -> User Library -> User Libraries -> New** 
+2. une fenêtre s'affiche, au champ `User library name` entrer le nom de la lib (ex: javafx).
+3. **selectionner la nouvelle lib -> Add External JARs -> **`chemin/vers/javafx-sdk/lib`** -> sellectioner tous les .jar-> Open**
+4. **cocher la nouvelle lib -> Finish**
 
-## 4 Option project
-1. Dans eclipse -> **projet -> propreties -> java build path -> selectionner classpath -> add library**
-2. Selectionner user **library -> user libraries -> new -> NOM_LIB -> selectionner NOM_LIB -> add externals** jars
-3. Selectionner tous les jars de javafx dans `/chemin/du/repertoire/java-xx-openjfx/lib` **-> apply**
-4. Selectionner NOM_LIB comme library pour le projet
-5. **Pour de meilleur explications voir directement [la doc javafx](https://openjfx.io/openjfx-docs/#IDE-Eclipse)**
+### 2 Configuration run
+1. **Dans Run -> Run configuration -> java application (double clique)** -> Entrer les champs:<br/>
 
-## 5 Option run
-1. **Dans Run -> Run configuration -> java application (double clique)** -> Entrer les champs:
-  - Name : NOM_RUN
-  - Projcet name : Tamagotchi
-  - Main class : test.Test
+- Name : NOM_RUN
+- Projcet name : Tamagotchi
+- Main class : test.Test
 
 2. Allez dans l'onglet -> **Arguments -> VM Arguments** <br/>
 `--module-path /chemin/du/repertoire/java-xx-openjfx/lib --add-modules javafx.controls`
