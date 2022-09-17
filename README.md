@@ -5,8 +5,8 @@ Projet étudiant dans lequel on doit réaliser un jeu tamagotchi soit un jeu d'a
 # Import du projet Git avec Eclipse
 
 ## 1 NOTE
-**Pour de meilleur explications voir directement [la doc javafx](https://openjfx.io/openjfx-docs/#IDE-Eclipse)**
-
+**Pour de meilleur explications voir directement [la doc javafx](https://openjfx.io/openjfx-docs/#IDE-Eclipse)** <br/>
+**[Wiki](https://fr.wikipedia.org/wiki/Markdown) à propos du readme.md (md pour MarkDown) **
 ### JavaFX
 1. Il faut télécharger JavaFX ([openjfx.io](https://openjfx.io/#fh5co-intro)) ou l'installer via votre distribution linux <br/>
 `sudo apt install openjfx`

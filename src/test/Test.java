@@ -5,85 +5,55 @@ import javafx.stage.Stage;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.Group;
-import javafx.scene.shape.Circle;
-import javafx.scene.paint.Color;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
 
 public class Test extends Application {
 	
-	MyButton button;
-	Circle circle;
-	boolean swaper;
+	private MyButton button;
+	private MyCanvas canvas;
+	private MyLayout layout;
+	private Label message;
 	
     public void start(Stage stage) {
     	
-        button = new MyButton();
-        circle = new Circle();
-        swaper = true;
+        String javaVersion = System.getProperty("java.version");
+        String javafxVersion = System.getProperty("javafx.version");
         
-        //Setting the position of the circle
-        circle.setCenterX(300.0f); 
-        circle.setCenterY(135.0f); 
-          
-        //Setting the radius of the circle
-        circle.setRadius(25.0f); 
-          
-        //Setting the color of the circle 
-        circle.setFill(Color.BROWN); 
-          
-        //Setting the stroke width of the circle 
-        circle.setStrokeWidth(20);
+    	layout = new MyLayout();
+    	button = new MyButton();
+    	canvas = new MyCanvas(480, 360);
+        message = new Label("Hello, JavaFX " + javafxVersion + ", " + 
+        					"running on Java " + javaVersion + ".");
         
-        //Setting the position of the circle 
-        circle.setCenterX(320.0f); 
-        circle.setCenterY(135.0f);
-    	
-        //Creating event
+        //Creating mouse event
         EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
-                
-                if (swaper) { 
-                    circle.setFill(Color.DARKSLATEBLUE); 
-                } else {
-                    circle.setFill(Color.BROWN);
-                }
-                System.out.println(""+swaper);
-                swaper = !swaper;
-            }
+                System.out.println("in canvas");            }
         };
-        circle.addEventFilter(MouseEvent.MOUSE_ENTERED_TARGET, eventHandler);
+        canvas.addEventFilter(MouseEvent.MOUSE_ENTERED_TARGET, eventHandler);
         
-        //Creating event
+        //Creating button action event
         EventHandler<ActionEvent> buttonHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent action) {
-                System.out.println("clicked");
+                System.out.println("button clicked");
             }
         };
-        
         button.setOnAction(buttonHandler);
-        button.addEventFilter(MouseEvent.MOUSE_ENTERED_TARGET, eventHandler);
         
-        String javaVersion = System.getProperty("java.version");
-        String javafxVersion = System.getProperty("javafx.version");
-        Label l = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-        l.setLayoutX(150.0f);
-        l.setLayoutY(240.0f);
-       
-        
-        Group root = new Group(circle, l, button); 
-        Scene scene = new Scene(root, 640, 480);
+        layout.addTop(button);
+        layout.addBottom(message);
+        layout.addCenter(canvas);
+        Scene scene = new Scene(layout, 640, 480);
         stage.setScene(scene);
-        
         stage.show();
     }
     
     public static void main(String[] args) {
-    	System.out.println("j'ai fixé le problème sans tout supprimer :) plus de LOL ah bah ok si enfait");
+    	System.out.println("Lancement");
         launch();
     }
 	
