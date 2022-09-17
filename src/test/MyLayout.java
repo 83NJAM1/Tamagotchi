@@ -6,6 +6,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.Node;
+import javafx.geometry.Pos;
 
 public class MyLayout extends StackPane{
 	
@@ -30,8 +31,11 @@ public class MyLayout extends StackPane{
     	border.setRight(right);
     	border.setCenter(center);
     	
-    	BorderPane.setMargin(top, new Insets(8,8,8,8));
-    	BorderPane.setMargin(bottom, new Insets(8,8,8,8));
+    	top.setAlignment(Pos.CENTER);
+    	bottom.setAlignment(Pos.CENTER);
+    	
+    	BorderPane.setMargin(top, new Insets(8,0,8,0));
+    	BorderPane.setMargin(bottom, new Insets(8,0,8,0));
     	BorderPane.setMargin(left, new Insets(8,8,8,8));
     	BorderPane.setMargin(right, new Insets(8,8,8,8));
     	
@@ -52,5 +56,9 @@ public class MyLayout extends StackPane{
 	}
 	public void addCenter(Node object) {
 		center.getChildren().add(object);
+	}
+	
+	public double getTopHeight() {
+		return top.getHeight();
 	}
 }

@@ -126,7 +126,7 @@ public class Test extends Application {
         //Creation change event for height change
         ChangeListener<Number> newHeight= new ChangeListener<Number>() {
         	public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-        		Double height = (Double)newValue;
+        		Double height = (Double)newValue-layout.getTopHeight()-32;
         		Double oldHeight = (Double)oldValue;
         		if (oldHeight < max_h_canvas) {
         			canvas.setHeight(height);
@@ -136,6 +136,7 @@ public class Test extends Application {
         			canvas.setHeight(max_h_canvas);
         			canvas.draw();
         		}
+        		System.out.println(""+layout.getTopHeight());
         	}
         };
         layout.heightProperty().addListener(newHeight);
