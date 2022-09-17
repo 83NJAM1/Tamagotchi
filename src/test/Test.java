@@ -83,7 +83,7 @@ public class Test extends Application {
     }
     
     public static void main(String[] args) {
-    	System.out.println("j'ai fixé le problème sans tout supprimer :)");
+    	System.out.println("j'ai fixé le problème sans tout supprimer :) lol");
         launch();
     }
 	
