@@ -25,7 +25,7 @@ Projet étudiant dans lequel on doit réaliser un jeu tamagotchi soit un jeu d'a
 Dans eclipse -> **project -> properties -> java build path -> Classpath (click)**
 
 #### pendant l'import
-Dans l'onglet Libraries -> **Classpath (click)**
+Dans l'onglet -> **Libraries -> Classpath (click)**
 
 ### suivi de
 1. **Add Library -> User Library -> User Libraries -> New** 
