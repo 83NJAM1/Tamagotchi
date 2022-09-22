@@ -7,7 +7,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class Main extends StackPane{
+public class Main extends StackPane {
 
 	HBox horizontalPane;
 	VBox characteristicPane;
@@ -51,6 +51,9 @@ public class Main extends StackPane{
 	
 	public void drawImage(Image img, double x, double y) {
 		drawzone.getGraphicsContext2D().drawImage(img, x, y);
+	}
+	public void blanck() {
+		drawzone.getGraphicsContext2D().clearRect(0, 0, 300, 300);
 	}
 	
 	public void changeName(String newName) {

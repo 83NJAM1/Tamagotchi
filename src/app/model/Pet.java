@@ -13,6 +13,7 @@ public class Pet {
 	private Characteristic spirit;
 	private Characteristic weight;
 	private Characteristic[] list;
+	
 	public Pet(String name) {
 		this.name = name;
 		

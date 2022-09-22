@@ -8,17 +8,28 @@ public class Main {
 	
 	private app.view.Main mainView;
 	private Pet myPet;
-	private AnimationTimer timer;
-    
+	private AnimationTimer timerCharacteristic;
+	private AnimationTimer timerRefreshCanvas;
+	
 	public Main() {
-		timer = new AnimationTimer() {
+		timerCharacteristic = new AnimationTimer() {
 			long old_time=0;
 			@Override
 	        public void handle(long new_time) {
 				if (new_time > old_time ) {
 					old_time = new_time+(1000000000);
-					myPet.autoDecrement();
 					updateValue();
+				}
+	        }
+	    };
+	    
+	    timerRefreshCanvas = new AnimationTimer() {
+			long old_time=0;
+			@Override
+	        public void handle(long new_time) {
+				if (new_time > old_time ) {
+					old_time = new_time+(4*16700000);
+					updateCanvas();
 				}
 	        }
 	    };
@@ -28,10 +39,12 @@ public class Main {
 		
 		mainView.drawImage(myPet.getSkin(), 150-64, 150-64);
 		updateValue();
-		timer.start();
+		timerCharacteristic.start();
+		timerRefreshCanvas.start();
 	}
 	
 	public void updateValue() {
+		myPet.autoDecrement();
 		mainView.changeName(myPet.getName());
 		mainView.changeBladder(myPet.getBladder());
 		mainView.changeEnergy(myPet.getEnergy());
@@ -40,6 +53,11 @@ public class Main {
 		mainView.changeNourished(myPet.getNourished());
 		mainView.changeSpirit(myPet.getSpirit());
 		mainView.changeWeight(myPet.getWeight());
+	}
+	
+	public void updateCanvas() {
+		mainView.blanck();
+		mainView.drawImage(myPet.getSkin(), myPet.getX(), myPet.getY());
 	}
 	
 	public StackPane getRoot() {
