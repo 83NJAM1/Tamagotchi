@@ -4,13 +4,14 @@ import app.App;
 import javafx.animation.AnimationTimer;
 import javafx.scene.layout.StackPane;
 
+
 public class Main {
 	
 	private app.view.Main mainView;
 	private Pet myPet;
 	private AnimationTimer timerCharacteristic;
 	private AnimationTimer timerRefreshCanvas;
-	
+
 	public Main() {
 		
 		timerCharacteristic = new AnimationTimer() {
@@ -34,6 +35,7 @@ public class Main {
 				}
 	        }
 	    };
+	    
 	    
 		mainView = new app.view.Main(300, 300);
 		myPet = new Pet("BALEK", App.getResource("res/skin.png"));

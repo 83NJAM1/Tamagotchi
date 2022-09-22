@@ -120,17 +120,10 @@ public class Test extends Application {
         
         //Creation change event for width change
         ChangeListener<Number> newWidth = new ChangeListener<Number>() {
+        	@Override
         	public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+        		
         		Double width = ((Double)newValue)-layout.getRightLeftWidth();
-        		/*Double oldWidth = (Double)oldValue;
-        		if (oldWidth < max_w_canvas) {
-        			canvas.setWidth(width);
-        			canvas.draw();
-        		}
-        		else {
-        			canvas.setWidth(max_w_canvas);
-        			canvas.draw();
-        		}*/
         		canvas.setWidth(width);
         		canvas.draw();
         		
@@ -140,17 +133,10 @@ public class Test extends Application {
         
         //Creation change event for height change
         ChangeListener<Number> newHeight= new ChangeListener<Number>() {
+        	@Override
         	public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+        		
         		Double height = ((Double)newValue)-layout.getTopBottomHeight();
-        		/*Double oldHeight = (Double)oldValue;
-        		if (oldHeight < max_h_canvas) {
-        			canvas.setHeight(height);
-        			canvas.draw();
-        		}
-        		else {
-        			canvas.setHeight(max_h_canvas);
-        			canvas.draw();
-        		}*/
         		canvas.setHeight(height);
         		canvas.draw();
         	}

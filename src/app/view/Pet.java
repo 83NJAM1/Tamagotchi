@@ -6,9 +6,9 @@ import javafx.scene.image.Image;
 
 public class Pet {
 
-	Image skin;
-	IntegerProperty x;
-	IntegerProperty y;
+	private Image skin;
+	private IntegerProperty x;
+	private IntegerProperty y;
 	
 	public Pet(String pathimage) {
 		x = new SimpleIntegerProperty(98);

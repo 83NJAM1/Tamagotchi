@@ -6,23 +6,31 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 
 public class Main extends StackPane {
 
-	HBox horizontalPane;
-	VBox characteristicPane;
-	Canvas drawzone;
-	Label name;
-	Label bladder;
-	Label energy;
-	Label hydrated;
-	Label hygiene;
-	Label nourished;
-	Label spirit;
-	Label weight;
+	private HBox horizontalPane;
+	private VBox characteristicPane;
+	private Canvas drawzone;
+	private Label name;
+	private Label bladder;
+	private Label energy;
+	private Label hydrated;
+	private Label hygiene;
+	private Label nourished;
+	private Label spirit;
+	private Label weight;
+	
+	private Font nameFont;
 	
 	public Main(double w, double h) {
 		super();
+		
+		nameFont = Font.font("Courier new", FontWeight.BOLD, FontPosture.ITALIC, 16);
 		
 		horizontalPane = new HBox(32);
 		characteristicPane = new VBox(32);
@@ -35,6 +43,8 @@ public class Main extends StackPane {
 		nourished = new Label();
 		spirit = new Label();
 		weight = new Label();
+		
+		name.setFont(nameFont);
 		
 		horizontalPane.getChildren().add(drawzone);
 		characteristicPane.getChildren().add(name);
@@ -60,24 +70,43 @@ public class Main extends StackPane {
 		name.setText("Name: " + newName);
 	}
 	public void changeBladder(double newValue) {
+		changeTextColorByValue(newValue, bladder);
 		bladder.setText( ("Bladder: %.3f").formatted(newValue) );
 	}
 	public void changeEnergy(double newValue) {
+		changeTextColorByValue(newValue, energy);
 		energy.setText( ("Energy: %.3f").formatted(newValue) );
 	}
 	public void changeHydrated(double newValue) {
+		changeTextColorByValue(newValue, hydrated);
 		hydrated.setText( ("Hydrated: %.3f").formatted(newValue) );
 	}
 	public void changeHygiene(double newValue) {
+		changeTextColorByValue(newValue, hygiene);
 		hygiene.setText( ("Hygiene: %.3f").formatted(newValue) );
 	}
 	public void changeNourished(double newValue) {
+		changeTextColorByValue(newValue, nourished);
 		nourished.setText( ("Nourished: %.3f").formatted(newValue) );
 	}
 	public void changeSpirit(double newValue) {
+		changeTextColorByValue(newValue, spirit);
 		spirit.setText( ("Spirit: %.3f").formatted(newValue) );
 	}
 	public void changeWeight(double newValue) {
+		changeTextColorByValue(newValue, weight);
 		weight.setText( ("Weight: %.3f").formatted(newValue) );
+	}
+	
+	private void changeTextColorByValue(double value, Label l) {
+		if (value > 0.5) {
+			l.setTextFill(Color.GREEN);
+		}
+		else if (value > 0.2) {
+			l.setTextFill(Color.ORANGE);
+		}
+		else {
+			l.setTextFill(Color.RED);
+		}
 	}
 }
