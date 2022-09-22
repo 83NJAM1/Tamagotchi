@@ -4,22 +4,23 @@
 
 rectangle Tamagotchi {
 
-    p --> (On Start App)
+    p -> (Start App)
     
     package Menu {
         
         p --> (Edit Options)
         p --> (New Game)
-        p --> (Load)
+        p --> (Chose Save)
         p --> (Login Online)
         
-        (Login Online) ..> (Authentification) : <<include>>
-        (New Game) ..> (Choose Pet) : <<include>>
         (Load) ..> (Start Game) : <<include>>
-        (Load) <.. (Login Online) : <<extend>> [if auth]
-        (On Start App) <.. (Load) : <<extend>> [if save file]
-        (On Start App) <.. (New Game) : <<extend>> [if no save file]
-        (Choose Pet) <.. (Customize Pet) : <<extend>> [if player wants]
+        (New Game) ..> (Choose Pet) : <<include>>
+        (Login Online) ..> (Authentification) : <<include>>
+        (Login Online) ..> (Load) : <<include>>
+        (Chose Save) ..> (Load) : <<include>>
+        (Start App) <.. (Load) : <<extend>>\n[if save file]
+        (Start App) <.. (New Game) : <<extend>>\n[if no save file]
+        (Choose Pet) <.. (Customize Pet) : <<extend>>\n[if player wants]
         (Choose Pet) ..> (Start Game) : <<include>>
         (Edit Options)
     }
@@ -33,15 +34,15 @@ rectangle Tamagotchi {
         
         (Change Room) ..> (Change player location) : <<include>>
         (Change Room) ..> (Load environment) : <<include>>
-        (On State Change) ..> (Save) : <<include>>
-        (Give) ..> (On State Change) : <<include>>
+        (State Change) ..> (Save) : <<include>>
+        (Give) ..> (State Change) : <<include>>
         (Cook) ..> (Give) : <<include>>
         (Fridge) ..> (Give) : <<include>>
         (Feed) <.. (Cook) : <<extend>>\n[if in kitchen]
         (Feed) <.. (Fridge) : <<extend>>\n[if in kitchen]
         (MiniGame) <.. (Sport) : <<extend>>\n[if outside]
-        (Interact with Pet) ..> (On State Change) : <<include>>
-        (Interact with Pet) ..> (MiniGame) : <<extend>>
+        (Interact with Pet) ..> (State Change) : <<include>>
+        (Interact with Pet) <.. (MiniGame) : <<extend>>\n[if player chose]
     }
 }
 
