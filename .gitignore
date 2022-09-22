@@ -10,7 +10,7 @@
 # Eclipse Files
 *.classpath
 *.project
-.setting
+.settings
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
