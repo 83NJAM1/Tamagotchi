@@ -1,5 +1,6 @@
 package app.model;
 
+import java.util.Random;
 import app.useless.*;
 
 public class Pet {
@@ -16,14 +17,14 @@ public class Pet {
 	
 	public Pet(String name) {
 		this.name = name;
-		
-		bladder = new Bladder(0.5);
-		energy = new Energy(0.5);
-		hydrated = new Hydrated(0.5);
-		hygiene = new Hygiene(0.5);
-		nourished = new Nourished(0.5);
-		spirit = new Spirit(0.5);
-		weight = new Weight(0.5);
+		Random r = new Random();
+		bladder = new Bladder(r.nextDouble(0.0, 1.0));
+		energy = new Energy(r.nextDouble(0.0, 1.0));
+		hydrated = new Hydrated(r.nextDouble(0.0, 1.0));
+		hygiene = new Hygiene(r.nextDouble(0.0, 1.0));
+		nourished = new Nourished(r.nextDouble(0.0, 1.0));
+		spirit = new Spirit(r.nextDouble(0.0, 1.0));
+		weight = new Weight(r.nextDouble(0.0, 1.0));
 		list = new Characteristic[]{bladder, energy, hydrated, hygiene, nourished, spirit, weight};
 	}
 	
