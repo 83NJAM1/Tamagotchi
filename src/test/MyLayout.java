@@ -58,7 +58,10 @@ public class MyLayout extends StackPane{
 		center.getChildren().add(object);
 	}
 	
-	public double getTopHeight() {
-		return top.getHeight();
+	public double getTopBottomHeight() {
+		return top.getHeight() + bottom.getHeight() + BorderPane.getMargin(top).getTop()*2 + BorderPane.getMargin(top).getBottom()*2;
+	}
+	public double getRightLeftWidth() {
+		return right.getWidth() + left.getWidth() + BorderPane.getMargin(right).getRight()*2 + BorderPane.getMargin(right).getLeft()*2;
 	}
 }

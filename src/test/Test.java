@@ -22,6 +22,7 @@ public class Test extends Application {
 	private MyButton buttonBlu;
 	private MyButton buttonGre;
 	private MyButton buttonBla;
+	private MyButton buttonSave;
 	private MyCanvas canvas;
 	private MyLayout layout;
 	private Label message;
@@ -40,6 +41,7 @@ public class Test extends Application {
     	buttonBlu = new MyButton("Crayon bleu");
     	buttonGre = new MyButton("Crayon vert");
     	buttonBla = new MyButton("Crayon noir");
+    	buttonSave = new MyButton("Save");
     	
     	canvas = new MyCanvas(max_w_canvas, max_h_canvas);
         message = new Label("Hello, JavaFX " + javafxVersion + ", " + 
@@ -54,6 +56,16 @@ public class Test extends Application {
                 System.out.println("in canvas");            }
         };
         canvas.addEventFilter(MouseEvent.MOUSE_ENTERED_TARGET, eventHandler);
+        
+        //Creating button action event
+        EventHandler<ActionEvent> saveHandler = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent action) {
+                System.out.println("save clicked");
+                canvas.save("snapshot.png");
+            }
+        };
+        buttonSave.setOnAction(saveHandler);
         
         //Creating button action event
         EventHandler<ActionEvent> eraserHandler = new EventHandler<ActionEvent>() {
@@ -109,8 +121,8 @@ public class Test extends Application {
         //Creation change event for width change
         ChangeListener<Number> newWidth = new ChangeListener<Number>() {
         	public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-        		Double width = (Double)newValue;
-        		Double oldWidth = (Double)oldValue;
+        		Double width = ((Double)newValue)-layout.getRightLeftWidth();
+        		/*Double oldWidth = (Double)oldValue;
         		if (oldWidth < max_w_canvas) {
         			canvas.setWidth(width);
         			canvas.draw();
@@ -118,7 +130,10 @@ public class Test extends Application {
         		else {
         			canvas.setWidth(max_w_canvas);
         			canvas.draw();
-        		}
+        		}*/
+        		canvas.setWidth(width);
+        		canvas.draw();
+        		
         	}
         };
         layout.widthProperty().addListener(newWidth);
@@ -126,8 +141,8 @@ public class Test extends Application {
         //Creation change event for height change
         ChangeListener<Number> newHeight= new ChangeListener<Number>() {
         	public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-        		Double height = (Double)newValue-layout.getTopHeight()-48;
-        		Double oldHeight = (Double)oldValue;
+        		Double height = ((Double)newValue)-layout.getTopBottomHeight();
+        		/*Double oldHeight = (Double)oldValue;
         		if (oldHeight < max_h_canvas) {
         			canvas.setHeight(height);
         			canvas.draw();
@@ -135,8 +150,9 @@ public class Test extends Application {
         		else {
         			canvas.setHeight(max_h_canvas);
         			canvas.draw();
-        		}
-        		System.out.println(""+layout.getTopHeight());
+        		}*/
+        		canvas.setHeight(height);
+        		canvas.draw();
         	}
         };
         layout.heightProperty().addListener(newHeight);
@@ -150,6 +166,7 @@ public class Test extends Application {
         layout.addTop(buttonBlu);
         layout.addTop(buttonGre);
         layout.addTop(buttonBla);
+        layout.addTop(buttonSave);
         layout.addBottom(message);
         layout.addCenter(canvas);
         

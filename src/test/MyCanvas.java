@@ -2,7 +2,13 @@ package test;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+
+import javax.imageio.ImageIO;
+import java.io.File;
+
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.ArcType;
@@ -29,7 +35,6 @@ public class MyCanvas extends Canvas{
 	
 	public MyCanvas(double width, double height) {
 		super(width, height);
-		
 		colorPen = null;
 		default_width = width;
 		default_height = height;
@@ -60,5 +65,17 @@ public class MyCanvas extends Canvas{
 	
 	public void setPen(Color color) {
 		colorPen = color;
+	}
+	
+	public void save(String path) {
+		WritableImage export = new WritableImage((int)getWidth(), (int)getHeight());
+		File file = new File(path);
+		try {
+			this.snapshot(null, export);
+			ImageIO.write(SwingFXUtils.fromFXImage(export, null), "png", file);
+		}
+		catch(Exception e) {
+			System.err.println("Error save image");
+		}
 	}
 }
