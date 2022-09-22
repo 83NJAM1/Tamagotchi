@@ -17,7 +17,7 @@ public class App extends Application{
         stage.setScene(scene);
         stage.show();
 	}
-	public static String getRessource(String path) {
+	public static String getResource(String path) {
 		return App.class.getClassLoader().getResource(path).toString();
 	}
     public static void main(String[] args) {
