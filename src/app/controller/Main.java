@@ -16,7 +16,7 @@ public class Main {
 			@Override
 	        public void handle(long new_time) {
 				if (new_time > old_time ) {
-					old_time = new_time+(2*1000000000);
+					old_time = new_time+(1000000000);
 					myPet.autoDecrement();
 					updateValue();
 				}

@@ -14,6 +14,6 @@ public class Characteristic {
 		value = new_value;
 	}
 	public void autoDecrement() {
-		value = value - 0.01;
+		value = value - 0.001;
 	}
 }

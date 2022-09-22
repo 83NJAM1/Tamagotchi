@@ -54,27 +54,27 @@ public class Main extends StackPane{
 	}
 	
 	public void changeName(String newName) {
-		name.setText("Nom: " + newName);
+		name.setText("Name: " + newName);
 	}
 	public void changeBladder(double newValue) {
-		bladder.setText("Bladder: " + newValue);
+		bladder.setText( ("Bladder: %.3f").formatted(newValue) );
 	}
 	public void changeEnergy(double newValue) {
-		energy.setText("Energy: " + newValue);
+		energy.setText( ("Energy: %.3f").formatted(newValue) );
 	}
 	public void changeHydrated(double newValue) {
-		hydrated.setText("Hydrated: " + newValue);
+		hydrated.setText( ("Hydrated: %.3f").formatted(newValue) );
 	}
 	public void changeHygiene(double newValue) {
-		hygiene.setText("Hygiene: " + newValue);
+		hygiene.setText( ("Hygiene: %.3f").formatted(newValue) );
 	}
 	public void changeNourished(double newValue) {
-		nourished.setText("Nourished: " + newValue);
+		nourished.setText( ("Nourished: %.3f").formatted(newValue) );
 	}
 	public void changeSpirit(double newValue) {
-		spirit.setText("Spirit: " + newValue);
+		spirit.setText( ("Spirit: %.3f").formatted(newValue) );
 	}
 	public void changeWeight(double newValue) {
-		weight.setText("Weight: " + newValue);
+		weight.setText( ("Weight: %.3f").formatted(newValue) );
 	}
 }
