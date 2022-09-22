@@ -12,6 +12,7 @@ public class Main {
 	private AnimationTimer timerRefreshCanvas;
 	
 	public Main() {
+		
 		timerCharacteristic = new AnimationTimer() {
 			long old_time=0;
 			@Override
@@ -35,10 +36,11 @@ public class Main {
 	    };
 	    
 		mainView = new app.view.Main(300, 300);
-		myPet = new Pet("BALEK", App.getRessource("res/skin.png"));
+		myPet = new Pet("BALEK", App.getResource("res/skin.png"));
 		
-		mainView.drawImage(myPet.getSkin(), 150-64, 150-64);
+		updateCanvas();
 		updateValue();
+		
 		timerCharacteristic.start();
 		timerRefreshCanvas.start();
 	}
