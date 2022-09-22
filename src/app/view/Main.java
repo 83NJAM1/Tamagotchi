@@ -53,7 +53,7 @@ public class Main extends StackPane {
 		drawzone.getGraphicsContext2D().drawImage(img, x, y);
 	}
 	public void blanck() {
-		drawzone.getGraphicsContext2D().clearRect(0, 0, 300, 300);
+		drawzone.getGraphicsContext2D().clearRect(0, 0, drawzone.getWidth(), drawzone.getHeight());
 	}
 	
 	public void changeName(String newName) {
