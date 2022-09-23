@@ -17,8 +17,19 @@ public class App extends Application{
         stage.setScene(scene);
         stage.show();
 	}
+	
 	public static String getResource(String path) {
-		return App.class.getClassLoader().getResource(path).toString();
+		try {
+			
+			return App.class.getClassLoader().getResource(path).toString();
+		}
+		catch(NullPointerException e) {
+			
+			System.out.println("Error resources loading");
+			System.out.println(e);
+			System.exit(-1);
+		}
+		return "";
 	}
     public static void main(String[] args) {
     	System.out.println("Launched");
