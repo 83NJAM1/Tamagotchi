@@ -1,4 +1,4 @@
-# Tamagotchi LOLe
+# Tamagotchi
 Projet étudiant dans lequel on doit réaliser un jeu tamagotchi ; autrement dit, un jeu d'animaux de compagnie virtuel.
 [![usecase-diagram](use-case.svg)](https://raw.githubusercontent.com/83NJAM1/Tamagotchi/main/use-case.svg)
 
