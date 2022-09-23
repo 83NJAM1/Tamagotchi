@@ -26,48 +26,62 @@ public class Pet {
 	}
 	
 	public String getName() {
+		
 		return model.getName();
 	}
+	
 	public void autoDecrement() {
+		
 		model.autoDecrement();
 	}
 	
 	public int getX() {
+		
 		return view.getWritableX().intValue();
 	}
+	
 	public int getY() {
+		
 		return view.getWritableY().intValue();
 	}
 	
 	public double getBladder() {
+		
 		return model.getCharacteristic()[0].getValue();
 	}
 	
 	public double getEnergy() {
+		
 		return model.getCharacteristic()[1].getValue();
 	}
 	
 	public double getHydrated() {
+		
 		return model.getCharacteristic()[2].getValue();
 	}
 	
 	public double getHygiene() {
+		
 		return model.getCharacteristic()[3].getValue();
 	}
 	
 	public double getNourished() {
+		
 		return model.getCharacteristic()[4].getValue();
 	}
 	
 	public double getSpirit() {
+		
 		return model.getCharacteristic()[5].getValue();
 	}
 	
 	public double getWeight() {
+		
 		return model.getCharacteristic()[6].getValue();
 	}
 	
 	public Image getSkin() {
+		
 		return view.getImage();
 	}
 }

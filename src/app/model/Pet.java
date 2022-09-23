@@ -16,8 +16,10 @@ public class Pet {
 	private Characteristic[] list;
 	
 	public Pet(String name) {
-		this.name = name;
+		
 		Random r = new Random();
+		
+		this.name = name;
 		bladder = new Bladder(r.nextDouble(0.0, 1.0));
 		energy = new Energy(r.nextDouble(0.0, 1.0));
 		hydrated = new Hydrated(r.nextDouble(0.0, 1.0));
@@ -29,14 +31,17 @@ public class Pet {
 	}
 	
 	public Characteristic[] getCharacteristic() {
+		
 		return list;
 	}
 	
 	public String getName() {
+		
 		return name;
 	}
 	
 	public void autoDecrement() {
+		
 		for (Characteristic c : list) {
 			c.autoDecrement();
 		}

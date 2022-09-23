@@ -4,10 +4,10 @@ import app.App;
 import javafx.animation.AnimationTimer;
 import javafx.scene.layout.StackPane;
 
-
 public class Main {
 	
 	private app.view.Main mainView;
+	
 	private Pet myPet;
 	private AnimationTimer timerCharacteristic;
 	private AnimationTimer timerRefreshCanvas;
@@ -48,6 +48,7 @@ public class Main {
 	}
 	
 	public void updateValue() {
+		
 		myPet.autoDecrement();
 		mainView.changeName(myPet.getName());
 		mainView.changeBladder(myPet.getBladder());
@@ -60,11 +61,13 @@ public class Main {
 	}
 	
 	public void updateCanvas() {
+		
 		mainView.blanck();
 		mainView.drawImage(myPet.getSkin(), myPet.getX(), myPet.getY());
 	}
 	
 	public StackPane getRoot() {
+		
 		return mainView;
 	}
 }

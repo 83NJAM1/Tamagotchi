@@ -11,20 +11,24 @@ public class Pet {
 	private IntegerProperty y;
 	
 	public Pet(String pathimage) {
+		
 		x = new SimpleIntegerProperty(98);
 		y = new SimpleIntegerProperty(98);
 		skin = new Image(pathimage);
 	}
 	
 	public Image getImage() {
+		
 		return skin;
 	}
 	
 	public IntegerProperty getWritableX() {
+		
 		return x;
 	}
 	
 	public IntegerProperty getWritableY() {
+		
 		return y;
 	}
 }
