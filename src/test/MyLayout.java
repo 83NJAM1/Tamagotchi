@@ -1,10 +1,13 @@
 package test;
 
 import javafx.geometry.Insets;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.Node;
 import javafx.geometry.Pos;
 
@@ -16,14 +19,17 @@ public class MyLayout extends StackPane{
 	private VBox left;
 	private VBox right;
 	private StackPane center;
+	private BackgroundFill centerBackground;
 	
-	public MyLayout() {		
+	public MyLayout() {
+		
     	border = new BorderPane();
     	top = new HBox(16);
     	bottom = new HBox(16);
     	left = new VBox(16);
     	right = new VBox(16);
     	center = new StackPane();
+    	centerBackground = new BackgroundFill(Color.LIGHTGREY, null, null);
     	
     	border.setTop(top);
     	border.setBottom(bottom);
@@ -33,6 +39,7 @@ public class MyLayout extends StackPane{
     	
     	top.setAlignment(Pos.CENTER);
     	bottom.setAlignment(Pos.CENTER);
+    	center.setBackground(new Background(centerBackground));
     	
     	BorderPane.setMargin(top, new Insets(8,0,8,0));
     	BorderPane.setMargin(bottom, new Insets(8,0,8,0));
