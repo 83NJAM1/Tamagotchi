@@ -64,4 +64,8 @@ public class MyLayout extends StackPane{
 	public double getRightLeftWidth() {
 		return right.getWidth() + left.getWidth() + BorderPane.getMargin(right).getRight()*2 + BorderPane.getMargin(right).getLeft()*2;
 	}
+	
+	public StackPane getCenter() {
+		return center;
+	}
 }

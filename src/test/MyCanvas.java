@@ -8,12 +8,14 @@ import javafx.scene.paint.Color;
 import javax.imageio.ImageIO;
 import java.io.File;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.ArcType;
 
-public class MyCanvas extends Canvas{
+public class MyCanvas extends Canvas {
 
 	private GraphicsContext gc;
 	private double default_width;
@@ -31,8 +33,29 @@ public class MyCanvas extends Canvas{
         		 gc.clearRect(e.getX() - 8, e.getY() - 8, 16, 16);
         	 }
          }
-     };
-	
+    };
+
+    EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
+         @Override
+         public void handle(MouseEvent e) {
+             System.out.println("in canvas");            
+         }
+    };
+     
+    ChangeListener<Number> changeWidth = new ChangeListener<Number>() {
+	 	@Override
+	 	public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+	 		draw();
+	 	}
+ 	};
+    ChangeListener<Number> changeHeight = new ChangeListener<Number>() {
+	 	@Override
+	 	public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+	 		draw();
+	 	}
+ 	};
+ 	
+     
 	public MyCanvas(double width, double height) {
 		super(width, height);
 		colorPen = null;
@@ -42,6 +65,9 @@ public class MyCanvas extends Canvas{
 		gc = getGraphicsContext2D();
 	    draw();
 	    
+	    //this.widthProperty().addListener(changeWidth);
+	    //this.heightProperty().addListener(changeHeight);
+	    this.addEventFilter(MouseEvent.MOUSE_ENTERED_TARGET, eventHandler);
 	    this.addEventHandler(MouseEvent.MOUSE_DRAGGED, eraser);
 	}
 	
