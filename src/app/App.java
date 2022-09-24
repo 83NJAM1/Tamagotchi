@@ -8,7 +8,6 @@ import app.controller.Main;
 
 public class App extends Application{
 	
-	
 	public void start(Stage stage) {
 		
 		Main mainController = new Main();

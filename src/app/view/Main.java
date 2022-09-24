@@ -4,6 +4,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -29,7 +31,7 @@ public class Main extends StackPane {
 	public Main(double width, double height) {
 		super();
 		
-		nameFont = Font.font("Courier new", FontWeight.BOLD, FontPosture.ITALIC, 16);
+		nameFont = Font.font("Courier new", FontWeight.BOLD, FontPosture.ITALIC, 24);
 		horizontalPane = new HBox(32);
 		characteristicPane = new VBox(32);
 		drawzone = new Canvas(width, height);
@@ -42,10 +44,11 @@ public class Main extends StackPane {
 		spirit = new Label();
 		weight = new Label();
 		
-		
+		this.setBackground(new Background( new BackgroundFill(Color.BEIGE, null, null) ));
+		this.getStylesheets().add("./res/myStyle.css");
+		characteristicPane.getStyleClass().add("char-pane");
 		name.setFont(nameFont);
 		name.setUnderline(true);
-		//name.setStyle("-fx-underline: true;");
 		
 		horizontalPane.getChildren().add(drawzone);
 		characteristicPane.getChildren().add(name);
