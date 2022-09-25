@@ -63,7 +63,17 @@ public class Main {
 	public void updateCanvas() {
 		
 		mainView.blanck();
+		
 		mainView.drawImage(myPet.getSkin(), myPet.getX(), myPet.getY());
+		
+		mainView.drawSprite(myPet.getSpritesImage(), myPet.getSprite("A").getMinX(), myPet.getSprite("A").getMinY(), 
+													 myPet.getSprite("A").getWidth(), myPet.getSprite("A").getHeight());
+		
+		mainView.drawSprite(myPet.getSpritesImage(), myPet.getSprite("C").getMinX(), myPet.getSprite("C").getMinY(), 
+				 									 myPet.getSprite("C").getWidth(), myPet.getSprite("C").getHeight());
+		
+		mainView.drawSprite(myPet.getSpritesImage(), myPet.getSprite("O").getMinX(), myPet.getSprite("O").getMinY(), 
+				 									 myPet.getSprite("O").getWidth(), myPet.getSprite("O").getHeight());
 	}
 	
 	public StackPane getRoot() {

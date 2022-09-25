@@ -67,6 +67,10 @@ public class Main extends StackPane {
 		
 		drawzone.getGraphicsContext2D().drawImage(img, x, y);
 	}
+	public void drawSprite(Image img, double x, double y, double w, double h) {
+		
+		drawzone.getGraphicsContext2D().drawImage(img, x, y, w, h, x, y, w, h);
+	}
 	
 	public void blanck() {
 		

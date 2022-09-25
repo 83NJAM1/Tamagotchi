@@ -3,6 +3,7 @@ package app.controller;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.geometry.BoundingBox;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
@@ -45,6 +46,9 @@ public class Pet {
 		return view.getWritableY().intValue();
 	}
 	
+	public BoundingBox getSprite(String name) {
+		return view.getSprite(name);
+	}
 	public double getBladder() {
 		
 		return model.getCharacteristic()[0].getValue();
@@ -83,5 +87,9 @@ public class Pet {
 	public Image getSkin() {
 		
 		return view.getImage();
+	}
+	public Image getSpritesImage() {
+		
+		return view.getSpritesImage();
 	}
 }
