@@ -1,4 +1,4 @@
-package app.useless;
+package app.model.useless;
 
 public class Energy extends Characteristic {
 	

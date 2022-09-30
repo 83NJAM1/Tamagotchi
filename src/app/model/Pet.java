@@ -1,7 +1,7 @@
 package app.model;
 
 import java.util.Random;
-import app.useless.*;
+import app.model.useless.*;
 
 public class Pet {
 
