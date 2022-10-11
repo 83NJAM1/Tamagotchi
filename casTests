@@ -1,0 +1,45 @@
+Test : Créer et charger les sauvegardes
+1 - Lancer la classe main
+2 - Sélectionner "Créer une partie" dans le menu qui s'est ouvert
+3 - Sélectionner le tamagotchi et lancer la partie, changer de salle et jouer un peu
+4 - forcer la fermeture de l'appli (avec la croix)
+5 - relancer et sélectionner la sauvegarde
+On devrait avoir le bon personage, là ou il en était avec les mêmes stats
+
+Test Attributs bruts :
+
+1- Lancer classe test Attributs
+2- Simule une création d'avatar avec moitié des attributs
+3- Affiche les attributs une fois mis au maximumum automatiquement par le pogramme test
+
+Test Attributs affichage :
+
+1- Lancer classe test Attributs MVC
+2- Cliquer sur des boutons attribués et affichage de quel attribut a été modifié
+
+Test Attributs affichage changement de Sprite :
+1- Lancer classe test AttributStateChange
+2- Les attributs régressent plus vite et un changement doit avoir lieu sur l'avatar.
+Une fois baissés, le nourrir et voir son design evoluer
+
+Test Mort du personnage:
+1- Lance classe TestMort
+2- Le programme va simuler une création de personnage et le laisser mourir, une message "Est Mort" doit etre écrit dans le terminal
+
+Test Salles :
+1- Lancer la classe test Salle
+2- Affiche uniquement le background salon
+3- On doit pouvoir cliquer sur les flèches a gauche et a droite pour changer de salle
+
+Test Activités :
+1- lancer test activité (extension de testSalles)
+2-on peut changer de salles et aussi cliquer sur des objets (peut etre ballon,casserole, frigo) dans certaines salles (cuisine=cuisiner, jardin=jouer au minijeu, sport)
+3- Affiche un message par interaction
+
+Test Mini jeu:
+1- Lancer  classe testMiniJeu
+2- On doit pouvoir jouer au mini jeu
+
+Test Customize pet :
+1- Lancer un menu clickable qui nous permet de changer le design de l'avatar
+2- l'avatar change en temps réel 
