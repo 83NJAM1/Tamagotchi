@@ -1,0 +1,112 @@
+@startuml
+
+    alt login case
+
+        User -> App : click-button-login()
+        App -> Game : create-view-login()
+        Game -> ViewLogin : identification()
+
+        alt first-connection
+
+            ViewLogin -> ViewLogin : create-acount
+
+        else connection
+
+            ViewLogin -> ViewLogin : authentification
+
+        end
+
+        alt success
+
+            ViewLogin --> Game : success
+
+        else echec
+
+        ViewLogin --> Game : echec
+
+    end
+
+    Game --> App
+
+    end
+
+    alt no-save case
+
+        User -> App : click-button-new-game()
+        App -> Game : create-game()
+        Game --> App : instance-de-game
+
+        User -> App : click-button-choose-pet()
+        App -> Game : set-pet()
+        Game --> App
+
+        alt custom case
+
+            User -> App : click-button-custom-pet()
+            App -> Game : custom-pet()
+            Game --> App
+
+        end
+
+    else save case
+
+        User -> App : click-button-load()
+        App -> Game : load()
+        Game --> App
+
+    end
+
+    User -> App : click-button-start-game()
+    App -> Game : start()
+    Game -> ViewGame : create-view-game()
+    ViewGame --> Game : instance-view-game 
+
+    alt menu-option
+
+        User -> App : click-button-option()
+        App -> Game : edit-option()
+        Game --> App
+
+    end
+
+    alt room 
+
+        User -> App : click-button-change-room()
+        App -> Game : change-room()
+        Game -> Map : load-map()
+        Map --> Game : instance-map
+
+        Game --> App : new-player-location
+        App --> User : new-player-location
+
+    else feed
+
+        User -> App : click-button-feed()
+        App -> Game : feed()
+        Game -> Pet : change-states()
+        Pet --> ViewGame : new-states
+        Game --> App
+
+    else interact-pet
+
+        alt mini-game 
+            User -> App : click-button-mini-game()
+            App -> Game : charge-mini-game()
+            Game -> ViewMiniGame : create-view-mini-game()
+            Game -> ModelMiniGame : create-model-mini-game()
+            ModelMiniGame --> Game : instance-model-mini-game
+            ViewMiniGame --> Game : instance-view-mini-game
+            ViewMiniGame -> ModelMiniGame : change-states()
+            ModelMiniGame --> Pet : new-states
+            Game --> App
+        end 
+
+    else option
+
+        User -> App : click-button-option()
+        App -> Game : edit-option()
+        Game --> App
+
+    end
+
+@enduml
