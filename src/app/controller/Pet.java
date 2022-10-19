@@ -16,7 +16,7 @@ public class Pet {
 	
 	public Pet(String name, String pathimage) {
 		
-		model = new app.model.Pet(name);
+		//model = new app.model.Pet(name);
 		view = new app.view.Pet(pathimage);
 		
 		timeline = new Timeline();
@@ -28,12 +28,13 @@ public class Pet {
 	
 	public String getName() {
 		
-		return model.getName();
+		//return model.getName();
+		return "TODO";
 	}
 	
 	public void autoDecrement() {
 		
-		model.autoDecrement();
+		//model.autoDecrement();
 	}
 	
 	public int getX() {
@@ -51,37 +52,44 @@ public class Pet {
 	}
 	public double getBladder() {
 		
-		return model.getCharacteristic()[0].getValue();
+		//return model.getCharacteristic()[0].getValue();
+		return 0.0;
 	}
 	
 	public double getEnergy() {
 		
-		return model.getCharacteristic()[1].getValue();
+		//return model.getCharacteristic()[1].getValue();
+		return 0.0;
 	}
 	
 	public double getHydrated() {
 		
-		return model.getCharacteristic()[2].getValue();
+		//return model.getCharacteristic()[2].getValue();
+		return 0.0;
 	}
 	
 	public double getHygiene() {
 		
-		return model.getCharacteristic()[3].getValue();
+		//return model.getCharacteristic()[3].getValue();
+		return 0.0;
 	}
 	
 	public double getNourished() {
 		
-		return model.getCharacteristic()[4].getValue();
+		//return model.getCharacteristic()[4].getValue();
+		return 0.0;
 	}
 	
 	public double getSpirit() {
 		
-		return model.getCharacteristic()[5].getValue();
+		//return model.getCharacteristic()[5].getValue();
+		return 0.0;
 	}
 	
 	public double getWeight() {
 		
-		return model.getCharacteristic()[6].getValue();
+		//return model.getCharacteristic()[6].getValue();
+		return 0.0;
 	}
 	
 	public Image getSkin() {
