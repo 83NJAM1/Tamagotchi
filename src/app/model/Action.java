@@ -237,31 +237,15 @@ public enum Action {
 		}
 	}
 	
-	public void execute(int n) {
-		contextInt=n;
-		execute();
-	}
-	
-	public void execute(String s, int n) {
-		contextInt=n;
-		execute(s);
-	}
-	
-	public void execute(Pet pet, String s, int n) {
-		contextPet=pet;
-		execute(s,n);
-	}
-	
-	public void execute(Pet pet) {
-		contextPet=pet;
-		execute();
-	}
-	
-	public void execute(String s) {
+	public void setContext(String s) {
 		if(s.charAt(0)=='#' && s.length()==7) contextColor = s;
 		else contextString = s;
-		execute();
 	}
+	
+	public void setContext(int n) {
+		contextInt=n;
+	}
+	
 
 	
 	
