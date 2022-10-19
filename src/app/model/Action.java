@@ -246,6 +246,12 @@ public enum Action {
 		contextInt=n;
 	}
 	
+	public static Action get(String name) {
+		for(Action action : Action.values())
+			if(action.name().equals(name))
+				return action;
+		return doNothing;
+	}
 
 	
 	
