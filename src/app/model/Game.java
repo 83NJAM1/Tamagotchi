@@ -81,16 +81,23 @@ public class Game {
 	
 	private static final List<String> inputTable = Arrays.asList("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f","g","h","i","j","k","l");
 	
-	public static void getTextInfo() {
-				
-		System.out.println("-----------------------------------------------------"+stage.name().toUpperCase()
-		+"-----------------------------------------------------");
+	public String getTextInfo() {
 		
-		if(is(Stage.playing)) selectedPet.getTextinfo();
+		String s="-----------------------------------------------------"+stage.name().toUpperCase()
+				+"-----------------------------------------------------\n";
+				
+				if(is(Stage.playing)) s+=selectedPet.getTextinfo();
+				
+		
+	}
+	
+	public static void showTextInfo() {
+		
+		String s=getTextInfo();
+				
 		
 		List<Action> actions = getEnabledActions();
-		
-		String s="";
+
 		int n=0;
 		for(Action a:actions){
 			s+=inputTable.get(n)+" : "+Text.call(a)+"\t\t";
@@ -106,7 +113,7 @@ public class Game {
 		
 		for(int i=0;i<1000000;i++) {
 			refresh();
-			getTextInfo();
+			showTextInfo();
 		
 			String input = scanner.nextLine();
 			int n = 0;

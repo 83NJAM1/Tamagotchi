@@ -397,12 +397,12 @@ public class Pet {
 		stats=b;
 	}
 	
-	public void getTextinfo() {
-		System.out.println(name+"\t\t"+specie+"\t\t"+room+"\t\t"+weather+"\t\t"+Integer.toString(cycle)+"\t\t");
+	public String getTextinfo() {
+		String s=name+"\t\t"+specie+"\t\t"+room+"\t\t"+weather+"\t\t"+Integer.toString(cycle)+"\t\t\n";
 		
 		if(stats) {
 			for(State state : states) {
-				String s=state.getText().call()+" : [";
+				s+=state.getText().call()+" : [";
 				
 				double n=state.getValue();
 				
@@ -411,33 +411,32 @@ public class Pet {
 				
 				for(int i=0;i<50;i++) {s+=n>0?"#":" ";n-=0.02;}
 				
-				s+="] "+percent;
+				s+="] \n"+percent;
 				
-				System.out.println(s);
 			}
 		}
 		
 		if(fridgeIsOpen()) {
-			System.out.println("FRIGO-----");
+			s+="FRIGO-----\n";
 			for(int i=0;i<8;i++)
-				System.out.println(Integer.toString(i+1)+" "+Text.call(fridge.get(i)));
-			System.out.println("----------");
+				s+=Integer.toString(i+1)+" "+Text.call(fridge.get(i))+"\n";
+			s+="----------\n";
 			}
 		
 		if(isCooking()) {
-			System.out.println("INGREDIENTS-----");
+			s+="INGREDIENTS-----\n";
 			for(int i=0;i<3;i++)
-				System.out.println(Integer.toString(i+1)+" "+Text.call(ingredients.get(i)));
-			System.out.println("----------------");
+				s+=Integer.toString(i+1)+" "+Text.call(ingredients.get(i))+"\n";
+			s+="----------------\n";
 			}
 		
 		if(isDining()) {
-			System.out.println("DISH-----");
-			System.out.println(Text.call(recipe));
-			System.out.println("----------------");
+			s+="DISH-----\n";
+			s+=Text.call(recipe)+"\n";
+			s+="----------------\n";
 			}
 		
-		
+		return s;
 	}
 	
 	
