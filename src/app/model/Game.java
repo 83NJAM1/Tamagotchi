@@ -40,9 +40,10 @@ public class Game {
 	
 	public static void removePet(Pet pet) {
 		if(selectedPet==pet) {
-		int i = pets.indexOf(selectedPet);
-		pets.remove(pet);
-		setSelectedPet(pets.size()==0?null:pets.get((i+pets.size()-1)%pets.size()));}
+			int i = pets.indexOf(selectedPet);
+			pets.remove(pet);
+			setSelectedPet(pets.size()==0?null:pets.get((i+pets.size()-1)%pets.size()));
+		}
 		else pets.remove(pet);
 		
 	}
