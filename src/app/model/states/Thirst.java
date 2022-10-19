@@ -1,4 +1,4 @@
-package app.states;
+package app.model.states;
 import app.model.*;
 
 public class Thirst extends State{

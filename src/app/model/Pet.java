@@ -1,5 +1,14 @@
 package app.model;
-import app.states.*;
+import app.model.states.Clean;
+import app.model.states.Energy;
+import app.model.states.Health;
+import app.model.states.Hunger;
+import app.model.states.Moral;
+import app.model.states.Sick;
+import app.model.states.State;
+import app.model.states.Thirst;
+import app.model.states.Weight;
+import app.model.states.Wet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
