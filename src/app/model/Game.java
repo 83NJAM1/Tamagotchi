@@ -105,7 +105,7 @@ public class Game {
 		
 		for(int i=0;i<1000000;i++) {
 			refresh();
-		getTextInfo();
+			getTextInfo();
 		
 		String input = scanner.nextLine();
 		int n = 0;
