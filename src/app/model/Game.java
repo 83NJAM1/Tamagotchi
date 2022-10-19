@@ -104,7 +104,7 @@ public class Game {
 		Scanner scanner = new Scanner(System.in);
 		
 		for(int i=0;i<1000000;i++) {
-			refresh();
+		refresh();
 			getTextInfo();
 		
 		String input = scanner.nextLine();
