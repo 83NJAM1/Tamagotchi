@@ -1,111 +1,129 @@
 @startuml
 
+    actor user as Player
+
+    Player -> App : launch
+    
+    App -> OptionView : create-option-view()
+    OptionView --> App : instance-option-view
+    OptionView -> LoginView : create-login-view()
+    LoginView --> OptionView : instance-login-view
+    
+    
     alt login case
 
-        User -> App : click-button-login()
-        App -> Game : create-view-login()
-        Game -> ViewLogin : identification()
+        Player -> OptionView : click-button-login()
+        OptionView -> LoginView : show()
+        Player -> LoginView : enter-login()
+        LoginView -> LoginChecker : identity
 
         alt first-connection
 
-            ViewLogin -> ViewLogin : create-acount
+            LoginChecker -> LoginChecker : create-acount()
+            LoginChecker --> App
 
         else connection
 
-            ViewLogin -> ViewLogin : authentification
+            LoginChecker -> LoginChecker : authentification()
+            LoginChecker --> App
 
         end
 
-        alt success
+        alt authentification-success
 
-            ViewLogin --> Game : success
-
-        else echec
-
-        ViewLogin --> Game : echec
-
-    end
-
-    Game --> App
+            App -> App : ConnectToServer()
+        
+        end
 
     end
 
     alt no-save case
 
-        User -> App : click-button-new-game()
+        Player -> OptionView : click-button-new-game()
+        OptionView --> App : click-event
         App -> Game : create-game()
+        Game -> GameView : create-game-view()
+        GameView --> Game : instance-game-view
         Game --> App : instance-de-game
-
-        User -> App : click-button-choose-pet()
-        App -> Game : set-pet()
+        
+        Player -> GameView : click-button-choose-pet()
+        GameView --> Game : click-event
+        Game -> Game : set-pet()
         Game --> App
 
         alt custom case
 
-            User -> App : click-button-custom-pet()
-            App -> Game : custom-pet()
+            Player -> GameView : click-button-custom-pet()
+            GameView --> Game : click-event
+            Game -> Game : custom-pet()
             Game --> App
 
         end
 
     else save case
 
-        User -> App : click-button-load()
+        Player -> OptionView : click-button-load()
+        OptionView --> App : click-event
+        App -> Game : create-game()
+        Game -> GameView : create-game-view()
+        GameView --> Game : instance-game-view
+        Game --> App : instance-de-game
+        
         App -> Game : load()
         Game --> App
 
     end
 
-    User -> App : click-button-start-game()
+    Player -> OptionView : click-button-start-game()
+    OptionView --> App : click-event
     App -> Game : start()
-    Game -> ViewGame : create-view-game()
-    ViewGame --> Game : instance-view-game 
 
     alt menu-option
 
-        User -> App : click-button-option()
-        App -> Game : edit-option()
-        Game --> App
+        Player -> GameView : click-button-option()
+        GameView --> Game : click-event
+        Game --> App : click-event
+        App -> OptionView : show()
 
     end
 
     alt room 
 
-        User -> App : click-button-change-room()
-        App -> Game : change-room()
+        Player -> GameView : click-button-change-room()
+        GameView --> Game : click-event
+        Game -> Game : change-room()
         Game -> Map : load-map()
         Map --> Game : instance-map
 
-        Game --> App : new-player-location
-        App --> User : new-player-location
-
     else feed
 
-        User -> App : click-button-feed()
-        App -> Game : feed()
-        Game -> Pet : change-states()
-        Pet --> ViewGame : new-states
-        Game --> App
+        Player -> GameView : click-button-feed()
+        GameView --> Game : click-event
+        Game -> Pet : feed()
+        Pet -> Pet : change-states()
+        Pet --> Game : new-states
+        Game --> GameView : new-states
 
     else interact-pet
 
-        alt mini-game 
-            User -> App : click-button-mini-game()
-            App -> Game : charge-mini-game()
-            Game -> ViewMiniGame : create-view-mini-game()
-            Game -> ModelMiniGame : create-model-mini-game()
-            ModelMiniGame --> Game : instance-model-mini-game
-            ViewMiniGame --> Game : instance-view-mini-game
-            ViewMiniGame -> ModelMiniGame : change-states()
-            ModelMiniGame --> Pet : new-states
-            Game --> App
-        end 
+        alt mini-game
+        
+            Player -> GameView : click-button-mini-game()
+            GameView --> Game : click-event
+            Game -> MiniGame : create-mini-game()
+            MiniGame -> ViewMiniGame : create-view-mini-game()
+            ViewMiniGame --> MiniGame : instance-view-mini-game
+            MiniGame --> Game : instance-mini-game
+            Game -> MiniGame : show()
+            
+            Player -> ViewMiniGame : send-input-to-play()
+            ViewMiniGame --> MiniGame : input-event
+            MiniGame -> Pet : do-action()
+            Pet -> Pet : change-states()
+            Pet --> Game : new-states
+            Game --> GameView : new-states
 
-    else option
-
-        User -> App : click-button-option()
-        App -> Game : edit-option()
-        Game --> App
+        end
 
     end
 
