@@ -107,13 +107,13 @@ public class Game {
 			refresh();
 			getTextInfo();
 		
-		String input = scanner.nextLine();
-		int n = 0;
-		if(input.length()==2) n = input.charAt(1)-'0';
+			String input = scanner.nextLine();
+			int n = 0;
+			if(input.length()==2) n = input.charAt(1)-'0';
 		
-		Action action=getEnabledActions().get(inputTable.indexOf(String.valueOf(input.charAt(0))));
-		refresh();
-		action.execute(n);
+			Action action=getEnabledActions().get(inputTable.indexOf(String.valueOf(input.charAt(0))));
+			refresh();
+			action.execute(n);
 		}
 		scanner.close();
 		
