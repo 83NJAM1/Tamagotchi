@@ -88,7 +88,7 @@ public class Game {
 				
 				if(is(Stage.playing)) s+=selectedPet.getTextinfo();
 				
-		
+		//a
 	}
 	
 	public static void showTextInfo() {
