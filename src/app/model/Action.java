@@ -237,12 +237,12 @@ public enum Action {
 		}
 	}
 	
-	public void setContext(String s) {
+	public static void setContext(String s) {
 		if(s.charAt(0)=='#' && s.length()==7) contextColor = s;
 		else contextString = s;
 	}
 	
-	public void setContext(int n) {
+	public static void setContext(int n) {
 		contextInt=n;
 	}
 	

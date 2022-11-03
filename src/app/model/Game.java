@@ -81,12 +81,14 @@ public class Game {
 	
 	private static final List<String> inputTable = Arrays.asList("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f","g","h","i","j","k","l");
 	
-	public String getTextInfo() {
+	public static String getTextInfo() {
 		
 		String s="-----------------------------------------------------"+stage.name().toUpperCase()
 				+"-----------------------------------------------------\n";
 				
 				if(is(Stage.playing)) s+=selectedPet.getTextinfo();
+				
+				return s;
 				
 	}
 	
@@ -120,7 +122,8 @@ public class Game {
 		
 			Action action=getEnabledActions().get(inputTable.indexOf(String.valueOf(input.charAt(0))));
 			refresh();
-			action.execute(n);
+			Action.setContext(n);
+			action.execute();
 		}
 		scanner.close();
 		
