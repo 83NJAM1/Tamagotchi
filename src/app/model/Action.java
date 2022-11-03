@@ -221,7 +221,7 @@ public enum Action {
 		case openFridge:return pet.isIn(Room.kitchen) && !pet.fridgeIsOpen();
 		case closeFridge:return pet.isIn(Room.kitchen) && pet.fridgeIsOpen();
 	
-		case fridgeSlot:return pet.fridgeIsOpen() && (pet.getIngredientSlot()!=-1 || !pet.isCooking());
+		case fridgeSlot:return pet.fridgeIsOpen() && pet.isIn(Room.kitchen) ;
 		
 		case ingredient:return pet.isCooking();
 

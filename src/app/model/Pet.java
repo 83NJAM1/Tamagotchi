@@ -257,7 +257,7 @@ public class Pet {
 		if(!isCooking()) {
 			return;
 		}
-		else {
+		else if(getIngredientSlot()!=-1){
 			n=Math.min(fridge.size()-1, Math.max(0,n));
 			addIngredient(fridge.get(n));
 			fridge.set(n, null);

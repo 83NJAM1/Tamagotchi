@@ -1,4 +1,4 @@
-package app.view;
+package test.old.View;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
