@@ -10,7 +10,11 @@ public class App extends Application{
 	
 	public void start(Stage stage) {
 		
-		//Main mainController = new Main();
+		//Main mainController = new Main(); //(ancienne ligne)
+		
+		//J'ai mis le controlleur en static
+		//Ça décomplexifie le système et ça n'a aucun intérêt d'instancier quelque chose qui sera de toute façon unique.
+		//On pourra toujours remettre le contrôleur en instance ce n'est qu'un détail.
 		Controler.start();
 		Scene scene = new Scene(Controler.getRoot(), 640, 480);
         stage.setScene(scene);

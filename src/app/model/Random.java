@@ -2,6 +2,10 @@ package app.model;
 
 import java.util.*;
 
+/*
+ * Classe statique gérant l'aléatoire dans le modèle.
+ */
+
 public class Random {
 	
 	private static final java.util.Random RANDOM = new java.util.Random();
