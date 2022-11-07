@@ -1,0 +1,37 @@
+@startuml
+
+    actor user as Player
+
+    Player -> App : launch
+    
+    App -> ControllerMain : showMenu()
+	    ControllerMain -> ControllerMenu : showMenu()
+		    ControllerMenu -> ViewMenu : show()
+		    ViewMenu --> ControllerMenu
+	    ControllerMenu --> ControllerMain
+    ControllerMain --> App
+	
+	alt new case
+		Player -> ViewMenu : click-on-new()
+		ViewMenu --> ControllerMenu : action
+		ViewMenu -> ViewCustomPet : show()
+		Player -> ViewCustomPet : click-on-action()
+		ViewCustomPet --> ControllerMenu : action
+		
+	else load case
+		Player -> ViewMenu : click-on-load()
+		ViewMenu --> ControllerMenu : action
+		ViewMenu -> ViewLoad : show()
+		Player -> ViewLoad : click-on-action()
+		ViewLoad --> ControllerMain : action
+		ControllerMain -> ControllerGame : load()
+		ControllerGame --> ControllerMain
+		
+	else continue case
+		Player -> ViewMenu : click-on-continue()
+		ViewLoad --> ControllerMain : action
+		ControllerMain -> ControllerGame : load()
+		
+	end
+	
+@enduml

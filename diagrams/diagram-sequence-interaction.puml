@@ -1,0 +1,34 @@
+@startuml
+
+    actor user as Player
+
+    Player -> App : launch
+    
+    App -> ControllerMain : showGame()
+	    ControllerMain -> ControllerGame : showGame()
+		    ControllerGame -> ViewGame : show()
+		    ViewGame --> ControllerGame
+	    ControllerGame --> ControllerMain
+    ControllerMain --> App
+	
+	alt room
+		Player -> ViewAction : click-on-change-room()
+		ViewAction --> ControllerGame : action
+		ControllerGame -> ControllerRoom : change-room(newRoom)
+		ControllerRoom --> ControllerGame
+		
+	else feed
+		Player -> ViewAction : click-on-feed()
+		ViewAction --> ControllerGame : action
+		ControllerGame -> ControllerPet : feed()
+		ControllerPet --> ControllerGame
+		
+	else mini-game
+		Player -> ViewAction : click-on-mini-game()
+		ViewAction --> ControllerGame : action
+		ControllerGame -> ControllerPet : play(numGame)
+		ControllerPet --> ControllerGame
+		
+	end
+	
+@enduml

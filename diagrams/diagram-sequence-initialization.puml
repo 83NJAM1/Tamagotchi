@@ -1,0 +1,64 @@
+@startuml
+
+    actor user as Player
+
+    Player -> App : launch
+    
+    App -> ControllerMain : constructor()
+	
+    	ControllerMain -> ControllerMenu : constructor()
+    	
+		    ControllerMenu -> ModelOption : constructor()
+		    ModelOption --> ControllerMenu : instance
+		    ControllerMenu -> ViewMenu : constructor()
+		    	ViewMenu -> ViewOption : constructor()
+		    	ViewOption --> ViewMenu : instance
+		    	ViewMenu -> ViewCustomPet : constructor()
+		    	ViewCustomPet --> ViewMenu : instance
+		    	ViewMenu -> ViewLoad : constructor()
+		    	ViewLoad --> ViewMenu : instance
+		    	ViewMenu -> ViewAction : constructor()
+		    	ViewAction --> ViewMenu : instance
+		    ViewMenu --> ControllerMenu : instance
+		    
+	    ControllerMenu --> ControllerMain : instance
+	    
+	    ControllerMain -> ControllerGame : constructor()
+	    
+		    ControllerGame -> ControllerPet : constructor()
+		    
+		    	ControllerPet -> ModelPet : constructor()
+			    ModelPet --> ControllerPet : instance
+			    ControllerPet -> ViewPet : constructor()
+			    ViewPet --> ControllerPet : instance
+			    
+			    ControllerPet -> ControllerStat : constructor()
+			    
+		    	    ControllerStat -> ModelStat : constructor()
+				    ModelStat --> ControllerStat : instance
+				    ControllerStat -> ViewStat : constructor()
+				    ViewStat --> ControllerStat : instance
+				    
+				ControllerStat --> ControllerPet : instance
+				
+		    ControllerPet --> ControllerGame : instance
+		    
+		    ControllerGame -> ControllerRoom : constructor()
+		    
+			    ControllerRoom -> ModelRoom : constructor()
+			    ModelRoom --> ControllerRoom : instance
+			    ControllerRoom -> ViewRoom : constructor()
+			    ViewRoom --> ControllerRoom : instance
+			    
+		    ControllerRoom --> ControllerGame : instance
+		    
+		    ControllerGame -> ModelGame : constructor()
+		    ModelGame --> ControllerGame : instance
+		    ControllerGame -> ViewGame : constructor(instanceViewPet, instanceViewRoom)
+		    ViewGame --> ControllerGame : instance
+	    
+	    ControllerGame --> ControllerMain : instance
+	    
+    ControllerMain --> App : instance
+	
+@enduml

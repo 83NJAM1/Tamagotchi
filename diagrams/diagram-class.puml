@@ -1,0 +1,90 @@
+@startuml
+
+class App
+interface Lang
+App ..> Lang
+class Fr
+Class En
+Lang <|-- Fr
+Lang <|-- En
+
+package model {
+    class ModelPet
+    interface ModelRoom
+    class ModelRoom
+    class ModelGame
+    class ModelOption {
+        -String lang
+        -Double sound
+    }
+    interface ModelStat
+    class Food
+    class Sleep
+    class Weight
+    class Thirst
+    class Moral
+    ModelStat <|-- Food
+    ModelStat <|-- Sleep
+    ModelStat <|-- Weight
+    ModelStat <|-- Thirst
+    ModelStat <|-- Moral
+    ModelPet o-- ModelStat
+    ModelGame o-- ModelPet
+    ModelGame o-- ModelRoom
+    ModelGame o-- ModelOption
+}
+
+package view {
+    class ViewPet
+    class ViewRoom
+    class ViewStat
+    class ViewMenu
+    class ViewCustomPet
+    class ViewLoad
+    class ViewAction
+    class ViewOption
+    class ViewGame
+    
+    ViewMenu *-- ViewOption
+    ViewMenu *-- ViewCustomPet
+    ViewMenu *-- ViewLoad
+    ViewGame *-- ViewAction
+    ViewGame o-- ViewRoom
+    ViewGame o-- ViewPet
+}
+
+package Controllerer {
+    class ControllerMain
+    
+    class ControllerPet {
+        -ModelPet
+        -ViewPet
+    }
+    class ControllerRoom {
+        -ModelRoom
+        -ViewRoom
+    }
+    class ControllerStat {
+        -ModelStat
+        -ViewStat
+    }
+    class ControllerMenu {
+        -ModelOption
+        -ViewMenu
+    }
+    class ControllerGame {
+        -ModelGame
+        -ViewGame
+    }
+    
+    ControllerPet *-- ControllerStat
+    ControllerGame *-- ControllerPet
+    ControllerGame *-- ControllerRoom
+    ControllerMain *-- ControllerGame 
+    ControllerMain *-- ControllerMenu
+    
+}
+
+App *-- ControllerMain
+
+@enduml
