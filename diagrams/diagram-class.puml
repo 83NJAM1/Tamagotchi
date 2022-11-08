@@ -1,5 +1,8 @@
 @startuml
 
+hide empty attributes
+hide empty methods
+
 class App
 interface Lang
 App ..> Lang
