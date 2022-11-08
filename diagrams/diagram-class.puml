@@ -5,12 +5,11 @@ interface Lang
 App ..> Lang
 class Fr
 Class En
-Lang <|-- Fr
-Lang <|-- En
+Lang <|.. Fr
+Lang <|.. En
 
 package model {
     class ModelPet
-    interface ModelRoom
     class ModelRoom
     class ModelGame
     class ModelOption {
@@ -23,11 +22,11 @@ package model {
     class Weight
     class Thirst
     class Moral
-    ModelStat <|-- Food
-    ModelStat <|-- Sleep
-    ModelStat <|-- Weight
-    ModelStat <|-- Thirst
-    ModelStat <|-- Moral
+    ModelStat <|.. Food
+    ModelStat <|.. Sleep
+    ModelStat <|.. Weight
+    ModelStat <|.. Thirst
+    ModelStat <|.. Moral
     ModelPet o-- ModelStat
     ModelGame o-- ModelPet
     ModelGame o-- ModelRoom
