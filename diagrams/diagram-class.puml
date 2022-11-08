@@ -53,7 +53,7 @@ package view {
     ViewGame o-- ViewPet
 }
 
-package Controllerer {
+package Controller {
     class ControllerMain
     
     class ControllerPet {
