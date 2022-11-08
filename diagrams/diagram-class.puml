@@ -10,8 +10,12 @@ Lang <|-- En
 
 package model {
     class ModelPet
-    interface ModelRoom
     class ModelRoom
+    interface ModelStat
+    ModelRoom <|-- LivingRoom
+    ModelRoom <|-- Kitchen
+    ModelRoom <|-- Bathroom
+    ModelRoom <|-- Garden
     class ModelGame
     class ModelOption {
         -String lang
@@ -29,6 +33,10 @@ package model {
     ModelStat <|-- Thirst
     ModelStat <|-- Moral
     ModelPet o-- ModelStat
+    ModelPet <|-- Cat
+    ModelPet <|-- Dog
+    ModelPet <|-- Rabbit
+    ModelPet <|-- Robot
     ModelGame o-- ModelPet
     ModelGame o-- ModelRoom
     ModelGame o-- ModelOption
@@ -49,11 +57,12 @@ package view {
     ViewMenu *-- ViewCustomPet
     ViewMenu *-- ViewLoad
     ViewGame *-- ViewAction
+    ViewGame *-- ViewStat
     ViewGame o-- ViewRoom
     ViewGame o-- ViewPet
 }
 
-package Controllerer {
+package Controller {
     class ControllerMain
     
     class ControllerPet {
@@ -88,3 +97,6 @@ package Controllerer {
 App *-- ControllerMain
 
 @enduml
+
+
+
