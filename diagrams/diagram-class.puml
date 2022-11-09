@@ -12,24 +12,21 @@ Lang <|.. Fr
 Lang <|.. En
 
 package model {
-    class ModelPet
     class ModelRoom
     class ModelGame
+    
+    interface ModelPet
+    class Robot
+    class Animal
+    
     class ModelOption {
         -String lang
         -Double sound
     }
-    interface ModelStat
-    class Food
-    class Sleep
-    class Weight
-    class Thirst
-    class Moral
-    ModelStat <|.. Food
-    ModelStat <|.. Sleep
-    ModelStat <|.. Weight
-    ModelStat <|.. Thirst
-    ModelStat <|.. Moral
+    class ModelStat
+    ModelPet <|.. Robot
+    ModelPet <|.. Animal
+    
     ModelPet o-- ModelStat
     ModelGame o-- ModelPet
     ModelGame o-- ModelRoom
