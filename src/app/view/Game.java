@@ -1,7 +1,5 @@
 package app.view;
 
-import app.model.Pet;
-import app.model.Room;
 import javafx.scene.canvas.Canvas;
 
 /**
