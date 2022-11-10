@@ -14,26 +14,24 @@ Lang <|.. En
 package model {
     class ModelRoom
     class ModelGame
-    
+    class ModelStat
+    class ModelOption {
+	    -Lang lang
+	    -Double volume
+    }
     interface ModelPet
     class Robot
     class Animal
     
-    class ModelOption {
-        -String lang
-        -Double sound
-    }
-    class ModelStat
     ModelPet <|.. Robot
     ModelPet <|.. Animal
-    
     ModelPet o-- ModelStat
     ModelGame o-- ModelPet
     ModelGame o-- ModelRoom
-    ModelGame o-- ModelOption
 }
 
 package view {
+	class ViewMain
     class ViewPet
     class ViewRoom
     class ViewStat
@@ -43,11 +41,16 @@ package view {
     class ViewAction
     class ViewOption
     class ViewGame
+    class ViewHUD
     
+    ViewMain *-- ViewGame
+    ViewMain *-- ViewMenu
     ViewMenu *-- ViewOption
     ViewMenu *-- ViewCustomPet
     ViewMenu *-- ViewLoad
-    ViewGame *-- ViewAction
+    ViewGame *-- ViewHUD
+    ViewHUD  *-- ViewAction
+    ViewHUD  o-- ViewStat
     ViewGame o-- ViewRoom
     ViewGame o-- ViewPet
 }

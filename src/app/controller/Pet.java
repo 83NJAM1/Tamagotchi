@@ -8,6 +8,7 @@ package app.controller;
 public class Pet {
 
 	// Model et Vue de Pet
+	// ATTENTION: référence partagé avec model.Game
 	private app.model.Pet model;
 	// ATTENTION: référence partagé avec view.Game
 	private app.view.Pet view;
