@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.BoundingBox;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
@@ -26,6 +27,7 @@ public class PrinterSprite extends VBox {
 		printer = new Canvas(w,h);
 		printer.getGraphicsContext2D().setFill(Color.RED);
 		printer.getGraphicsContext2D().fillRect(0, 0, w, h);
+		printer.getGraphicsContext2D().setImageSmoothing(false);
 		pauseButton = new Button("  ▶️\nplay");
 		timelaps = new ProgressBar();
 
@@ -34,7 +36,7 @@ public class PrinterSprite extends VBox {
 	    sprite = null;
 	    timelaps.setPrefWidth(w);
 	    pauseButton.setPrefWidth(w);
-
+	    
 	    this.setProgress(0.5);
 	    this.getChildren().add(printer);
 		this.getChildren().add(timelaps);

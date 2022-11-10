@@ -27,17 +27,17 @@ public class Main {
 	public Main() {
 		view = new util.view.Main();
 		
-		spriteSheet = "./res/PET_TAMAGOCHI.png";
-		bodyBox = new BoundingBox(0, 0, 512, 512);
-		headABox = new BoundingBox(512, 0, 512, 512);
-		headBBox = new BoundingBox(512*2, 0, 512, 512);
-		headCBox = new BoundingBox(512*3, 0, 512, 512);
-		headDBox = new BoundingBox(0, 512, 512, 512);
-		headEBox = new BoundingBox(512, 512, 512, 512);
-		headFBox = new BoundingBox(512*2, 512, 512, 512);
-		headDestBox = new BoundingBox(0, 0, 64, 64);
-		bodyDestBox = new BoundingBox(0, 32, 64, 64);
-		printer = new PrinterSprite(150,150);
+		spriteSheet = "./res/hobbit-sh.png";
+		bodyBox = new BoundingBox(0, 0, 64, 64);
+		headABox = new BoundingBox(64, 0, 64, 64);
+		headBBox = new BoundingBox(64*2, 0, 64, 64);
+		headCBox = new BoundingBox(64*3, 0, 64, 64);
+		headDBox = new BoundingBox(0, 64, 64, 64);
+		headEBox = new BoundingBox(64, 64, 64, 64);
+		headFBox = new BoundingBox(64*2, 64, 64, 64);
+		headDestBox = new BoundingBox(0, 0, 512, 512);
+		bodyDestBox = new BoundingBox(0, 32, 0, 0);
+		printer = new PrinterSprite(64,64);
 		
 		Frame[] allframes = {new Frame(bodyBox, bodyDestBox, spriteSheet, 1),
 							 new Frame(headABox, headDestBox, spriteSheet, 2),
