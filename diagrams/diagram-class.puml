@@ -31,7 +31,8 @@ package model {
     
     ModelPet <|.. Robot
     ModelPet <|.. Animal
-    ModelPet o--> ModelStat
+    Animal o--> ModelStat
+    Robot o--> ModelStat
     ModelGame o--> ModelPet
     ModelGame o--> ModelRoom
 }
