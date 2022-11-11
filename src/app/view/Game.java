@@ -17,9 +17,11 @@ public class Game extends Canvas {
 	// ATTENTION reference partagé avec controller.Pet
 	private Pet pet;
 	
-	// il y aura plusieurs room, restont avec une pour le moment
+	// il y aura plusieurs room, restons avec une pour le moment
 	// TODO choisir une strucutre de donnée pour stocker les Rooms
 	//      ou on les liste une par une sans structure de donnée
 	// ATTENTION reference partagé avec controller.Room
 	private Room hall;
+	
+	private Hud hud;
 }

@@ -11,11 +11,11 @@ import javafx.scene.layout.StackPane;
 public class Menu extends StackPane {
 
 	// La vue pour customiser le pet
-	CustomPet customPet;
+	private CustomPet customPet;
 	
 	// La vue pour l'affichages et la selection des sauvegardes
-	Load load;
+	private Load load;
 	
 	// La vue des options
-	Option option;
+	private Option option;
 }

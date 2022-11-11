@@ -1,12 +1,12 @@
 package app;
 
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import app.controller.Main;
 import app.lang.Lang;
+
 /**
  * 
  * @author ben
@@ -16,15 +16,14 @@ public class App extends Application{
 	
 	public void start(Stage stage) {
 		
-		// Controller
 		Main mainController = new Main();
-		
-		Group vide = new Group();
-		Scene scene = new Scene(vide, 640, 480);
+		Scene scene = new Scene( mainController.getView(), 640, 480 );
         stage.setScene(scene);
         stage.show();
 	}
 	
+	// sera remplacer dans les version ultérieur par
+	// Java i18n mais pour simplifier on reste avec ça
 	private static Lang lang;
 	
 	public static Lang getLang() {
@@ -33,6 +32,7 @@ public class App extends Application{
 	public static void setLang(Lang newLang) {
 		lang = newLang;
 	}
+	// ----------------------------------------
 	
     public static void main(String[] args) {
     	

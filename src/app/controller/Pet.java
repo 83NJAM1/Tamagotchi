@@ -10,12 +10,14 @@ import app.App;
 public class Pet {
 
 	// Model et Vue de Pet
+	
 	// ATTENTION: référence partagé avec model.Game
 	private app.model.Pet model;
+	
 	// ATTENTION: référence partagé avec view.Game
 	private app.view.Pet view;
 	
-	// il y aura plusieurs Stat, restont avec une pour le moment
+	// il y aura plusieurs Stat, restons avec une pour le moment
 	// TODO choisir une strucutre de donnée pour les stocker
 	//      ou on les liste une par une sans structure de donnée
 	private Stat test;
