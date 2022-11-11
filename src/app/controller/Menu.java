@@ -9,5 +9,6 @@ public class Menu {
 	
 	// Model et Vue de Menu
 	private app.model.Option model;
+	//ATTENTION: reference partagé avec view.Main
 	private app.view.Menu view;
 }

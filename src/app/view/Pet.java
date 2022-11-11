@@ -13,7 +13,8 @@ import javafx.scene.image.Image;
 public class Pet extends Image {
 
 	// Constructeur obligatoire car de type Image
-	// EVIDENCE: nescesaire uniquement pour la vue
+	// REMARQUE: nescesaire uniquement pour la vue
+	//			 ?? chemin de l'image dans le model ??
 	public Pet(String spritesheet) {
 		super(spritesheet);
 	}

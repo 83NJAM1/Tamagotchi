@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import app.controller.Main;
-
+import app.lang.Lang;
 /**
  * 
  * @author ben
@@ -23,6 +23,15 @@ public class App extends Application{
 		Scene scene = new Scene(vide, 640, 480);
         stage.setScene(scene);
         stage.show();
+	}
+	
+	private static Lang lang;
+	
+	public static Lang getLang() {
+		return lang;
+	}
+	public static void setLang(Lang newLang) {
+		lang = newLang;
 	}
 	
     public static void main(String[] args) {

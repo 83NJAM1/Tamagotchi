@@ -1,4 +1,4 @@
-package app;
+package app.lang;
 
 /**
  * 
@@ -6,5 +6,4 @@ package app;
  * surchagere les methodes de Lang pour un texte en français
  */
 public class Fr implements Lang {
-
 }

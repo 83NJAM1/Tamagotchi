@@ -6,7 +6,7 @@ import javafx.scene.layout.StackPane;
  * 
  * @author ben
  * view.Menu de type StackPane car c'est le conteneur de tout les sous menus
- * il est composé de plusieurs vues qui se supeposeront
+ * il est composé de plusieurs vues qui se superposeront
  */
 public class Menu extends StackPane {
 

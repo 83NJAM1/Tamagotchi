@@ -3,21 +3,28 @@
 hide empty attributes
 hide empty methods
 
-class App
+class App {
+	+ {static} getLang() : Lang
+	+ {static} setLang( newLang : Lang )
+}
+
 interface Lang
-App ..> Lang
 class Fr
 Class En
+
 Lang <|.. Fr
 Lang <|.. En
+App o--> Lang
 
 package model {
     class ModelRoom
     class ModelGame
     class ModelStat
     class ModelOption {
-	    -Lang lang
-	    -Double volume
+    	-language : string
+	    -volume : double
+	    -h_window : int
+	    -w_window : int
     }
     interface ModelPet
     class Robot
@@ -25,9 +32,9 @@ package model {
     
     ModelPet <|.. Robot
     ModelPet <|.. Animal
-    ModelPet o-- ModelStat
-    ModelGame o-- ModelPet
-    ModelGame o-- ModelRoom
+    ModelPet o--> ModelStat
+    ModelGame o--> ModelPet
+    ModelGame o--> ModelRoom
 }
 
 package view {
@@ -43,16 +50,16 @@ package view {
     class ViewGame
     class ViewHUD
     
-    ViewMain *-- ViewGame
-    ViewMain *-- ViewMenu
-    ViewMenu *-- ViewOption
-    ViewMenu *-- ViewCustomPet
-    ViewMenu *-- ViewLoad
-    ViewGame *-- ViewHUD
-    ViewHUD  *-- ViewAction
-    ViewHUD  o-- ViewStat
-    ViewGame o-- ViewRoom
-    ViewGame o-- ViewPet
+    ViewMain o--> ViewGame
+    ViewMain o--> ViewMenu
+    ViewMenu *--> ViewOption
+    ViewMenu *--> ViewCustomPet
+    ViewMenu *--> ViewLoad
+    ViewGame *--> ViewHUD
+    ViewHUD  *--> ViewAction
+    ViewHUD  o--> ViewStat
+    ViewGame o--> ViewRoom
+    ViewGame o--> ViewPet
 }
 
 package Controller {
@@ -79,14 +86,14 @@ package Controller {
         -ViewGame
     }
     
-    ControllerPet *-- ControllerStat
-    ControllerGame *-- ControllerPet
-    ControllerGame *-- ControllerRoom
-    ControllerMain *-- ControllerGame 
-    ControllerMain *-- ControllerMenu
+    ControllerPet *--> ControllerStat
+    ControllerGame *--> ControllerPet
+    ControllerGame *--> ControllerRoom
+    ControllerMain *--> ControllerGame 
+    ControllerMain *--> ControllerMenu
     
 }
 
-App *-- ControllerMain
+App *--> ControllerMain
 
 @enduml

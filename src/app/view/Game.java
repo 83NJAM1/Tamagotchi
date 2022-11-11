@@ -5,8 +5,11 @@ import javafx.scene.canvas.Canvas;
 /**
  * 
  * @author ben
- * view.Game est de type Canvas
- * toutes les opérations d'affichage concernant le jeu se feront via cette classe
+ * view.Game est de type Canvas|StakPane
+ * TODO determiner si Canvas ou StakPane.
+ *      j'ai choisi Canvas mais ça pourrait poser 
+ *      probleme si l'on veut superposer d'autre vue
+ * Permet des opérations d'affichage concernant le jeu
  */
 public class Game extends Canvas {
 	

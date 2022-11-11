@@ -9,6 +9,7 @@ public class Game {
 
 	// Model et Vue de Game
 	private app.model.Game model;
+	//ATTENTION: reference partagé avec view.Main
 	private app.view.Game view;
 	
 	// le pet a manipuler
@@ -18,6 +19,5 @@ public class Game {
 	// TODO choisir une strucutre de donnée pour les stocker
 	//      ou on les liste une par une sans structure de donnée
 	private Room hall;
-	
 	
 }
