@@ -1,0 +1,24 @@
+	Description des utilitées des différentes cases des tableaux ;
+	
+	Animation_Chat ;
+[1;1],[1;2],[1;3] - Heureux
+[1;4]			  - Balle 1
+[2;1],[2;2],[2;3] - Neutre
+[2;4]			  - Balle 2
+[3;1],[3;2],[3;3] - Malheureux
+[3;4]			  - Punis
+[4;1],[4;2]		  - Dodo
+[4;3]			  - Mort
+[5;1]			  - Soif
+[5;2]			  - Miaulement
+[5;3]			  - Malade
+
+	Coloriage_Chat ; 
+[1;] - couleur uni
+[2;] - tigré (bicolore)
+[3;] - tacheté (tricolore)
+[;1] - Animations [1;1], [2,1], [3,1], [5,1], [5,2]
+[;2] - Animations [1;2], [2,2], [3,2], [4,3], [5,3]
+[;3] - Animations [1;3], [2,3], [3,3], [3,4], [4,1], [4,2]
+[;4] - Animation [1;4]
+[;5] - Animation [2;4]
