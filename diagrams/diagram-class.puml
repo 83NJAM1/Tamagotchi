@@ -8,13 +8,12 @@ class App {
 	+ {static} setLang( newLang : Lang )
 }
 
-interface Lang
-class Fr
-Class En
 
-Lang <|.. Fr
-Lang <|.. En
-App o--> Lang
+package lang {
+	interface Lang
+	class Fr
+	Class En
+}
 
 package model {
     class ModelRoom
@@ -94,6 +93,9 @@ package Controller {
     
 }
 
+Lang <|.. Fr
+Lang <|.. En
+App o--> Lang
 App *--> ControllerMain
 
 @enduml
