@@ -8,9 +8,9 @@ package app.controller;
  */
 public class Main {
 	
-	// juste pour le teste je l'ai instancié ici
 	// TODO constructeur, action, ordonnancement, etc.
-	private app.view.Main view = new app.view.Main();
+	
+	private app.view.Main view;
 	
 	private Menu menu;
 	private Game game;
@@ -21,5 +21,12 @@ public class Main {
 	 */
 	public app.view.Main getView() {
 		return view;
+	}
+	
+	// juste pour les testes je les ai instancié
+	public Main() {
+		menu = new Menu();
+		game = new Game();
+		view = new app.view.Main( game.getView(), menu.getView() );
 	}
 }

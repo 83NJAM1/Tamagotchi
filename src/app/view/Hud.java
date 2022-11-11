@@ -15,5 +15,10 @@ public class Hud {
 	// TODO choisir une strucutre de donnée pour les stocker
 	//      ou on les liste une par une sans structure de donnée
 	// ATTENTION: reference partagé avec controller.Stat
-	private Stat stat;
+	private Stat stats;
+	
+	public Hud(Stat stats_instances) {
+		this.actionBar = new Action();
+		this.stats = stats_instances;
+	}
 }

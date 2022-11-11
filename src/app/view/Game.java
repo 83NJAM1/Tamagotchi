@@ -24,4 +24,10 @@ public class Game extends Canvas {
 	private Room hall;
 	
 	private Hud hud;
+	
+	public Game(Pet pet_instance, Room room_instance, Stat stats_instances) {
+		this.pet = pet_instance;
+		this.hall = room_instance;
+		this.hud = new Hud(stats_instances);
+	}
 }

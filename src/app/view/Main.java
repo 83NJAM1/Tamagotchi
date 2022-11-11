@@ -14,4 +14,9 @@ public class Main extends StackPane {
 	
 	//ATTENTION: reference partagé avec controller.Menu
 	private Menu menu;
+	
+	public Main(Game game_instance, Menu menu_instance) {
+		this.game = game_instance;
+		this.menu = menu_instance;
+	}
 }

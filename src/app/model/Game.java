@@ -16,4 +16,9 @@ public class Game {
 	//      ou on les liste une par une sans structure de donnée
 	// ATTENTION: référence partagé avec controller.Room
 	private Room hall;
+	
+	public Game(Pet pet_instance, Room room_instance) {
+		this.pet = pet_instance;
+		this.hall = room_instance;
+	}
 }

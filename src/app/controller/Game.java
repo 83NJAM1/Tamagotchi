@@ -6,8 +6,6 @@ package app.controller;
  * permet de faire intéragire l'ensemble du jeu avec les actions à associer
  */
 public class Game {
-
-	// Model et Vue de Game
 	
 	private app.model.Game model;
 	
@@ -21,5 +19,16 @@ public class Game {
 	// TODO choisir une strucutre de donnée pour les stocker
 	//      ou on les liste une par une sans structure de donnée
 	private Room hall;
+	
+	public Game() {
+		pet = new Pet();
+		hall = new Room();
+		model = new app.model.Game( pet.getModel(), hall.getModel() );
+		view = new app.view.Game( pet.getView(), hall.getView(), pet.getStats().getView() );
+	}
+	
+	public app.view.Game getView() {
+		return view;
+	}
 	
 }

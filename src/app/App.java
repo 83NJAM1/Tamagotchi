@@ -5,7 +5,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import app.controller.Main;
-import app.lang.Lang;
 
 /**
  * 
@@ -21,18 +20,6 @@ public class App extends Application{
         stage.setScene(scene);
         stage.show();
 	}
-	
-	// sera remplacer dans les version ultérieur par
-	// Java i18n mais pour simplifier on reste avec ça
-	private static Lang lang;
-	
-	public static Lang getLang() {
-		return lang;
-	}
-	public static void setLang(Lang newLang) {
-		lang = newLang;
-	}
-	// ----------------------------------------
 	
     public static void main(String[] args) {
     	

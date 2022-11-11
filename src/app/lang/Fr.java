@@ -5,5 +5,5 @@ package app.lang;
  * @author ben
  * surchagere les methodes de Lang pour un texte en français
  */
-public class Fr implements Lang {
+public class Fr extends Lang {
 }
