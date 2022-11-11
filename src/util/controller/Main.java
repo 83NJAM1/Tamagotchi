@@ -11,46 +11,53 @@ public class Main {
 	private util.view.Main view;
 	private PrinterSprite printer;
 	private AnimeList animes;
-	private BoundingBox bodyBox;
-	private BoundingBox headABox;
-	private BoundingBox headBBox;
-	private BoundingBox headCBox;
-	private BoundingBox headDBox;
-	private BoundingBox headEBox;
-	private BoundingBox headFBox;
-	private BoundingBox headDestBox;
-	private BoundingBox bodyDestBox;
+	private BoundingBox background;
+	private BoundingBox happy1;
+	private BoundingBox happy2;
+	private BoundingBox happy3;
+	private BoundingBox sad1;
+	private BoundingBox sad2;
+	private BoundingBox sad3;
+	private BoundingBox petDestBox;
+	private BoundingBox bgDestBox;
 	private String spriteSheet;
-	private Sprite body;
+	private String backgroundImg;
+	private Sprite bgSprite;
 	private AnimationTimer timerRefreshCanvas;
 	
 	public Main() {
 		view = new util.view.Main();
 		
-		spriteSheet = "./res/hobbit-sh.png";
-		bodyBox = new BoundingBox(0, 0, 64, 64);
-		headABox = new BoundingBox(64, 0, 64, 64);
-		headBBox = new BoundingBox(64*2, 0, 64, 64);
-		headCBox = new BoundingBox(64*3, 0, 64, 64);
-		headDBox = new BoundingBox(0, 64, 64, 64);
-		headEBox = new BoundingBox(64, 64, 64, 64);
-		headFBox = new BoundingBox(64*2, 64, 64, 64);
-		headDestBox = new BoundingBox(0, 0, 512, 512);
-		bodyDestBox = new BoundingBox(0, 32, 0, 0);
+		spriteSheet = "./res/Animation_Chat_Gros.png";
+		backgroundImg = "./res/test_room.png";
+		int frame_dim = 512;
+		
+		
+		happy1 = new BoundingBox(0		  , 0		   , frame_dim, frame_dim);
+		happy2 = new BoundingBox(frame_dim  , 0		   , frame_dim, frame_dim);
+		happy3 = new BoundingBox(frame_dim*2, 0		   , frame_dim, frame_dim);
+		sad1 = new BoundingBox(0		  , frame_dim*2, frame_dim, frame_dim);
+		sad2 = new BoundingBox(frame_dim  , frame_dim*2, frame_dim, frame_dim);
+		sad3 = new BoundingBox(frame_dim*2, frame_dim*2, frame_dim, frame_dim);
+		petDestBox = new BoundingBox(0, 0, 256, 256);
+		
+		background = new BoundingBox(0, 0, 1024, 1024);
+		bgDestBox = new BoundingBox(0, -96, 768, 768);
+		
 		printer = new PrinterSprite(64,64);
 		
-		Frame[] allframes = {new Frame(bodyBox, bodyDestBox, spriteSheet, 1),
-							 new Frame(headABox, headDestBox, spriteSheet, 2),
-							 new Frame(headBBox, headDestBox, spriteSheet, 3),
-							 new Frame(headCBox, headDestBox, spriteSheet, 4),
-							 new Frame(headDBox, headDestBox, spriteSheet, 5),
-							 new Frame(headEBox, headDestBox, spriteSheet, 6),
-							 new Frame(headFBox, headDestBox, spriteSheet, 7)};
+		Frame[] allframes = {new Frame(background, bgDestBox, backgroundImg, 1),
+							 new Frame(happy1, petDestBox, spriteSheet, 1),
+							 new Frame(happy2, petDestBox, spriteSheet, 1),
+							 new Frame(happy3, petDestBox, spriteSheet, 1),
+							 new Frame(sad1, petDestBox, spriteSheet, 1),
+							 new Frame(sad2, petDestBox, spriteSheet, 1),
+							 new Frame(sad3, petDestBox, spriteSheet, 1)};
 		
-		Anime[] allanimes = {new Anime("sad"), new Anime("happy")};
-		Anime bodyAnime = new Anime("body");
+		Anime[] allanimes = {new Anime("happy"), new Anime("sad")};
+		Anime bgAnime = new Anime("bg");
 		
-		bodyAnime.addFrame(allframes[0]);
+		bgAnime.addFrame(allframes[0]);
 		allanimes[0].addFrame(allframes[1], allframes[2], allframes[3]);
 		allanimes[1].addFrame(allframes[4], allframes[5], allframes[6]);
 		
@@ -58,15 +65,15 @@ public class Main {
 		
 		animes.addItems(allanimes);
 		
-		body = new Sprite();
+		bgSprite = new Sprite();
 		
-		body.addAnime(bodyAnime);
-		body.setAnime("body");
-		body.setSpriteSheet(spriteSheet);
+		bgSprite.addAnime(bgAnime);
+		bgSprite.setAnime("bg");
+		bgSprite.setSpriteSheet(backgroundImg);
 		
-		System.out.println("bodysprite-anime:"+body.getAnime());
-		System.out.println("bodysprite-source:"+body.getSourceBox());
-		System.out.println("bodysprite-source:"+body.getCurrentTime());
+		System.out.println("bodysprite-anime:"+bgSprite.getAnime());
+		System.out.println("bodysprite-source:"+bgSprite.getSourceBox());
+		System.out.println("bodysprite-source:"+bgSprite.getCurrentTime());
 		
 		Sprite sprite = new Sprite();
 		
@@ -128,9 +135,9 @@ public class Main {
 	public void update() {
 		
 		printer.blank();
-		body.run(0);
-		body.play();
-		printer.draw(body, true);
+		bgSprite.run(0);
+		bgSprite.play();
+		printer.draw(bgSprite, true);
 		view.update();
 		printer.update();
 	}
