@@ -3,16 +3,20 @@
 hide empty attributes
 hide empty methods
 
-class App {
-	+ {static} getLang() : Lang
-	+ {static} setLang( newLang : Lang )
-}
+class App
 
 
 package lang {
-	interface Lang
+	abstract class Lang {
+		+ {method} {static} getLang() : Lang
+		+ {method} {static} setLang( newInst : Lang )
+	}
+	
 	class Fr
 	Class En
+	
+	Lang <|-- Fr
+	Lang <|-- En
 }
 
 package model {
@@ -94,9 +98,6 @@ package Controller {
     
 }
 
-Lang <|.. Fr
-Lang <|.. En
-App o--> Lang
 App *--> ControllerMain
 
 @enduml
