@@ -27,6 +27,8 @@ public class App extends Application{
         stage.show();
 	}
 	
+	//fichiers .properties requis accesible dans le ./res à mettre dans le dossier ./bin
+	// soit ./bin/language.properties et ./bin/language_en.properties
 	static ResourceBundle lang = ResourceBundle.getBundle("language", Locale.ENGLISH);
 	
     public static void main(String[] args) {
