@@ -27,7 +27,7 @@ public class App extends Application{
         stage.show();
 	}
 	
-	static ResourceBundle lang = ResourceBundle.getBundle("language");
+	static ResourceBundle lang = ResourceBundle.getBundle("language", Locale.ENGLISH);
 	
     public static void main(String[] args) {
     	
