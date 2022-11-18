@@ -1,9 +1,15 @@
 package app;
 
+//javafx import
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+//javasdk import
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+//app import
 import app.controller.Main;
 
 /**
@@ -21,9 +27,11 @@ public class App extends Application{
         stage.show();
 	}
 	
+	static ResourceBundle lang = ResourceBundle.getBundle("language", Locale.ENGLISH);
+	
     public static void main(String[] args) {
     	
-    	System.out.println("Launched");
+    	System.out.println(lang.getString("wellcome"));
         launch();
     }
 }
