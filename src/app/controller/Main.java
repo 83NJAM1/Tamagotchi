@@ -23,6 +23,13 @@ public class Main {
 		return view;
 	}
 	
+	public Menu getMenu() {
+		return menu;
+	}
+	
+	public Game getGame() {
+		return game;
+	}
 	// juste pour les testes je les ai instancié
 	public Main() {
 		menu = new Menu();
