@@ -1,6 +1,5 @@
 package app.view;
 
-import app.App;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.StackPane;
@@ -9,6 +8,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.event.ActionEvent;
 
+import app.App;
+
 /**
  * 
  * @author ben
@@ -16,6 +17,8 @@ import javafx.event.ActionEvent;
  * il est composé de plusieurs vues qui se superposeront
  */
 public class Menu extends StackPane {
+
+	//########################### ATTRIBUTS #####################################
 
 	// La vue pour customiser le pet
 	private CustomPet customPet;
@@ -35,70 +38,129 @@ public class Menu extends StackPane {
 	// Bouton pour revenir dans le jeu
 	private Button buttonOpt;
 	
+	//######################### EVENT-ACTION ####################################
 	
+	/**
+	 * ActionEvent effectué quand t-on veut quitter la vue Option
+	 * déclencheur -> this
+	 */
 	private EventHandler<ActionEvent> click_quit_opt = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			getChildren().remove(option);
+			listButtons.setDisable(false);
 		}
 	};
+
+	/**
+	 * ActionEvent effectué quand t-on veut afficher la vue Option
+	 * déclencheur -> this
+	 */
 	private EventHandler<ActionEvent> click_opt = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			getChildren().add(option);
+			listButtons.setDisable(true);
 		}
 	};
+
+	/**
+	 * ActionEvent effectué quand t-on veut quitter la vue Load
+	 * déclencheur -> this
+	 */
 	private EventHandler<ActionEvent> click_quit_load = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			getChildren().remove(load);
+			closeLoad();
 		}
 	};
+
+	/**
+	 * ActionEvent effectué quand t-on veut afficher la vue Load
+	 * déclencheur -> this
+	 */
 	private EventHandler<ActionEvent> click_load = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			getChildren().add(load);
+			listButtons.setDisable(true);
 		}
 	};
 	
+	//############################ METHODES #####################################
+	
 	public Menu() {
 		
+		//instanciations
 		customPet = new CustomPet();
 		load = new Load();
 		option = new Option();
-		
 		listButtons = new VBox(15);
 		listButtons.setAlignment(Pos.CENTER);
 		buttonQuit = new Button();
 		buttonLoad = new Button();
 		buttonOpt = new Button();
 		
+		//assignation action
 		buttonOpt.setOnAction(click_opt);
-		
 		option.setQuitAction(click_quit_opt);
+		buttonLoad.setOnAction(click_load);
+		load.setQuitAction(click_quit_load);
 		
+		//initalisatons
 		updateText();
-		updateBuild();
-	}
-	
-	/**
-	 * Toutes les vues devrons avoir cette methodes car necessaire lors du changement de langue
-	 */
-	public void updateText() {
-		buttonQuit.setText(App.language.getString("menu-button-quit"));
-		buttonLoad.setText(App.language.getString("menu-button-load"));
-		buttonOpt.setText(App.language.getString("menu-button-opts"));
-		option.updateText();
-	}
-	
-	public void updateBuild() {
-		//double top, double right, double bottom, double left
-		setMargin(option, new Insets(50., 250., 50., 250.));
+		updateStyle();
+		
+		//constructions de la vue
 		listButtons.getChildren().addAll(buttonLoad, buttonOpt, buttonQuit);
 		this.getChildren().add(listButtons);
 	}
 	
+	/**
+	 * Met à jour le texte de tous les élements
+	 */
+	public void updateText() {
+		buttonQuit.setText(App.language.getString("button-quit"));
+		buttonLoad.setText(App.language.getString("button-load"));
+		buttonOpt.setText(App.language.getString("button-opts"));
+		option.updateText();
+		load.updateText();
+	}
+	
+	/**
+	 * Met à jour le style de tous les élements
+	 */
+	public void updateStyle() {
+								   //top, right, bottom, left
+		setMargin(option, new Insets(50., 250. , 50.   , 250.));
+		setMargin(load, new Insets(50., 50. , 50.   , 50.));
+	}
+	
+	/**
+	 * L'action agit sur des objets de couche superieur donc elle doit venir de la couche du dessus
+	 * @param e l'action-event à appliquer sur le boutton quitter du menu
+	 */
 	public void setQuitAction(EventHandler<ActionEvent> e) {
 		buttonQuit.setOnAction(e);
 	}
 	
+	/**
+	 * Permet l'acces à la vue et aux methodes Option sans necessairement passer par des methode de la vue Menu
+	 * @return l'instance d'Option
+	 */
 	public Option getOption() {
 		return option;
+	}
+	
+	/**
+	 * Permet l'acces à la vue et aux methodes Load sans necessairement passer par des methode de la vue Menu
+	 * @return l'instance de Load
+	 */
+	public Load getLoad() {
+		return load;
+	}
+	
+	/**
+	 * Permet de masquer la vue Load, utilisé lors d'une validation de chargement
+	 */
+	public void closeLoad() {
+		getChildren().remove(load);
+		listButtons.setDisable(false);
 	}
 }

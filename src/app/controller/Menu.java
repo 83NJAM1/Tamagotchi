@@ -1,14 +1,15 @@
 package app.controller;
 
+import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import app.App;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
+import app.App;
 /**
  * 
  * @author ben
@@ -16,30 +17,50 @@ import javafx.event.EventHandler;
  */
 public class Menu {
 	
+	//########################### ATTRIBUTS #####################################
+	
 	private app.model.Option model;
 	
 	//ATTENTION: reference partagé avec view.Main
 	private app.view.Menu view;
 	
+	//######################### EVENT-ACTION ####################################
+	
+	/**
+	 * ActionEvent effectué quand t-on modifie le volume via la vue Option
+	 * déclencher -> this -> v.Menu -< v.Option
+	 */
 	ChangeListener<Number> change_volume_value = new ChangeListener<Number>() {
 		public void changed(ObservableValue<? extends Number> obs, Number vold, Number vnew) {
 			System.out.println(vold + " to " + vnew);
 		}
 	};
-	
+
+	/**
+	 * ActionEvent effectué quand t-on change la langue via la vue Option
+	 * déclencher -> this -> v.Menu -< v.Option
+	 */
 	private EventHandler<ActionEvent> choose_lang = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
+			Locale loc;
 			if ( view.getOption().getChoosenLang() == 0) {
-				App.language = ResourceBundle.getBundle("language", Locale.FRENCH);
+				loc = Locale.FRENCH;
+				App.language = ResourceBundle.getBundle("language", loc);
+				App.languageNumber = NumberFormat.getNumberInstance(loc);
 			}
 			else {
-				App.language = ResourceBundle.getBundle("language", Locale.ENGLISH);
+				loc = Locale.ENGLISH;
+				App.language = ResourceBundle.getBundle("language", loc);
+				App.languageNumber = NumberFormat.getNumberInstance(loc);
 			}
 			
-			System.out.println("locale:" + App.language.getLocale());
+			System.out.println("Locale:" + loc.getDisplayLanguage());
+			System.out.println("Number test: " + App.languageNumber.format(25.8));
 			view.updateText();
 		}
 	};
+	
+	//############################ METHODES #####################################
 	
 	public Menu() {
 		model = new app.model.Option();

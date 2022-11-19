@@ -7,6 +7,8 @@ package app.controller;
  */
 public class Game {
 	
+	//########################### ATTRIBUTS #####################################
+
 	private app.model.Game model;
 	
 	//ATTENTION: reference partagé avec view.Main
@@ -19,6 +21,8 @@ public class Game {
 	// TODO choisir une strucutre de donnée pour les stocker
 	//      ou on les liste une par une sans structure de donnée
 	private Room hall;
+	
+	//############################ METHODES #####################################
 	
 	public Game() {
 		pet = new Pet();

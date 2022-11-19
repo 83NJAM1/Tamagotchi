@@ -7,12 +7,15 @@ package app.controller;
  */
 public class Stat {
 	
+	//########################### ATTRIBUTS #####################################
+
 	// ATTENTION: Reference partagé avec model.Pet
 	private app.model.Stat model;
 	
 	// ATTENTION: Reference partagé avec view.Hud
 	private app.view.Stat view;
 	
+	//############################ METHODES #####################################
 	
 	public Stat() {
 		model = new app.model.Stat();

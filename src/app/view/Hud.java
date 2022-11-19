@@ -7,6 +7,8 @@ package app.view;
  */
 public class Hud {
 	
+	//########################### ATTRIBUTS #####################################
+
 	// Barre des actions pour le moment car plus simple a implémenter
 	// les futures version pourront implémenter le clique sur objets
 	private Action actionBar;
@@ -16,6 +18,8 @@ public class Hud {
 	//      ou on les liste une par une sans structure de donnée
 	// ATTENTION: reference partagé avec controller.Stat
 	private Stat stats;
+	
+	//############################ METHODES #####################################
 	
 	public Hud(Stat stats_instances) {
 		this.actionBar = new Action();

@@ -1,5 +1,8 @@
 package app.controller;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+
 /**
  * 
  * @author ben
@@ -8,17 +11,36 @@ package app.controller;
  */
 public class Main {
 	
-	// TODO constructeur, action, ordonnancement, etc.
+	//########################### ATTRIBUTS #####################################
 	
 	private app.view.Main view;
 	
 	private Menu menu;
 	private Game game;
 	
+	//######################### EVENT-ACTION ####################################
+	
 	/**
-	 * permet au thread javafx d'y acceder
-	 * @return la vue principale
+	 * ActionEvent effectué quand t-on veut charger une partie
+	 * déclencheur -> c.Menu -> v.Menu -> v.Load
 	 */
+	private EventHandler<ActionEvent> load_file = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			System.out.println("Loading... : " + menu.getView().getLoad().getChoosenSave());
+			menu.getView().closeLoad();
+		}
+	};
+	
+	//############################ METHODES #####################################
+
+	public Main() {
+		menu = new Menu();
+		game = new Game();
+		view = new app.view.Main( game.getView(), menu.getView() );
+		
+		menu.getView().getLoad().setValidateAction(load_file);
+	}
+	
 	public app.view.Main getView() {
 		return view;
 	}
@@ -29,11 +51,5 @@ public class Main {
 	
 	public Game getGame() {
 		return game;
-	}
-	// juste pour les testes je les ai instancié
-	public Main() {
-		menu = new Menu();
-		game = new Game();
-		view = new app.view.Main( game.getView(), menu.getView() );
 	}
 }

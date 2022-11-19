@@ -13,6 +13,8 @@ import javafx.scene.canvas.Canvas;
  */
 public class Game extends Canvas {
 	
+	//########################### ATTRIBUTS #####################################
+	
 	// le view.pet a manipuler
 	// ATTENTION reference partagé avec controller.Pet
 	private Pet pet;
@@ -24,6 +26,8 @@ public class Game extends Canvas {
 	private Room hall;
 	
 	private Hud hud;
+	
+	//############################ METHODES #####################################
 	
 	public Game(Pet pet_instance, Room room_instance, Stat stats_instances) {
 		this.pet = pet_instance;

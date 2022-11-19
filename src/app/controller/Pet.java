@@ -7,6 +7,8 @@ package app.controller;
  */
 public class Pet {
 	
+	//########################### ATTRIBUTS #####################################
+	
 	// ATTENTION: référence partagé avec model.Game
 	private app.model.Pet model;
 	
@@ -17,6 +19,8 @@ public class Pet {
 	// TODO choisir une strucutre de donnée pour les stocker
 	//      ou on les liste une par une sans structure de donnée
 	private Stat stats;
+	
+	//############################ METHODES #####################################
 	
 	public Pet() {
 		stats = new Stat();

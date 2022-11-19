@@ -12,6 +12,10 @@ import javafx.scene.image.Image;
  */
 public class Room extends Image {
 
+	//########################### ATTRIBUTS #####################################
+
+	//############################ METHODES #####################################
+	
 	// Constructeur obligatoire car de type Image
 	// REMARQUE: nescesaire uniquement pour la vue
 	//			 ?? chemin de l'image dans le model ??
