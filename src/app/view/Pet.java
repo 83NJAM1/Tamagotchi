@@ -22,5 +22,18 @@ public class Pet extends Image {
 	public Pet(String spritesheet) {
 		super(spritesheet);
 	}
+	
+	public double getX() {
+		return 0;
+	}
+	public double getY() {
+		return 92;
+	}
+	public double getW() {
+		return 128;
+	}
+	public double getH() {
+		return 128;
+	}
 
 }

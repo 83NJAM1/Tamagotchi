@@ -22,5 +22,17 @@ public class Room extends Image {
 	public Room(String imagepath) {
 		super(imagepath);
 	}
-
+	
+	public double getX() {
+		return 0;
+	}
+	public double getY() {
+		return 0;
+	}
+	public double getW() {
+		return getWidth();
+	}
+	public double getH() {
+		return getHeight();
+	}
 }

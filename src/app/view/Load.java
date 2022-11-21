@@ -30,6 +30,8 @@ public class Load extends StackPane {
 	
 	//########################### ATTRIBUTS #####################################
 	
+	private int currentIndex;
+	private ObservableList<String> savesObsList;
 	private ListView<String> savesList;
 	private HBox savesContent;
 	private VBox allContent;
@@ -37,8 +39,6 @@ public class Load extends StackPane {
 	private Button butRight;
 	private Button butValidate;
 	private Button butCancel;
-	private ObservableList<String> savesObsList;
-	private int currentIndex;
 	
 	//######################### EVENT-ACTION ####################################
 	
@@ -51,6 +51,7 @@ public class Load extends StackPane {
 			if ( currentIndex > 0) {
 				savesList.scrollTo(--currentIndex);
 				savesList.getSelectionModel().select(currentIndex);
+				//savesList.requestFocus();
 			}
 		}
 	};
@@ -64,6 +65,7 @@ public class Load extends StackPane {
 			if ( currentIndex < savesList.getItems().size()-1) {
 				savesList.scrollTo(++currentIndex);
 				savesList.getSelectionModel().select(currentIndex);
+				//savesList.requestFocus();
 			}
 		}
 	};
@@ -84,16 +86,15 @@ public class Load extends StackPane {
 	public Load() {
 		//instanciation
 		savesList = new ListView<String>();
-		allContent = new VBox(15);
-		savesContent = new HBox(15);
+		allContent = new VBox();
+		savesContent = new HBox();
 		butLeft = new Button();
 		butRight = new Button();
 		butValidate = new Button();
 		butCancel = new Button();
 		
 		//initialisation
-		File directory = new File("./res/");
-		savesObsList = FXCollections.observableArrayList(directory.list());
+		updateFilesList();
 		savesList.setItems(savesObsList);
 		currentIndex = 0;
 		
@@ -114,6 +115,13 @@ public class Load extends StackPane {
 	}
 	
 	/**
+	 * Met à jour la liste des fichiers de sauvegardes
+	 */	
+	public void updateFilesList() {
+		savesObsList = FXCollections.observableArrayList(new File("./res/").list());
+	}
+	
+	/**
 	 * Met à jour le texte de tous les élements
 	 */
 	public void updateText() {
@@ -128,12 +136,14 @@ public class Load extends StackPane {
 	 */
 	public void updateStyle() {
 		//this.setBackground(new Background(new BackgroundFill( Color.BLUE, null, null) ) );
-		savesContent.setBackground(new Background(new BackgroundFill( Color.WHITESMOKE, null, null) ) );
 		savesList.setOrientation(Orientation.HORIZONTAL);
 		savesList.setPrefSize(1280, 360);
+		savesContent.setBackground(new Background(new BackgroundFill( Color.WHITESMOKE, null, null) ) );
 		savesContent.setAlignment(Pos.CENTER);
-		allContent.setAlignment(Pos.CENTER);
+		savesContent.setSpacing(15);
 		allContent.setFillWidth(true);
+		allContent.setAlignment(Pos.CENTER);
+		allContent.setSpacing(15);
 		butLeft.setMinSize(100, BASELINE_OFFSET_SAME_AS_HEIGHT);
 		butRight.setMinSize(100, BASELINE_OFFSET_SAME_AS_HEIGHT);
 	}

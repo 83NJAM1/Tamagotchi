@@ -15,6 +15,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Slider;
 
 import app.App;
+
 /**
  * 
  * @author ben
@@ -47,7 +48,7 @@ public class Option extends VBox {
 		
 		updateText();
 		updateStyle();
-		
+
 		// construction
 		this.getChildren().addAll(choiceDimWindow, choiceLang, volume, buttonQuit);
 	}

@@ -2,6 +2,9 @@ package app.view;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.StackPane;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -80,6 +83,7 @@ public class Menu extends StackPane {
 		public void handle(ActionEvent e) {
 			getChildren().add(load);
 			listButtons.setDisable(true);
+			load.updateFilesList();
 		}
 	};
 	
@@ -130,6 +134,7 @@ public class Menu extends StackPane {
 								   //top, right, bottom, left
 		setMargin(option, new Insets(50., 250. , 50.   , 250.));
 		setMargin(load, new Insets(50., 50. , 50.   , 50.));
+		setBackground(new Background(new BackgroundFill( Color.WHITESMOKE, null, null) ) );
 	}
 	
 	/**

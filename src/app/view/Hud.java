@@ -1,11 +1,13 @@
 package app.view;
 
+import javafx.scene.layout.HBox;
+
 /**
  * 
  * @author ben
  * affiche les stats ainsi que les actions
  */
-public class Hud {
+public class Hud extends HBox{
 	
 	//########################### ATTRIBUTS #####################################
 
@@ -24,5 +26,17 @@ public class Hud {
 	public Hud(Stat stats_instances) {
 		this.actionBar = new Action();
 		this.stats = stats_instances;
+		
+		this.getChildren().addAll(actionBar, stats);
+		updateStyle();
+	}
+	
+	public void updateStyle() {
+		this.setFillHeight(true);
+		this.setHeight(92);
+	}
+	
+	public Action getActionBar() {
+		return actionBar;
 	}
 }
