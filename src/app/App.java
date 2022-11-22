@@ -11,7 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+import javafx.stage.WindowEvent;
 //app import
 import app.controller.Main;
 
@@ -51,6 +51,18 @@ public class App extends Application{
 		}
 	};
 	
+	/**
+	 * WindowEvent pour sauvegarder si on ferme l'application
+	 * déclancheur -> c.Main -> m.Save
+	 */
+	private EventHandler<WindowEvent> close_app = new EventHandler<WindowEvent>() {
+		public void handle(WindowEvent e) {
+			mainController.exit();
+			System.out.println("Save done");
+			System.out.println(language.getString("bye"));
+		}
+	};
+
 	//############################ METHODES #####################################
 	
 	public void start(Stage stage) {
@@ -58,6 +70,7 @@ public class App extends Application{
 		// enregistre la référence pour pouvoir fair des actions dessus
 		this.stage = stage;
 		
+		stage.setOnCloseRequest(close_app);
 		//fichiers .properties requis accesible dans le ./res à mettre dans le dossier ./bin
 		//soit ./bin/language.properties et ./bin/language_en.properties
 		language = ResourceBundle.getBundle("language");
@@ -74,8 +87,6 @@ public class App extends Application{
 	}
 	
     public static void main(String[] args) {
-    	
         launch();
-        System.out.println(language.getString("bye"));
     }
 }

@@ -15,11 +15,16 @@ import javafx.stage.PopupWindow.AnchorLocation;
 /**
  * 
  * @author ben
- * view.Action est de type VBox car elle sera vu en bas de l'écran de jeu
- * Elle permet de selectionner les actions du jeu 
+ * view.Action est de type HBox car elle sera vu en bas de l'écran de jeu
+ * Elle permet de selectionner les actions du jeu et d'aller au menu
  */
 public class Action extends HBox {
 	
+	//########################### ATTRIBUTS #####################################
+	
+	// On est obligé de faire un menu perso car
+	// le MenuBar de base n'est pas fait pour se 
+	// positionner en bas de l'écrant
 	private Button butMenu;
 	private Button butRoomMenu;
 	private CustomMenuItem butRoomA;
@@ -27,50 +32,59 @@ public class Action extends HBox {
 	private CustomMenuItem butRoomC;
 	private ContextMenu roomContextMenu;
 	
+	//######################### EVENT-ACTION ####################################
+	
 	private EventHandler<ActionEvent> click_room = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			//butRoomMenu.setDisable(true);
 			roomContextMenu.show(butRoomMenu, Side.TOP, 0, 0);
 		}
 	};
-	private EventHandler<ActionEvent> hide_room = new EventHandler<ActionEvent>() {
+	
+	/*private EventHandler<ActionEvent> hide_room = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			//butRoomMenu.setDisable(false);
 			roomContextMenu.hide();
 		}
-	};
+	};*/
+	
+	//############################ METHODES #####################################
 	
 	public Action() {
+		
+		//instanciations
 		butMenu = new Button("Menu");
 		butRoomMenu = new Button("Room");
-		
 		butRoomA = new CustomMenuItem(new Button("RoomA"));
 		butRoomB = new CustomMenuItem(new Button("RoomB"));
 		butRoomC = new CustomMenuItem(new Button("RoomC"));
 		roomContextMenu = new ContextMenu();
-		roomContextMenu.getItems().addAll(butRoomA, butRoomB, butRoomC);
 		
-		//roomContextMenu.setOnAction(hide_room);
-		butRoomMenu.setOnAction(click_room);
+		//assignation action
+		butRoomMenu.setOnAction(click_room); //Affiche les bouttons rooms quand on clique sur butRoomMenu
 		
+		//initalisations
 		updateStyle();
 		
+		//constructions de la vue
+		roomContextMenu.getItems().addAll(butRoomA, butRoomB, butRoomC);
 		this.getChildren().addAll(butRoomMenu, butMenu);
-		//roomContextMenu.setAnchorLocation(AnchorLocation.CONTENT_TOP_LEFT);
-
 	}
 	
+	/**
+	 * Met à jour le style de tous les éléments
+	 */
 	public void updateStyle() {
 		this.setPrefHeight(92);
 		butRoomMenu.setAlignment(Pos.CENTER);
 		butMenu.setAlignment(Pos.CENTER_RIGHT);
 	}
 	
+	/**
+	 * Utilisé par v.Main car alterne les vues game et menu
+	 * @param e ActionEvent qui doit être déclencher par le bouton butMenu
+	 */
 	public void setActionMenu(EventHandler<ActionEvent> e) {
 		butMenu.setOnAction(e);
 	}
-	
-	/*public void setActionMenu(EventHandler<ActionEvent> e) {
-		butMenu.setOnAction(e);
-	}*/
 }

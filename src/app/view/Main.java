@@ -35,7 +35,7 @@ public class Main extends StackPane {
 
 	/**
 	 * ActionEvent effectué quand t-on veut afficher le Menu
-	 * déclencheur -> this -> v.Game
+	 * déclencheur -> this -> v.Game -> v.Action
 	 */
 	private EventHandler<ActionEvent> click_open_menu = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {

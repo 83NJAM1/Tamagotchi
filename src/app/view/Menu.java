@@ -107,7 +107,7 @@ public class Menu extends StackPane {
 		buttonLoad.setOnAction(click_load);
 		load.setQuitAction(click_quit_load);
 		
-		//initalisatons
+		//initalisations
 		updateText();
 		updateStyle();
 		

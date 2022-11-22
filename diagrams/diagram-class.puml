@@ -3,9 +3,12 @@
 hide empty attributes
 hide empty methods
 
-class App
+class App {
+	-{static}lang_resource : ResourceBundle
+	-{static}num_locale : NumberFormat
+}
 
-
+/' plus utilisé ; mais pourrait l'être à nouveau
 package lang {
 	abstract class Lang {
 		+ {method} {static} getLang() : Lang
@@ -18,6 +21,7 @@ package lang {
 	Lang <|-- Fr
 	Lang <|-- En
 }
+'/
 
 package model {
     class ModelRoom
@@ -29,6 +33,12 @@ package model {
 	    -h_window : int
 	    -w_window : int
     }
+    class ModelSave {
+    	-info_pet : list<string>
+    	-info_opt : list<string>
+    	-info_gme : list<string>
+    	-info_usr : list<string>
+    }
     interface ModelPet
     class Robot
     class Animal
@@ -39,6 +49,7 @@ package model {
     Robot o--> ModelStat
     ModelGame o--> ModelPet
     ModelGame o--> ModelRoom
+    ModelGame ..> ModelSave
 }
 
 package view {
@@ -67,7 +78,9 @@ package view {
 }
 
 package Controller {
-    class ControllerMain
+    class ControllerMain {
+    	-ModelSave
+    }
     
     class ControllerPet {
         -ModelPet
