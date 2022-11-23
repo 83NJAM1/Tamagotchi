@@ -1,6 +1,6 @@
 	Description des utilitées des différentes cases des tableaux ;
 	
-	Animation_Chat ;
+	Animation_Chat/Lapin ; [5;4]
 [1;1],[1;2],[1;3] - Heureux
 [1;4]			  - Balle 1
 [2;1],[2;2],[2;3] - Neutre
@@ -12,6 +12,25 @@
 [5;1]			  - Soif
 [5;2]			  - Miaulement
 [5;3]			  - Malade
+
+	Animation_Chien ; [5;6]
+[1;1]			  - Heureux couché
+[1;2],[1;3]		  - Heureux assis
+[1;4],[1;5]		  - Heureux debout
+[1;6]			  - Balle 1
+[2;1]			  - Neutre couché
+[2;2],[2;3]		  - Neutre assis
+[2;4],[2;5]		  - Neutre debout
+[2;6]			  - Balle 2
+[3;1]			  - Malheureux couché
+[3;2],[3;3]		  - Malheureux assis
+[3;4],[3;5]		  - Malheureux debout
+[3;6]			  - Punis
+[4;6],[5;6]		  - Dodo
+[4,5]			  - Mort
+[4;1],[4;2],[4,3] - Soif (couché, assis, debout)
+[5;1],[5;2],[5,3] - Miaulement (couché, assis, debout)
+[4;4],[5;4],[5,5] - Malade (couché, assis, debout)
 
 	Coloriage_Chat ; 
 [1;] - couleur uni
