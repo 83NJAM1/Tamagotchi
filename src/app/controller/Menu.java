@@ -26,48 +26,19 @@ public class Menu {
 	
 	//######################### EVENT-ACTION ####################################
 	
-	/**
-	 * ActionEvent effectué quand t-on modifie le volume via la vue Option
-	 * déclencher -> this -> v.Menu -< v.Option
-	 */
-	ChangeListener<Number> change_volume_value = new ChangeListener<Number>() {
-		public void changed(ObservableValue<? extends Number> obs, Number vold, Number vnew) {
-			System.out.println(vold + " to " + vnew);
-		}
-	};
-
-	/**
-	 * ActionEvent effectué quand t-on change la langue via la vue Option
-	 * déclencher -> this -> v.Menu -< v.Option
-	 */
-	private EventHandler<ActionEvent> choose_lang = new EventHandler<ActionEvent>() {
-		public void handle(ActionEvent e) {
-			Locale loc;
-			if ( view.getOption().getChoosenLang() == 0) {
-				loc = Locale.FRENCH;
-				App.language = ResourceBundle.getBundle("language", loc);
-				App.languageNumber = NumberFormat.getNumberInstance(loc);
-			}
-			else {
-				loc = Locale.ENGLISH;
-				App.language = ResourceBundle.getBundle("language", loc);
-				App.languageNumber = NumberFormat.getNumberInstance(loc);
-			}
-			
-			System.out.println("Locale:" + loc.getDisplayLanguage());
-			System.out.println("Number test: " + App.languageNumber.format(25.8));
-			view.updateText();
-		}
-	};
 	
 	//############################ METHODES #####################################
 	
 	public Menu() {
 		model = new app.model.Option();
 		view = new app.view.Menu();
-		
-		view.getOption().setVolumeAction(change_volume_value);
-		view.getOption().setLangAction(choose_lang);
+	}
+	
+	public void setVolume(Double value) {
+		model.setVolume(value);
+	}
+	public Double getVolume() {
+		return model.getVolume();
 	}
 	
 	public app.model.Option getModel(){
@@ -76,5 +47,10 @@ public class Menu {
 	
 	public app.view.Menu getView(){
 		return view;
+	}
+	
+	public void exit() {
+		model = null;
+		view = null;
 	}
 }

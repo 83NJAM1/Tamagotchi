@@ -43,8 +43,8 @@ public class Option extends VBox {
 		choiceDimWindow = new ChoiceBox<String>();
 		
 		// initialisation
-		choiceDimWindow.setValue("640x360");
 		choiceDimWindow.getItems().addAll("640x360", "1280x720");
+		choiceDimWindow.setValue(choiceDimWindow.getItems().get(0));
 		
 		updateText();
 		updateStyle();

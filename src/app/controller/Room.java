@@ -29,4 +29,9 @@ public class Room {
 	public app.view.Room getView() {
 		return view;
 	}
+	
+	public void exit() {
+		model = null;
+		view = null;
+	}
 }

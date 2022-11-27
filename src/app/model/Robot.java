@@ -7,13 +7,45 @@ package app.model;
  */
 public class Robot implements Pet {
 
-	// il y aura plusieurs Stat, restons avec une pour le moment
-	// TODO choisir une strucutre de donnée pour les stocker
-	//      ou on les liste une par une sans structure de donnée
-	// ATTENTION: Reference partagé avec constroller.Stat
-	private Stat stats;
+	// ATTENTION: Reference partagé avec constroller.Stat	
+	private Stat hunger;
+	private Stat thirst;
+	private Stat weight;
+	private Stat hygiene;
+	private Stat moral;
 	
-	public Robot (Stat stats_instances) {
-		this.stats = stats_instances;
+	public Robot () {
+	}
+	
+	public void setHunger(Stat hunger) {
+		this.hunger = hunger;
+	}
+	public void setThirst(Stat thirst) {
+		this.thirst = thirst;
+	}
+	public void setWeight(Stat weight) {
+		this.weight = weight;
+	}
+	public void setHygiene(Stat hygiene) {
+		this.hygiene = hygiene;
+	}
+	public void setMoral(Stat moral) {
+		this.moral = moral;
+	}
+	
+	public Stat getHunger() {
+		return hunger;
+	}
+	public Stat getThirst() {
+		return thirst;
+	}
+	public Stat getWeight() {
+		return weight;
+	}
+	public Stat getHygiene() {
+		return hygiene;
+	}
+	public Stat getMoral() {
+		return moral;
 	}
 }

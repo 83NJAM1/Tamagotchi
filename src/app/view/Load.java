@@ -110,8 +110,6 @@ public class Load extends StackPane {
 		savesContent.getChildren().addAll(butLeft, savesList, butRight);
 		allContent.getChildren().addAll(savesContent, butValidate, butCancel);
 		this.getChildren().add(allContent);
-		
-
 	}
 	
 	/**

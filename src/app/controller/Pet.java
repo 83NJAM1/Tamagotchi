@@ -1,5 +1,7 @@
 package app.controller;
 
+import app.App;
+
 /**
  * 
  * @author ben
@@ -15,17 +17,34 @@ public class Pet {
 	// ATTENTION: référence partagé avec view.Game
 	private app.view.Pet view;
 	
-	// il y aura plusieurs Stat, restons avec une pour le moment
-	// TODO choisir une strucutre de donnée pour les stocker
-	//      ou on les liste une par une sans structure de donnée
-	private Stat stats;
+	private Stat hunger;
+	private Stat thirst;
+	private Stat weight;
+	private Stat hygiene;
+	private Stat moral;
 	
 	//############################ METHODES #####################################
 	
 	public Pet() {
-		stats = new Stat();
-		model = new app.model.Robot( stats.getModel() );
+		hunger = new Stat("hunger");
+		thirst = new Stat("thirst");
+		weight = new Stat("weight");
+		hygiene = new Stat("hygiene");
+		moral = new Stat("moral");
+		
+		model = new app.model.Robot();
+		model.setHunger(hunger.getModel());
+		model.setThirst(thirst.getModel());
+		model.setWeight(weight.getModel());
+		model.setHygiene(hygiene.getModel());
+		model.setMoral(moral.getModel());
+		
 		view = new app.view.Pet("./res/test_pet.png");
+		view.setHunger(hunger.getView());
+		view.setThirst(thirst.getView());
+		view.setWeight(weight.getView());
+		view.setHygiene(hygiene.getView());
+		view.setMoral(moral.getView());
 	}
 	
 	public app.model.Pet getModel() {
@@ -36,7 +55,50 @@ public class Pet {
 		return view;
 	}
 	
-	public Stat getStats() {
-		return stats;
+	public void updateText() {
+		hunger.updateText();
+		thirst.updateText();
+		weight.updateText();
+		hygiene.updateText();
+		moral.updateText();
+	}
+	
+	public void statsDecreaseOvertime() {
+		hunger.decreaseValue();
+		thirst.decreaseValue();
+		weight.decreaseValue();
+		hygiene.decreaseValue();
+		moral.decreaseValue();
+	}
+	
+	public Stat getHunger() {
+		return hunger;
+	}
+	public Stat getThirst() {
+		return thirst;
+	}
+	public Stat getWeight() {
+		return weight;
+	}
+	public Stat getHygiene() {
+		return hygiene;
+	}
+	public Stat getMoral() {
+		return moral;
+	}
+	
+	public void exit() {
+		hunger.exit();
+		thirst.exit();
+		weight.exit();
+		hygiene.exit();
+		moral.exit();
+		model = null;
+		view = null;
+		hunger = null;
+		thirst = null;
+		weight = null;
+		hygiene = null;
+		moral = null;
 	}
 }

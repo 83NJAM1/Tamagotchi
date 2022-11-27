@@ -18,7 +18,6 @@ public class Room extends Image {
 	
 	// Constructeur obligatoire car de type Image
 	// REMARQUE: nescesaire uniquement pour la vue
-	//			 ?? chemin de l'image dans le model ??
 	public Room(String imagepath) {
 		super(imagepath);
 	}

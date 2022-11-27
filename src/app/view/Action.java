@@ -1,5 +1,6 @@
 package app.view;
 
+import app.App;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -26,10 +27,14 @@ public class Action extends HBox {
 	// le MenuBar de base n'est pas fait pour se 
 	// positionner en bas de l'écrant
 	private Button butMenu;
+	private Button butStat;
 	private Button butRoomMenu;
-	private CustomMenuItem butRoomA;
-	private CustomMenuItem butRoomB;
-	private CustomMenuItem butRoomC;
+	private CustomMenuItem customMenuA;
+	private CustomMenuItem customMenuB;
+	private CustomMenuItem customMenuC;
+	private Button butRoomA;
+	private Button butRoomB;
+	private Button butRoomC;
 	private ContextMenu roomContextMenu;
 	
 	//######################### EVENT-ACTION ####################################
@@ -53,11 +58,15 @@ public class Action extends HBox {
 	public Action() {
 		
 		//instanciations
-		butMenu = new Button("Menu");
-		butRoomMenu = new Button("Room");
-		butRoomA = new CustomMenuItem(new Button("RoomA"));
-		butRoomB = new CustomMenuItem(new Button("RoomB"));
-		butRoomC = new CustomMenuItem(new Button("RoomC"));
+		butMenu = new Button();
+		butStat = new Button();
+		butRoomMenu = new Button();
+		butRoomA = new Button();
+		butRoomB = new Button();
+		butRoomC = new Button();
+		customMenuA = new CustomMenuItem(butRoomA);
+		customMenuB = new CustomMenuItem(butRoomB);
+		customMenuC = new CustomMenuItem(butRoomC);
 		roomContextMenu = new ContextMenu();
 		
 		//assignation action
@@ -65,17 +74,27 @@ public class Action extends HBox {
 		
 		//initalisations
 		updateStyle();
+		updateText();
 		
 		//constructions de la vue
-		roomContextMenu.getItems().addAll(butRoomA, butRoomB, butRoomC);
-		this.getChildren().addAll(butRoomMenu, butMenu);
+		roomContextMenu.getItems().addAll(customMenuA, customMenuB, customMenuC);
+		this.getChildren().addAll(butStat, butRoomMenu, butMenu);
+	}
+	
+	public void updateText() {
+		butMenu.setText(App.language.getString("button-menu"));
+		butStat.setText(App.language.getString("button-stats"));
+		butRoomMenu.setText(App.language.getString("button-rooms"));
+		butRoomA.setText(App.language.getString("button-kitchen"));
+		butRoomB.setText(App.language.getString("button-garden"));
+		butRoomC.setText(App.language.getString("button-bathroom"));
 	}
 	
 	/**
 	 * Met à jour le style de tous les éléments
 	 */
 	public void updateStyle() {
-		this.setPrefHeight(92);
+		//this.setPrefHeight(92);
 		butRoomMenu.setAlignment(Pos.CENTER);
 		butMenu.setAlignment(Pos.CENTER_RIGHT);
 	}
@@ -86,5 +105,22 @@ public class Action extends HBox {
 	 */
 	public void setActionMenu(EventHandler<ActionEvent> e) {
 		butMenu.setOnAction(e);
+	}
+	
+	/**
+	 * Utilisé par v.Hud pour afficher masquer les stats
+	 * @param e ActionEvent qui doit être déclencher par le bouton butStat
+	 */
+	public void setActionStat(EventHandler<ActionEvent> e) {
+		butStat.setOnAction(e);
+	}
+	
+	public void setActive(boolean stats, boolean rooms, boolean kitchen, boolean garden, boolean bathroom, boolean menu) {
+		butStat.setDisable(!stats);
+		butRoomMenu.setDisable(!rooms);
+		butRoomA.setDisable(!kitchen);
+		butRoomB.setDisable(!garden);
+		butRoomC.setDisable(!bathroom);
+		butMenu.setDisable(!menu);
 	}
 }

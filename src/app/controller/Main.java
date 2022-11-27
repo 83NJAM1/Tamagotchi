@@ -1,10 +1,22 @@
 package app.controller;
 
+import java.nio.file.Paths;
+import java.text.NumberFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
+import app.App;
 import javafx.animation.AnimationTimer;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 /**
  * 
@@ -21,36 +33,65 @@ public class Main {
 	
 	private Menu menu;
 	private Game game;
+	private Media music;
+	private MediaPlayer mediaplayer;
 	
+	private BooleanProperty gameover;
 	//######################### EVENT-ACTION ####################################
 	
 	/**
-	 * ActionLoop effectué toute les 1 second (1e+9 ns)
-	 * déclendeur -> this
-	 */ 
-	private AnimationTimer actionLoop = new AnimationTimer() {
-		int n_access=0; // compteur d'acces au fichier de sauvegarde
-		long old_time=0;
-        public void handle(long new_time) {
-			if (new_time > old_time ) {
-				old_time = new_time+(1<<30); // aproximativement une seconde
-				save.addData("Accès n°" + n_access++ + "\n");
-				System.out.print(save.getData("test")); // ne pas utiliser println pour des raisons obscure
-			}
-        }
-    };
-	
-	/**
-	 * ActionEvent effectué quand t-on veut charger une partie
-	 * déclencheur -> c.Menu -> v.Menu -> v.Load
+	 * ActionEvent effectué quand t-on modifie le volume via la vue Option
+	 * déclencher -> this -> v.Menu -< v.Option
 	 */
-	private EventHandler<ActionEvent> load_file = new EventHandler<ActionEvent>() {
-		public void handle(ActionEvent e) {
-			System.out.println("Loading... : " + menu.getView().getLoad().getChoosenSave());
-			menu.getView().closeLoad();
+	ChangeListener<Boolean> change_gameover_value = new ChangeListener<Boolean>() {
+		public void changed(ObservableValue<? extends Boolean> obs, Boolean vold, Boolean vnew) {
+			mediaplayer.stop();
+			System.out.println(Paths.get("bin/res/musiques/LowBattery.mp3").toUri().toString());
+			music = new Media(Paths.get("bin/res/musiques/LowBattery.mp3").toUri().toString());
+			mediaplayer = new MediaPlayer(music);
+			mediaplayer.play();
+			mediaplayer.setVolume(menu.getVolume());
 		}
 	};
+	
+	/**
+	 * ActionEvent effectué quand t-on modifie le volume via la vue Option
+	 * déclencher -> this -> v.Menu -< v.Option
+	 */
+	ChangeListener<Number> change_volume_value = new ChangeListener<Number>() {
+		public void changed(ObservableValue<? extends Number> obs, Number vold, Number vnew) {
+			System.out.println(vold + " to " + vnew);
+			menu.setVolume(vnew.doubleValue());
+			mediaplayer.setVolume(vnew.doubleValue());
+		}
+	};
+	
+	/**
+	 * ActionEvent effectué quand t-on change la langue via la vue Option
+	 * déclencher -> this -> v.Menu -< v.Option
+	 */
+	private EventHandler<ActionEvent> choose_lang = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			Locale loc;
+			if ( menu.getView().getOption().getChoosenLang() == 0) {
+				loc = Locale.FRENCH;
+				App.language = ResourceBundle.getBundle("language", loc);
+				App.languageNumber = NumberFormat.getNumberInstance(loc);
+			}
+			else {
+				loc = Locale.ENGLISH;
+				App.language = ResourceBundle.getBundle("language", loc);
+				App.languageNumber = NumberFormat.getNumberInstance(loc);
+			}
+			
+			System.out.println("Locale:" + loc.getDisplayLanguage());
 
+			menu.getView().updateText();
+			game.getView().updateText();
+			game.getPet().updateText();
+		}
+	};
+	
 	//############################ METHODES #####################################
 
 	public Main() {
@@ -58,9 +99,20 @@ public class Main {
 		menu = new Menu();
 		game = new Game();
 		view = new app.view.Main( game.getView(), menu.getView() );
+		System.out.println(Paths.get("bin/res/musiques/DogsAndCats.mp3").toUri().toString());
+		music = new Media(Paths.get("bin/res/musiques/DogsAndCats.mp3").toUri().toString());
+		mediaplayer = new MediaPlayer(music);
+		mediaplayer.setStopTime(Duration.seconds(113));
+		mediaplayer.setCycleCount(MediaPlayer.INDEFINITE);
+		mediaplayer.play();
+		mediaplayer.setVolume(0.5);
+		gameover = new SimpleBooleanProperty(this, "gameover", false);
 		
-		menu.getView().getLoad().setValidateAction(load_file);
-		actionLoop.start();
+		gameover.addListener(change_gameover_value);
+		gameover.bind(game.gameover);
+		
+		menu.getView().getOption().setLangAction(choose_lang);
+		menu.getView().getOption().setVolumeAction(change_volume_value);
 	}
 	
 	public app.view.Main getView() {
@@ -76,9 +128,19 @@ public class Main {
 	}
 	
 	/**
-	 * JUSTE UN TEST PAS DEFINITIF
+	 * essaie d'aider au mieu le Garbage Collector
 	 */
 	public void exit() {
+		mediaplayer.stop();
 		save.saveToDisk();
+		game.exit();
+		menu.exit();
+		view = null;
+		save = null;
+		menu = null;
+		game = null;
+		choose_lang = null;
+		mediaplayer=null;
+		music=null;
 	}
 }
