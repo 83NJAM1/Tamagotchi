@@ -10,7 +10,7 @@
 [4;1],[4;2]		  - Dodo
 [4;3]			  - Mort
 [5;1]			  - Soif
-[5;2]			  - Miaulement
+[5;2]			  - Miaulement/Glapissement
 [5;3]			  - Malade
 
 	Animation_Chien ; [5;6]
@@ -29,13 +29,26 @@
 [4;6],[5;6]		  - Dodo
 [4,5]			  - Mort
 [4;1],[4;2],[4,3] - Soif (couché, assis, debout)
-[5;1],[5;2],[5,3] - Miaulement (couché, assis, debout)
+[5;1],[5;2],[5,3] - Aboiement (couché, assis, debout)
 [4;4],[5;4],[5,5] - Malade (couché, assis, debout)
 
+Animation_Robot ; [4;4]
+[1;1],[1;2]		  - Heureux
+[1;3],[1,4]		  - Balle
+[2;1],[2;2]		  - Neutre 
+[2;3]			  - Punis
+[2;3]			  - Mort
+[3;1],[3;2]		  - Malheureux
+[3,3]			  - "Soif"
+[3,4]			  - Parole
+[4;1],[4;2]		  - Dodo
+[4,3]			  - Malade (cassé)
+
+
 	Coloriage_Chat ; 
-[1;] - couleur uni
-[2;] - tigré (bicolore)
-[3;] - tacheté (tricolore)
+[1;] - Couleur uni
+[2;] - Tigré (bicolore)
+[3;] - Tacheté (tricolore)
 [;1] - Animations [1;1], [2,1], [3,1], [5,1], [5,2]
 [;2] - Animations [1;2], [2,2], [3,2], [4,3], [5,3]
 [;3] - Animations [1;3], [2,3], [3,3], [3,4], [4,1], [4,2]
