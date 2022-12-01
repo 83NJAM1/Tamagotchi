@@ -5,7 +5,7 @@ package app.model;
  * @author ben
  * L'animal à prendre soin
  */
-public class Robot implements Pet {
+public class Robot extends Pet {
 
 	// ATTENTION: Reference partagé avec constroller.Stat	
 	private Stat hunger;

@@ -94,10 +94,11 @@ public class Main {
 	
 	//############################ METHODES #####################################
 
-	public Main() {
-		save = new app.model.Save("./res/save.tmg");
+	public Main(String pathsave) {
+		
 		menu = new Menu();
 		game = new Game();
+		save = new app.model.Save("./res/save.tmg", game.getModel());
 		view = new app.view.Main( game.getView(), menu.getView() );
 		System.out.println(Paths.get("bin/res/musiques/DogsAndCats.mp3").toUri().toString());
 		music = new Media(Paths.get("bin/res/musiques/DogsAndCats.mp3").toUri().toString());
@@ -107,6 +108,9 @@ public class Main {
 		mediaplayer.play();
 		mediaplayer.setVolume(0.5);
 		gameover = new SimpleBooleanProperty(this, "gameover", false);
+		
+		if ( pathsave != null )
+			load(pathsave);
 		
 		gameover.addListener(change_gameover_value);
 		gameover.bind(game.gameover);
@@ -127,12 +131,22 @@ public class Main {
 		return game;
 	}
 	
+	// Test save
+	public void load(String pathsave) {
+		System.out.println("Loading... : " + pathsave);
+		System.out.println(save.load("./res/testsave.tmg"));
+	}
+	// Test save
+	public void save() {
+		save.save();
+		System.out.println("Save done");
+	}
+	
 	/**
 	 * essaie d'aider au mieu le Garbage Collector
 	 */
 	public void exit() {
 		mediaplayer.stop();
-		save.saveToDisk();
 		game.exit();
 		menu.exit();
 		view = null;

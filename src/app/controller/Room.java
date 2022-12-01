@@ -18,7 +18,7 @@ public class Room {
 	//############################ METHODES #####################################
 	
 	public Room() {
-		model = new app.model.Room();
+		model = new app.model.Room("test");
 		view = new app.view.Room("./res/test_room.png");
 	}
 	

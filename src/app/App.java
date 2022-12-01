@@ -40,7 +40,7 @@ public class App extends Application{
 	public static NumberFormat languageNumber;
 	
 	/*
-	TODO : Meurt au bout d’un certain temps
+	WIP  : Meurt au bout d’un certain temps
 	WIP  : Etat physique (faim, soif,poids)
 	WIP  : Chronomètre de la durée de vie du tamagotchi
 	WIP  : Système de sauvegarde/chargement (Automatique)
@@ -86,8 +86,8 @@ public class App extends Application{
 	 */
 	private EventHandler<WindowEvent> close_app = new EventHandler<WindowEvent>() {
 		public void handle(WindowEvent e) {
+			mainController.save();
 			mainController.exit();
-			System.out.println("Save done");
 			System.out.println(language.getString("bye"));
 		}
 	};
@@ -98,7 +98,8 @@ public class App extends Application{
 	 */
 	private EventHandler<ActionEvent> load_file = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			System.out.println("Loading... : " + mainController.getMenu().getView().getLoad().getChoosenSave());
+			String pathsave = mainController.getMenu().getView().getLoad().getChoosenSave();
+			mainController.save();
 			stage.close();
 			mainController.getMenu().getView().closeLoad();
 			mainController.exit();
@@ -106,7 +107,7 @@ public class App extends Application{
 			mainController=null;
 			System.gc();
 			
-			load();
+			load(pathsave);
 		}
 	};
 	
@@ -124,13 +125,13 @@ public class App extends Application{
 		
 		System.out.println(language.getString("wellcome"));
 		
-		load();
+		load(null);
         stageWidthDiff = stage.getWidth() - 640;
         stageHeightDiff = stage.getHeight() - 360;
 	}
 	
-	public void load() {
-		mainController = new Main();
+	public void load(String pathsave) {
+		mainController = new Main(pathsave);
 		mainController.getMenu().getView().getOption().setDimensionAction(choose_dim);
 		mainController.getMenu().getView().getLoad().setValidateAction(load_file);
 		

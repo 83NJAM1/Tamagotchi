@@ -28,6 +28,10 @@ public class Stat {
 		return value;
 	}
 	
+	public void setValue(Double value) {
+		this.value = value;
+	}
+	
 	public void setPosFactor(Double factor) {
 		this.posFactor = factor;
 	}
@@ -40,5 +44,9 @@ public class Stat {
 	}
 	public Double inc() {
 		return value+=changeValue*posFactor;
+	}
+	
+	public String toString() {
+		return keyName + " : " + value;
 	}
 }

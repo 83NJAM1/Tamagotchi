@@ -96,9 +96,9 @@ public class Game extends StackPane {
 		AnchorPane.setTopAnchor(canvas, 0.);
 		this.getChildren().addAll(drawingArea, hud);
 		
-		for ( String f : Font.getFamilies() ) {
+		/*for ( String f : Font.getFamilies() ) {
 			System.out.println(f);
-		}
+		}*/
 	}
 	
 	public void updateText() {

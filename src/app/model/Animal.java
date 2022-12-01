@@ -5,7 +5,7 @@ package app.model;
  * @author ben
  * L'animal à prendre soin
  */
-public class Animal implements Pet {
+public class Animal extends Pet {
 
 	// ATTENTION: Reference partagé avec constroller.Stat
 	private Stat hunger;
@@ -44,5 +44,14 @@ public class Animal implements Pet {
 	}
 	public Stat getMoral() {
 		return moral;
+	}
+	
+	public String toString() {
+		String output = hunger.toString() + System.lineSeparator()
+					  + thirst.toString() + System.lineSeparator()
+					  + weight.toString() + System.lineSeparator()
+					  + hygiene.toString() + System.lineSeparator()
+					  + moral.toString() + System.lineSeparator();
+		return output;
 	}
 }
