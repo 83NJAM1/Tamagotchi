@@ -39,7 +39,7 @@ public class App extends Application{
 	public static ResourceBundle language;
 	public static NumberFormat languageNumber;
 	
-	/*
+	/* 
 	WIP  : Meurt au bout d’un certain temps
 	WIP  : Etat physique (faim, soif,poids)
 	WIP  : Chronomètre de la durée de vie du tamagotchi

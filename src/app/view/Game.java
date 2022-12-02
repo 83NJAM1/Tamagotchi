@@ -1,5 +1,5 @@
 package app.view;
-
+ 
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ChangeListener;

@@ -1,5 +1,5 @@
 package app.view;
-
+ 
 import app.App;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;

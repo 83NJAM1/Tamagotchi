@@ -3,7 +3,7 @@ package app.controller;
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-
+ 
 /**
  * 
  * @author ben
