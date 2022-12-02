@@ -72,11 +72,17 @@ public class App extends Application{
 			if ( mainController.getMenu().getView().getOption().getChoosenDim() == 0) {
 				stage.setWidth(640+stageWidthDiff);
 				stage.setHeight(360+stageHeightDiff);
+				mainController.getMenu().getOption().setWindowWidth(640);
+				mainController.getMenu().getOption().setWindowHeight(360);
 			}
 			else {
 				stage.setWidth(1280+stageWidthDiff);
 				stage.setHeight(720+stageHeightDiff);
+				mainController.getMenu().getOption().setWindowWidth(1280);
+				mainController.getMenu().getOption().setWindowHeight(720);
 			}
+
+			mainController.getMenu().getOption().save();
 		}
 	};
 	
@@ -86,7 +92,7 @@ public class App extends Application{
 	 */
 	private EventHandler<WindowEvent> close_app = new EventHandler<WindowEvent>() {
 		public void handle(WindowEvent e) {
-			mainController.save();
+			mainController.saveGame();
 			mainController.exit();
 			System.out.println(language.getString("bye"));
 		}
@@ -99,7 +105,7 @@ public class App extends Application{
 	private EventHandler<ActionEvent> load_file = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			String pathsave = mainController.getMenu().getView().getLoad().getChoosenSave();
-			mainController.save();
+			mainController.saveGame();
 			stage.close();
 			mainController.getMenu().getView().closeLoad();
 			mainController.exit();
@@ -126,8 +132,9 @@ public class App extends Application{
 		System.out.println(language.getString("wellcome"));
 		
 		load(null);
-        stageWidthDiff = stage.getWidth() - 640;
-        stageHeightDiff = stage.getHeight() - 360;
+		
+        stageWidthDiff = stage.getWidth() - mainController.getMenu().getOption().getWindowWidth();
+        stageHeightDiff = stage.getHeight() - mainController.getMenu().getOption().getWindowHeight();
 	}
 	
 	public void load(String pathsave) {
@@ -135,7 +142,7 @@ public class App extends Application{
 		mainController.getMenu().getView().getOption().setDimensionAction(choose_dim);
 		mainController.getMenu().getView().getLoad().setValidateAction(load_file);
 		
-		Scene scene = new Scene( mainController.getView(), 640, 360);
+		Scene scene = new Scene( mainController.getView(), mainController.getMenu().getOption().getWindowWidth(), mainController.getMenu().getOption().getWindowHeight());
 		stage.setScene(scene);
         stage.show();
 	}

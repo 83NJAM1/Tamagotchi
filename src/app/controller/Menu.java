@@ -24,13 +24,10 @@ public class Menu {
 	//ATTENTION: reference partagé avec view.Main
 	private app.view.Menu view;
 	
-	//######################### EVENT-ACTION ####################################
-	
-	
 	//############################ METHODES #####################################
 	
 	public Menu() {
-		model = new app.model.Option();
+		model = new app.model.Option("res/config.txt");
 		view = new app.view.Menu();
 	}
 	
@@ -41,7 +38,26 @@ public class Menu {
 		return model.getVolume();
 	}
 	
-	public app.model.Option getModel(){
+	public void loadOption() {
+		model.load();
+		if ( model.getLanguage().equals( Locale.ENGLISH.toString() ) ) {
+			App.language = ResourceBundle.getBundle("language", Locale.ENGLISH);
+			App.languageNumber = NumberFormat.getNumberInstance(Locale.ENGLISH);
+		}
+		else {
+			App.language = ResourceBundle.getBundle("language", Locale.FRENCH);
+			App.languageNumber = NumberFormat.getNumberInstance(Locale.FRENCH);
+		}
+		
+		if ( model.getWindowWidth() == 640 )
+			view.getOption().setSelectedDim(0);
+		else
+			view.getOption().setSelectedDim(1);
+		
+		view.getOption().setVolumeValue(model.getVolume());
+	}
+	
+	public app.model.Option getOption(){
 		return model;
 	}
 	

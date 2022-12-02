@@ -16,30 +16,23 @@ import java.util.Scanner;
  */
 public class Save {
 
-	private Date currentDate;
-	private File fileName;
-	private FileWriter out;//FileOutputStream out;
-	private FileReader in;//FileInputStream in;
+	private File file;
 	
 	private Game game_record;
 	private String loadDate;
 	private String idRoom;
+	private int numberStats;
 	private Hashtable<String, Double> stats;
 
 	public Save(String pathname, Game game) {
-		
-		currentDate = new Date();
+
 		stats = new Hashtable<String, Double>();
 		
-		if ( pathname != null ) {
-			fileName = new File(pathname);
-			try {
-				out = new FileWriter(fileName);
-				out.write(currentDate.toString()+System.lineSeparator());
-				out.close();
-			} catch ( IOException e) {
-				System.err.println(e.getMessage());
-			}
+		try {
+			file = new File(pathname);
+		} 
+		catch ( NullPointerException e) {
+			System.err.println(e.getMessage());
 		}
 		
 		game_record = game;
@@ -48,13 +41,14 @@ public class Save {
 	public Double getStat(String key) {
 		return stats.get(key);
 	}
+	
 	/**
-	 * JUSTE UN TEST PAS DEFINITIF
+	 * PAS DEFINITIF
 	 */
 	public void save() {
 		try {
-			out = new FileWriter(fileName, true);
-			out.write(game_record.toString());
+			FileWriter out = new FileWriter(file);
+			out.write( (new Date()).toString() + System.lineSeparator() + game_record.toString() );
 			out.flush();
 			out.close();
 		} catch ( IOException e) {
@@ -63,41 +57,27 @@ public class Save {
 	}
 	
 	/**
-	 * JUSTE UN TEST PAS DEFINITIF
-	 * @param info
+	 * PAS DEFINITIF
+	 * @param pathname
 	 */
 	public String load(String pathname) {
 		
 		try {
-			in = new FileReader(pathname);
+			FileReader in = new FileReader(pathname);
 			
 			Scanner scanner = new Scanner(in);
 			scanner.useLocale(Locale.ENGLISH);
 			
-			String key;
-			
 			loadDate = scanner.nextLine();
 			idRoom = scanner.next();
+			numberStats = scanner.nextInt();
 			
-			key = scanner.next();
-				  scanner.next();
-			stats.put(key, scanner.nextDouble());
-			
-			key = scanner.next();
-	 			  scanner.next();
-		 	stats.put(key, scanner.nextDouble());
-			
-			key = scanner.next();
-		    	  scanner.next();
-			stats.put(key, scanner.nextDouble());
-			
-			key = scanner.next();
-			  	  scanner.next();
-		  	stats.put(key, scanner.nextDouble());
-			
-			key = scanner.next();
-			  	  scanner.next();
-			stats.put(key, scanner.nextDouble());
+			String key;
+			for ( int i=0; i<numberStats; i++) {
+				key = scanner.next();
+					  scanner.next();
+				stats.put(key, scanner.nextDouble());
+			}
 			
 			in.close();
 			scanner.close();

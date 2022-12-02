@@ -33,36 +33,34 @@ public class Main {
 	
 	private Menu menu;
 	private Game game;
-	private Media music;
+	private Media musicBackground;
+	private Media musicGameover;
 	private MediaPlayer mediaplayer;
 	
 	private BooleanProperty gameover;
+	
 	//######################### EVENT-ACTION ####################################
 	
 	/**
-	 * ActionEvent effectué quand t-on modifie le volume via la vue Option
+	 * Action effectué quand t-on perd la partie
 	 * déclencher -> this -> v.Menu -< v.Option
 	 */
 	ChangeListener<Boolean> change_gameover_value = new ChangeListener<Boolean>() {
 		public void changed(ObservableValue<? extends Boolean> obs, Boolean vold, Boolean vnew) {
-			mediaplayer.stop();
-			System.out.println(Paths.get("bin/res/musiques/LowBattery.mp3").toUri().toString());
-			music = new Media(Paths.get("bin/res/musiques/LowBattery.mp3").toUri().toString());
-			mediaplayer = new MediaPlayer(music);
-			mediaplayer.play();
-			mediaplayer.setVolume(menu.getVolume());
+			setGameoverMusic();
 		}
 	};
 	
 	/**
-	 * ActionEvent effectué quand t-on modifie le volume via la vue Option
+	 * Action effectué quand t-on modifie le volume via la vue Option
 	 * déclencher -> this -> v.Menu -< v.Option
 	 */
 	ChangeListener<Number> change_volume_value = new ChangeListener<Number>() {
 		public void changed(ObservableValue<? extends Number> obs, Number vold, Number vnew) {
-			System.out.println(vold + " to " + vnew);
 			menu.setVolume(vnew.doubleValue());
 			mediaplayer.setVolume(vnew.doubleValue());
+			
+			menu.getOption().save();
 		}
 	};
 	
@@ -72,23 +70,23 @@ public class Main {
 	 */
 	private EventHandler<ActionEvent> choose_lang = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
+			
 			Locale loc;
 			if ( menu.getView().getOption().getChoosenLang() == 0) {
 				loc = Locale.FRENCH;
-				App.language = ResourceBundle.getBundle("language", loc);
-				App.languageNumber = NumberFormat.getNumberInstance(loc);
 			}
 			else {
 				loc = Locale.ENGLISH;
-				App.language = ResourceBundle.getBundle("language", loc);
-				App.languageNumber = NumberFormat.getNumberInstance(loc);
 			}
 			
+			App.language = ResourceBundle.getBundle("language", loc);
+			App.languageNumber = NumberFormat.getNumberInstance(loc);
+			
+			updateText();
+			menu.getOption().setLanguage(loc.toString());
+			menu.getOption().save();
+			
 			System.out.println("Locale:" + loc.getDisplayLanguage());
-
-			menu.getView().updateText();
-			game.getView().updateText();
-			game.getPet().updateText();
 		}
 	};
 	
@@ -98,19 +96,25 @@ public class Main {
 		
 		menu = new Menu();
 		game = new Game();
-		save = new app.model.Save("./res/save.tmg", game.getModel());
-		view = new app.view.Main( game.getView(), menu.getView() );
-		System.out.println(Paths.get("bin/res/musiques/DogsAndCats.mp3").toUri().toString());
-		music = new Media(Paths.get("bin/res/musiques/DogsAndCats.mp3").toUri().toString());
-		mediaplayer = new MediaPlayer(music);
-		mediaplayer.setStopTime(Duration.seconds(113));
-		mediaplayer.setCycleCount(MediaPlayer.INDEFINITE);
-		mediaplayer.play();
-		mediaplayer.setVolume(0.5);
-		gameover = new SimpleBooleanProperty(this, "gameover", false);
 		
+		if ( pathsave != null ) {
+			System.out.println("current save : " + pathsave);
+			save = new app.model.Save("res/save2.tmg", game.getModel());
+		}
+		else
+			save = new app.model.Save("res/save.tmg", game.getModel());
+		
+		view = new app.view.Main( game.getView(), menu.getView() );
+		gameover = new SimpleBooleanProperty(this, "gameover", false);
+		musicBackground = new Media(Paths.get("bin/res/musiques/DogsAndCats.mp3").toUri().toString());
+		musicGameover = new Media(Paths.get("bin/res/musiques/LowBattery.mp3").toUri().toString());
+
 		if ( pathsave != null )
-			load(pathsave);
+			loadGame(pathsave);
+		
+		menu.loadOption();
+		updateText();
+		setBackgroundMusic();
 		
 		gameover.addListener(change_gameover_value);
 		gameover.bind(game.gameover);
@@ -131,13 +135,37 @@ public class Main {
 		return game;
 	}
 	
+	public void updateText() {
+		menu.getView().updateText();
+		game.getView().updateText();
+		game.getPet().updateText();
+	}
+	
+	public void setBackgroundMusic() {
+		mediaplayer = new MediaPlayer(musicBackground);
+		mediaplayer.setStopTime(Duration.seconds(113));
+		mediaplayer.setCycleCount(MediaPlayer.INDEFINITE);
+		mediaplayer.play();
+		mediaplayer.setVolume(menu.getVolume());
+		System.out.println("Play: " + musicBackground.getSource());
+	}
+	
+	public void setGameoverMusic() {
+		mediaplayer.stop();
+		mediaplayer = new MediaPlayer(musicGameover);
+		mediaplayer.play();
+		mediaplayer.setVolume(menu.getVolume());
+		System.out.println("Play: " + musicGameover.getSource());
+	}
+	
 	// Test save
-	public void load(String pathsave) {
+	public void loadGame(String pathsave) {
 		System.out.println("Loading... : " + pathsave);
 		System.out.println(save.load("./res/testsave.tmg"));
 	}
+	
 	// Test save
-	public void save() {
+	public void saveGame() {
 		save.save();
 		System.out.println("Save done");
 	}
@@ -155,6 +183,7 @@ public class Main {
 		game = null;
 		choose_lang = null;
 		mediaplayer=null;
-		music=null;
+		musicBackground=null;
+		musicGameover=null;
 	}
 }

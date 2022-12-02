@@ -26,4 +26,8 @@ public abstract class Pet {
 		  			  + getMoral().toString() + System.lineSeparator();
 		return output;
 	}
+	
+	public int getStatsNumber() {
+		return 5;
+	}
 }

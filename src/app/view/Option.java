@@ -78,6 +78,13 @@ public class Option extends VBox {
 		this.setBackground(new Background(new BackgroundFill( Color.WHITESMOKE, null, null) ) );
 	}
 	
+	public void setSelectedDim(int i) {
+		choiceDimWindow.setValue(choiceDimWindow.getItems().get(i));
+	}
+	public void setVolumeValue(double v) {
+		volume.setValue(v);
+	}
+	
 	/**
 	 * Appelant <- v.Menu
 	 * @param e ActionEvent à déclencher pour masquer cette vue

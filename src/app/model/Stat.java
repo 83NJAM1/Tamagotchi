@@ -6,18 +6,18 @@ package app.model;
  * Un état représenter par une JAUGE et un NOM
  */
 public class Stat {
-	private static final Double changeValue=0.01;
+	public static final Double changeValue=0.01;
 	
 	private String keyName;
 	private Double value;
-	private Double negFactor;
-	private Double posFactor;
+	private Double malusFactor;
+	private Double bonusFactor;
 	
 	public Stat(String keyName) {
 		this.keyName = keyName;
 		value = 0.5;
-		negFactor = 1.0;
-		posFactor = 1.0;
+		malusFactor = 1.0;
+		bonusFactor = 1.0;
 	}
 	
 	public String getKeyName() {
@@ -32,18 +32,32 @@ public class Stat {
 		this.value = value;
 	}
 	
-	public void setPosFactor(Double factor) {
-		this.posFactor = factor;
+	public boolean setBonus(Double factor) {
+		
+		if ( factor > 0 ) 
+			this.bonusFactor = factor;
+		else 
+			System.err.println("Bonuses must be a positive factor");
+		
+		return factor>0;
 	}
-	public void setNegFactor(Double factor) {
-		this.negFactor = factor;
+	
+	public boolean setMalus(Double factor) {
+		
+		if ( factor > 0 )
+			this.malusFactor = factor;
+		else
+			System.err.println("Maluses must be a positive factor");
+		
+		return factor>0;
 	}
 	
 	public Double dec() {
-		return value-=changeValue*negFactor;
+		return value-=changeValue*malusFactor;
 	}
+	
 	public Double inc() {
-		return value+=changeValue*posFactor;
+		return value+=changeValue*bonusFactor;
 	}
 	
 	public String toString() {

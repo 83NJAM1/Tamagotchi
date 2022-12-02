@@ -31,6 +31,6 @@ public class Game {
 	}
 	
 	public String toString() {
-		return room.toString() + System.lineSeparator() + pet.toString();
+		return room.toString() + System.lineSeparator() + pet.getStatsNumber() + System.lineSeparator() + pet.toString();
 	}
 }

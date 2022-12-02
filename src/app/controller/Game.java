@@ -18,10 +18,10 @@ public class Game {
 	//ATTENTION: reference partagé avec view.Main
 	private app.view.Game view;
 	
-	// le pet a manipuler
+	// le pet à manipuler
 	private Pet pet;
 	
-	
+	// la pièce active
 	private Room room;
 	
 	public BooleanProperty gameover;
@@ -36,7 +36,7 @@ public class Game {
 		long old_time=0;
         public void handle(long new_time) {
 			if (new_time > old_time ) {
-				old_time = new_time+(1<<30); // aproximativement une seconde
+				old_time = new_time+1_000_000_000;
 				
 				updateGame();
 			}
@@ -46,6 +46,7 @@ public class Game {
 	//############################ METHODES #####################################
 	
 	public Game() {
+		
 		pet = new Pet();
 		room = new Room();
 		model = new app.model.Game( pet.getModel(), room.getModel() );
@@ -56,16 +57,32 @@ public class Game {
 	}
 	
 	public void updateGame() {
+		
 		pet.statsDecreaseOvertime();
 		
-		if ( pet.getHygiene().getModel().getValue() < 0.48 ) {
-			pet.getHygiene().applyBonus(3.0, 10);
-		}
-		if ( pet.getHunger().getModel().getValue() < 0.0 ) {
+		if ( pet.getHygiene().getModel().getValue() < 0.48 )
+			pet.getHygiene().applyBonus(3.0, 10, "shower");
+		if ( pet.getHygiene().getModel().getValue() < 0.48 )
+			pet.getHygiene().applyBonus(2.0, 5, "brushing teeth");
+		
+		if ( isGameover() ) {
 			view.startDrawingGameOver();
 			actionLoop.stop();
-			gameover.setValue(true);
 		}
+	}
+	
+	public boolean isGameover() {
+		
+		if ( pet.getHunger().getModel().getValue() < 0.0 
+		  || pet.getThirst().getModel().getValue() < 0.0
+		  || pet.getWeight().getModel().getValue() < 0.0
+		  || pet.getMoral().getModel().getValue()  < 0.0 ) 
+		{
+			gameover.setValue(true);
+			return true;
+		}
+		
+		return false;
 	}
 	
 	public Pet getPet() {

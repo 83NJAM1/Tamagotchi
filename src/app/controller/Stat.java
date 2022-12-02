@@ -18,39 +18,53 @@ public class Stat {
 	// ATTENTION: Reference partagé avec view.Hud
 	private app.view.Stat view;
 	
-	private int bonusTime; 
+	// Bonus
+	private long bonusTime; // en nanosecondes
+	private String bonusName;
+	private boolean bonusIsActivate;
+	
 	//######################### EVENT-ACTION ####################################
 
 	/**
-	 * activeBonus effectué toute les 1 second (1e+9 ns) s'arrte après 
-	 * déclendeur -> this
+	 * Action effectué toute les 1 seconde (1e+9 ns), s'arrête après bonusTime secondes
+	 * déclencheur -> this
 	 */ 
 	private AnimationTimer activeBonus = new AnimationTimer() {
+		
 		long old_time=0;
-		double global_time=0;
+		long global_time=0;
 		boolean doonce = false;
+		
         public void handle(long new_time) {
+        	
+        	long next_time = new_time+1_000_000_000;
+        	
 			if (new_time > old_time ) {
 				
+				
+				// esquive la phase d'initialisation sinon valeur aberrante
 				if ( doonce ) {
-					global_time += ((new_time+(1<<30)-old_time)/1_000_000_000.0);
+					global_time += next_time-old_time;
 				}
 				else {
 					doonce = true;
+					System.out.println("Bonus " + bonusName + " for " + model.getKeyName() + " activated");
 				}
-				old_time = new_time+(1<<30); // aproximativement une seconde
-				//save.addData("Accès n°" + n_access++ + "\n");
-				//System.out.print(save.getData("test")); // ne pas utiliser println pour des raisons obscure
-				System.out.println("bonus "+ model.getKeyName() +" actif since: "+global_time);
 				
+				// le nouveau temps à attendre
+				old_time = next_time;
+				
+				// effet du bonus
 				increaseValue();
 				
+				// fin du bonus
 				if ( global_time > bonusTime ) {
+					System.out.println("Bonus " + bonusName + " for " + model.getKeyName() + " ended after: " + global_time/1_000_000_000.0 + " seconds");
 					this.stop();
 					global_time=0;
 					old_time=0;
+					bonusIsActivate=false;
 					doonce=false;
-					System.out.println("bonus ended");
 				}
 			}
         }
@@ -78,10 +92,20 @@ public class Stat {
 		view.updateValue(model.getValue());
 	}
 	
-	public void applyBonus(Double factor, int time) {
-		bonusTime = time;
-		model.setPosFactor(factor);
-		activeBonus.start();
+	public void applyBonus(Double factor, long seconds, String name) {
+		
+		if ( !bonusIsActivate && model.setBonus(factor) ) {
+			
+			bonusTime = seconds*1_000_000_000;
+			bonusName = name;
+			bonusIsActivate = true;
+			
+			activeBonus.start();
+		}
+		else {
+			
+			System.err.println("Bonuses are not stackable: imposible to apply \"" + name + "\"");
+		}
 	}
 	
 	public app.model.Stat getModel() {
@@ -94,6 +118,7 @@ public class Stat {
 	
 	public void exit() {
 		activeBonus.stop();
+		activeBonus=null;
 		model = null;
 		view = null;
 	}
