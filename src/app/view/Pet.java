@@ -20,6 +20,11 @@ public class Pet extends Image {
 	private Stat hygiene;
 	private Stat moral;
 	
+	
+	private double x;
+	private double y;
+	private double w;
+	private double h;
 	//############################ METHODES #####################################
 	
 	// Constructeur obligatoire car de type Image
@@ -27,6 +32,10 @@ public class Pet extends Image {
 	//			 ?? chemin de l'image dans le model ??
 	public Pet(String spritesheet) {
 		super(spritesheet);
+		x = 0;
+		y = 92;
+		w = 128;
+		h = 128;
 	}
 	
 	public void setHunger(Stat hunger) {
@@ -61,17 +70,29 @@ public class Pet extends Image {
 		return moral;
 	}
 	
+	public void setX(double v) {
+		x=v;
+	}
+	public void setY(double v) {
+		y=v;
+	}
+	public void setW(double v) {
+		w=v;
+	}
+	public void setH(double v) {
+		h=v;
+	}
 	public double getX() {
-		return 0;
+		return x;
 	}
 	public double getY() {
-		return 92;
+		return y;
 	}
 	public double getW() {
-		return 128;
+		return w;
 	}
 	public double getH() {
-		return 128;
+		return h;
 	}
 
 }

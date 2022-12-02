@@ -1,4 +1,4 @@
-language : en
+language : fr
 volume : 0.0222580511471272
 width_window : 640
 height_window : 360

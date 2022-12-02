@@ -41,6 +41,10 @@ public class Game extends StackPane {
 	private Font font;
 	private AnchorPane drawingArea;
 	private Hud hud;
+	
+	// besoin de garder les etat du gameover si on change de resolution après la fin
+	private boolean gameover;
+	private String gameover_msg;
 	//######################### EVENT-ACTION ####################################
 
 	/**
@@ -48,25 +52,27 @@ public class Game extends StackPane {
 	 * déclendeur -> this
 	 */ 
 	private AnimationTimer drawGameoverLoop = new AnimationTimer() {
+		
 		long old_time=0;
 		double fade=0;
 		int pos=0;
-		String text="GAME OVER";
 		boolean doonce=false;
+		
         public void handle(long new_time) {
 			if (new_time > old_time ) {
 				old_time = new_time+(1<<25); // aproximativement 33 millisecond
 				
-				drawGameOver(fade, text.substring(0, pos));
+				drawGameOver(fade, gameover_msg.substring(0, pos));
 				
 				fade+=0.01;
-				pos=(int)((fade+0.1)*(double)text.length());
+				pos=(int)((fade+0.1)*(double)gameover_msg.length());
 				
 				if ( fade > 1.0 ) {
 					this.stop();
 					old_time=0;
 					fade=0;
 					pos=1;
+					gameover=true;
 				}
 				
 				if(!doonce) {
@@ -90,7 +96,8 @@ public class Game extends StackPane {
 		font = Font.font("Linux Biolinum Keyboard O", FontWeight.NORMAL, FontPosture.REGULAR, 46);
 		updateDraw();
 		updateStyle();
-		
+		gameover=false;
+		gameover_msg="GAME OVER";
 		drawingArea.getChildren().add(canvas);
 		AnchorPane.setLeftAnchor(canvas, 0.);
 		AnchorPane.setTopAnchor(canvas, 0.);
@@ -111,7 +118,6 @@ public class Game extends StackPane {
 		
 		gc.drawImage(room, 0, 0, canvas.getWidth(), canvas.getHeight());
 		gc.drawImage(pet, canvas.getWidth()/2-pet.getW()/2, pet.getY()+canvas.getHeight()/2-pet.getH()/2, pet.getW(),pet.getH());
-		
 	}
 	
 	private void drawGameOver(double fade, String text) {
@@ -127,6 +133,34 @@ public class Game extends StackPane {
 	
 	public void startDrawingGameOver() {
 		drawGameoverLoop.start();
+	}
+	
+	public void changeDimension(int numChoice) {
+		
+		switch (numChoice) {
+			case 0:
+				//canvas.resize(640.,  360.);
+				canvas.setWidth(640);
+				canvas.setHeight(360);
+				pet.setY(92);
+				pet.setH(128);
+				pet.setW(128);
+				System.out.println("choice: " + numChoice + "canvas_w: " + canvas.getWidth() + " canvas_h: " +  canvas.getHeight());
+				break;
+			case 1:
+				//canvas.resize(1280., 720.);
+				canvas.setWidth(1280);
+				canvas.setHeight(720);
+				pet.setY(184);
+				pet.setH(256);
+				pet.setW(256);
+				System.out.println("choice: " + numChoice + " canvas_w: " + canvas.getWidth() + " canvas_h: " +  canvas.getHeight());
+				break;	
+		}
+		
+		updateDraw();
+		if ( gameover )
+			drawGameOver(1.0, "GAME OVER");
 	}
 	
 	public void updateStyle() {

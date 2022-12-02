@@ -113,6 +113,7 @@ public class Main {
 			loadGame(pathsave);
 		
 		menu.loadOption();
+		changeGameDim(menu.getChoosenDim());
 		updateText();
 		setBackgroundMusic();
 		
@@ -141,6 +142,10 @@ public class Main {
 		game.getPet().updateText();
 	}
 	
+	public void changeGameDim(int numChoice) {
+		game.getView().changeDimension(numChoice);
+	}
+	
 	public void setBackgroundMusic() {
 		mediaplayer = new MediaPlayer(musicBackground);
 		mediaplayer.setStopTime(Duration.seconds(113));
@@ -161,7 +166,7 @@ public class Main {
 	// Test save
 	public void loadGame(String pathsave) {
 		System.out.println("Loading... : " + pathsave);
-		System.out.println(save.load("./res/testsave.tmg"));
+		System.out.println(save.load("./res/save2.tmg"));
 	}
 	
 	// Test save

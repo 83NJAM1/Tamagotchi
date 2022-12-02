@@ -74,12 +74,14 @@ public class App extends Application{
 				stage.setHeight(360+stageHeightDiff);
 				mainController.getMenu().getOption().setWindowWidth(640);
 				mainController.getMenu().getOption().setWindowHeight(360);
+				mainController.changeGameDim(0);
 			}
 			else {
 				stage.setWidth(1280+stageWidthDiff);
 				stage.setHeight(720+stageHeightDiff);
 				mainController.getMenu().getOption().setWindowWidth(1280);
 				mainController.getMenu().getOption().setWindowHeight(720);
+				mainController.changeGameDim(1);
 			}
 
 			mainController.getMenu().getOption().save();
