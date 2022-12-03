@@ -14,13 +14,13 @@ class TestSave {
 	
 	@BeforeEach
 	void setUp() {
-		save = new Save(null, null);
+		save = new Save(null);
 	}
 	
 	@Test
 	@DisplayName("loading save")
 	void testLoadingSave() {
-		save.load("./res/testsave.tmg");
+		save.load("./res/testsave.tmg.test");
 		assertEquals(0.3999999999999999, save.getStat("hunger"));
 		assertEquals(0.3999999999999999, save.getStat("thirst"));
 		assertEquals(0.3999999999999999, save.getStat("weight"));

@@ -18,8 +18,12 @@ public abstract class Pet {
 	public abstract Stat getHygiene();
 	public abstract Stat getMoral();
 	
+	public abstract String getType();
+	
 	public String toString() {
-		String output = getHunger().toString() + System.lineSeparator()
+		String output = getType() + System.lineSeparator() 
+					  +	getStatsNumber() + System.lineSeparator()
+					  +	getHunger().toString() + System.lineSeparator()
 		  			  + getThirst().toString() + System.lineSeparator()
 		  			  + getWeight().toString() + System.lineSeparator()
 		  			  + getHygiene().toString() + System.lineSeparator()
@@ -30,4 +34,5 @@ public abstract class Pet {
 	public int getStatsNumber() {
 		return 5;
 	}
+	
 }

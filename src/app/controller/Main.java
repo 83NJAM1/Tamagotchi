@@ -94,32 +94,74 @@ public class Main {
 
 	public Main(String pathsave) {
 		
+		// instancie le menu et initialise les options
 		menu = new Menu();
-		game = new Game();
+		menu.loadOption();
 		
-		if ( pathsave != null ) {
-			System.out.println("current save : " + pathsave);
-			save = new app.model.Save("res/save2.tmg", game.getModel());
+		String lastSave = menu.getOption().getLastSave();
+		
+		// creer une nouvelle partie en écrasant la partie en cours
+		if ( pathsave != null && pathsave.equals("new") ) {
+			if ( lastSave != null ) {
+				System.out.println("new game: " + lastSave);
+				save = new app.model.Save(lastSave);
+			}
+			else {
+				System.out.println("new game: save.tmg");
+				menu.getOption().setLastSave("res/save.tmg");
+				menu.getOption().save();
+				save = new app.model.Save("res/save.tmg");
+			}
+			// crée une nouvelle partie, la customisation devrai être demandé ici
+			game = new Game("cat", "test");
 		}
-		else
-			save = new app.model.Save("res/save.tmg", game.getModel());
+		// charge la sauvegarde selectionnée
+		else if ( pathsave != null ) {
+			System.out.println("load: " + pathsave);
+			menu.getOption().setLastSave("res/"+pathsave);
+			menu.getOption().save();
+			save = new app.model.Save("res/"+pathsave);
+			save.load("res/"+pathsave);
+			System.out.println("loading data:\n" + save.toString().indent(4));
+			game = new Game(save.getPetType(), save.getRoomId());
+			initGameWithSaveData();
+		}
+		// charge la dernière sauvegarde utilisée
+		else if ( lastSave != null ) {
+			System.out.println("continue: " + lastSave);
+			save = new app.model.Save(lastSave);
+			save.load(lastSave);
+			System.out.println("loading data:\n" + save.toString().indent(4));
+			game = new Game(save.getPetType(), save.getRoomId());
+			initGameWithSaveData();
+		}
+		// crée un nouveau fichier de sauvgarde
+		else {
+			System.out.println("new game: save.tmg");
+			menu.getOption().setLastSave("res/save.tmg");
+			menu.getOption().save();
+			save = new app.model.Save("res/save.tmg");
+			// crée une nouvelle partie, la customisation devrai être demandé ici
+			game = new Game("dog", "test");
+		}
+		save.setGameInstance(game.getModel());
 		
+		// suite instantiation
 		view = new app.view.Main( game.getView(), menu.getView() );
 		gameover = new SimpleBooleanProperty(this, "gameover", false);
 		musicBackground = new Media(Paths.get("bin/res/musiques/DogsAndCats.mp3").toUri().toString());
 		musicGameover = new Media(Paths.get("bin/res/musiques/LowBattery.mp3").toUri().toString());
-
-		if ( pathsave != null )
-			loadGame(pathsave);
 		
-		menu.loadOption();
-		changeGameDim(menu.getChoosenDim());
-		updateText();
+		// suite initialisation
 		setBackgroundMusic();
+		updateText();
+		changeGameDim(menu.getChoosenDim());
 		
+		// assignation action
 		gameover.addListener(change_gameover_value);
 		gameover.bind(game.gameover);
 		
+		// construction
 		menu.getView().getOption().setLangAction(choose_lang);
 		menu.getView().getOption().setVolumeAction(change_volume_value);
 	}
@@ -163,12 +205,13 @@ public class Main {
 		System.out.println("Play: " + musicGameover.getSource());
 	}
 	
-	// Test save
-	public void loadGame(String pathsave) {
-		System.out.println("Loading... : " + pathsave);
-		System.out.println(save.load("./res/save2.tmg"));
+	public void initGameWithSaveData() {
+		game.getPet().getHunger().setValue(save.getStat("hunger"));
+		game.getPet().getThirst().setValue(save.getStat("thirst"));
+		game.getPet().getWeight().setValue(save.getStat("weight"));
+		game.getPet().getHygiene().setValue(save.getStat("hygiene"));
+		game.getPet().getMoral().setValue(save.getStat("moral"));
 	}
-	
 	// Test save
 	public void saveGame() {
 		save.save();

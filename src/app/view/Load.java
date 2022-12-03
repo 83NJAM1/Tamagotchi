@@ -1,6 +1,7 @@
 package app.view;
  
 import java.io.File;
+import java.io.FilenameFilter;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -40,6 +41,7 @@ public class Load extends StackPane {
 	private Button butValidate;
 	private Button butCancel;
 	
+	private boolean loadAsNew;
 	//######################### EVENT-ACTION ####################################
 	
 	/**
@@ -97,7 +99,7 @@ public class Load extends StackPane {
 		updateFilesList();
 		savesList.setItems(savesObsList);
 		currentIndex = 0;
-		
+		loadAsNew = false;
 		updateText();
 		updateStyle();
 		
@@ -116,7 +118,12 @@ public class Load extends StackPane {
 	 * Met à jour la liste des fichiers de sauvegardes
 	 */	
 	public void updateFilesList() {
-		savesObsList = FXCollections.observableArrayList(new File("./res/").list());
+		savesObsList = FXCollections.observableArrayList(new File("./res/").list( new FilenameFilter() { 
+			public boolean accept(File dir, String name) {
+				return name.matches(".*[.]tmg");
+			}
+		}));
+		System.out.println("number of saves: " + savesObsList.size());
 	}
 	
 	/**
@@ -167,6 +174,25 @@ public class Load extends StackPane {
 	 * @return le nom du fichier
 	 */
 	public String getChoosenSave() {
-		return savesList.getSelectionModel().getSelectedItem();
+		
+		String output = savesList.getSelectionModel().getSelectedItem();
+		
+		if (loadAsNew) {
+			return "new";
+		}
+		else if ( output != null ) {
+			return output;
+		}
+		else {
+			return savesList.getItems().get(0);
+		}
+	}
+	
+	public void setLoadAsNew(boolean b) {
+		loadAsNew=b;
+	}
+	
+	public Button getValidate() {
+		return butValidate;
 	}
 }

@@ -1,6 +1,4 @@
 package app.controller;
-
-import app.App;
  
 /**
  * 
@@ -25,21 +23,38 @@ public class Pet {
 	
 	//############################ METHODES #####################################
 	
-	public Pet() {
+	public Pet(String type) {
 		hunger = new Stat("hunger");
 		thirst = new Stat("thirst");
 		weight = new Stat("weight");
 		hygiene = new Stat("hygiene");
 		moral = new Stat("moral");
 		
-		model = new app.model.Robot();
+		switch(type) {
+			case "cat":
+				model = new app.model.Animal("cat");
+				view = new app.view.Pet("./res/test_cat.png");
+				break;
+			case "dog":
+				model = new app.model.Animal("dog");
+				view = new app.view.Pet("./res/test_dog.png");
+				break;
+			case "robot":
+				model = new app.model.Robot();
+				view = new app.view.Pet("./res/test_robot.png");
+				break;
+			default:
+				model = new app.model.Robot();
+				view = new app.view.Pet("./res/no_image.png");
+				break;
+		}
+		
 		model.setHunger(hunger.getModel());
 		model.setThirst(thirst.getModel());
 		model.setWeight(weight.getModel());
 		model.setHygiene(hygiene.getModel());
 		model.setMoral(moral.getModel());
 		
-		view = new app.view.Pet("./res/test_pet.png");
 		view.setHunger(hunger.getView());
 		view.setThirst(thirst.getView());
 		view.setWeight(weight.getView());

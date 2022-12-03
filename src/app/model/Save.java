@@ -4,10 +4,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Scanner;
+
+import app.App;
 
 /**
  * 
@@ -18,13 +22,14 @@ public class Save {
 
 	private File file;
 	
-	private Game game_record;
-	private String loadDate;
+	private Game gameRecord;
+	private Date dateLoaded;
 	private String idRoom;
+	private String petType;
 	private int numberStats;
 	private Hashtable<String, Double> stats;
 
-	public Save(String pathname, Game game) {
+	public Save(String pathname) {
 
 		stats = new Hashtable<String, Double>();
 		
@@ -35,9 +40,22 @@ public class Save {
 			System.err.println(e.getMessage());
 		}
 		
-		game_record = game;
+		
 	}
 	
+	public void setGameInstance(Game game){
+		gameRecord = game;
+	}
+	
+	public Date getDate() {
+		return dateLoaded;
+	}
+	public String getRoomId() {
+		return idRoom;
+	}
+	public String getPetType() {
+		return petType;
+	}
 	public Double getStat(String key) {
 		return stats.get(key);
 	}
@@ -48,7 +66,7 @@ public class Save {
 	public void save() {
 		try {
 			FileWriter out = new FileWriter(file);
-			out.write( (new Date()).toString() + System.lineSeparator() + game_record.toString() );
+			out.write( (new Date()).getTime() + System.lineSeparator() + gameRecord.toString() );
 			out.flush();
 			out.close();
 		} catch ( IOException e) {
@@ -60,7 +78,7 @@ public class Save {
 	 * PAS DEFINITIF
 	 * @param pathname
 	 */
-	public String load(String pathname) {
+	public void load(String pathname) {
 		
 		try {
 			FileReader in = new FileReader(pathname);
@@ -68,8 +86,9 @@ public class Save {
 			Scanner scanner = new Scanner(in);
 			scanner.useLocale(Locale.ENGLISH);
 			
-			loadDate = scanner.nextLine();
+			dateLoaded = new Date(scanner.nextLong());
 			idRoom = scanner.next();
+			petType = scanner.next();
 			numberStats = scanner.nextInt();
 			
 			String key;
@@ -87,21 +106,16 @@ public class Save {
 		} catch (IndexOutOfBoundsException e ) {
 			System.err.println("end of file : " + e);
 		}
-				
-		if ( game_record != null ) {
-			game_record.getPet().getHunger().setValue(stats.get("hunger"));
-			game_record.getPet().getThirst().setValue(stats.get("thirst"));
-			game_record.getPet().getWeight().setValue(stats.get("weight"));
-			game_record.getPet().getHygiene().setValue(stats.get("hygiene"));
-			game_record.getPet().getMoral().setValue(stats.get("moral"));
-		}
-		
-		return loadDate + System.lineSeparator()
+	}
+	
+	public String toString() {
+		return dateLoaded + System.lineSeparator()
 			 + idRoom + System.lineSeparator()
-			 + stats.get("hunger") + System.lineSeparator()
-			 + stats.get("thirst") + System.lineSeparator()
-			 + stats.get("weight") + System.lineSeparator()
-			 + stats.get("hygiene") + System.lineSeparator()
-			 + stats.get("moral") + System.lineSeparator();
+			 + petType + System.lineSeparator()
+			 + "    " + stats.get("hunger") + System.lineSeparator()
+			 + "    " + stats.get("thirst") + System.lineSeparator()
+			 + "    " + stats.get("weight") + System.lineSeparator()
+			 + "    " + stats.get("hygiene") + System.lineSeparator()
+			 + "    " + stats.get("moral") + System.lineSeparator();
 	}
 }

@@ -7,7 +7,8 @@ package app.model;
  */
 public class Robot extends Pet {
 
-	// ATTENTION: Reference partagé avec constroller.Stat	
+	// ATTENTION: Reference partagé avec constroller.Stat
+	private String type;
 	private Stat hunger;
 	private Stat thirst;
 	private Stat weight;
@@ -15,6 +16,7 @@ public class Robot extends Pet {
 	private Stat moral;
 	
 	public Robot () {
+		type = "robot";
 	}
 	
 	public void setHunger(Stat hunger) {
@@ -33,6 +35,9 @@ public class Robot extends Pet {
 		this.moral = moral;
 	}
 	
+	public String getType() {
+		return type;
+	}
 	public Stat getHunger() {
 		return hunger;
 	}

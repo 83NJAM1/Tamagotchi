@@ -17,9 +17,33 @@ public class Room {
 	
 	//############################ METHODES #####################################
 	
-	public Room() {
-		model = new app.model.Room("test");
-		view = new app.view.Room("./res/test_room.png");
+	public Room(String roomName) {
+		switch(roomName) {
+			case "test":
+				model = new app.model.Room("test");
+				view = new app.view.Room("./res/test_room.png");
+				break;
+			case "livingroom":
+				model = new app.model.Room("kitchen");
+				view = new app.view.Room("./res/no_image.png");
+				break;
+			case "kitchen":
+				model = new app.model.Room("kitchen");
+				view = new app.view.Room("./res/no_image.png");
+				break;
+			case "bathroom":
+				model = new app.model.Room("bathroom");
+				view = new app.view.Room("./res/no_image.png");
+				break;
+			case "garden":
+				model = new app.model.Room("garden");
+				view = new app.view.Room("./res/no_image.png");
+				break;
+			default:
+				model = new app.model.Room("undefined");
+				view = new app.view.Room("./res/no_image.png");
+				break;
+		}
 	}
 	
 	public app.model.Room getModel() {

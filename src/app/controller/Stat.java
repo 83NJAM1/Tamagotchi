@@ -108,6 +108,11 @@ public class Stat {
 		}
 	}
 	
+	public void setValue(Double value) {
+		model.setValue(value);
+		view.updateValue(value);
+	}
+	
 	public app.model.Stat getModel() {
 		return model;
 	}

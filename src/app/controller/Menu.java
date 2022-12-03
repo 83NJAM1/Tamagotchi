@@ -25,8 +25,6 @@ public class Menu {
 	//ATTENTION: reference partagé avec view.Main
 	private app.view.Menu view;
 	
-	
-	private int choosenDimensionIndex;
 	//############################ METHODES #####################################
 	
 	public Menu() {
@@ -58,6 +56,8 @@ public class Menu {
 			view.getOption().setSelectedDim(1);
 		
 		view.getOption().setVolumeValue(model.getVolume());
+		
+		System.out.println("loading option:\n" + model.toString().indent(4));
 	}
 	
 	public int getChoosenDim() {

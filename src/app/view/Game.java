@@ -145,7 +145,6 @@ public class Game extends StackPane {
 				pet.setY(92);
 				pet.setH(128);
 				pet.setW(128);
-				System.out.println("choice: " + numChoice + "canvas_w: " + canvas.getWidth() + " canvas_h: " +  canvas.getHeight());
 				break;
 			case 1:
 				//canvas.resize(1280., 720.);
@@ -154,7 +153,6 @@ public class Game extends StackPane {
 				pet.setY(184);
 				pet.setH(256);
 				pet.setW(256);
-				System.out.println("choice: " + numChoice + " canvas_w: " + canvas.getWidth() + " canvas_h: " +  canvas.getHeight());
 				break;	
 		}
 		

@@ -14,6 +14,7 @@ import java.util.Scanner;
  */
 public class Option {
 	
+	private String lastSave;
 	private String language;
 	private double volume;
 	private int w_window;
@@ -22,10 +23,11 @@ public class Option {
 	private File file;
 	
 	public Option(String pathname) {
+		lastSave=null;
 		language=Locale.FRENCH.toString();
-		volume=0.5;
-		w_window=360;
-		h_window=640;
+		volume=0.25;
+		w_window=640;
+		h_window=360;
 		
 		try {
 			file = new File(pathname);
@@ -63,7 +65,15 @@ public class Option {
 			while ( scanner.hasNext() ) {
 			
 				switch (scanner.next()) {
-				
+					case "last_save" :
+						scanner.next();
+						String v = scanner.next();
+						if ( v.equals("null") )
+							lastSave = null;
+						else
+							lastSave = v;
+						break;
+					
 					case "language" :
 						scanner.next();
 						language = scanner.next();
@@ -100,10 +110,18 @@ public class Option {
 	}
 	
 	public String toString() {
-		return "language : " + language + System.lineSeparator() +
+		return "last_save : " + lastSave + System.lineSeparator() +
+			   "language : " + language + System.lineSeparator() +
 			   "volume : " + volume + System.lineSeparator() +
 			   "width_window : " + w_window + System.lineSeparator() + 
 			   "height_window : " + h_window + System.lineSeparator();
+	}
+	
+	public void setLastSave(String value) {
+		lastSave=value;
+	}
+	public String getLastSave() {
+		return lastSave;
 	}
 	
 	public void setLanguage(String value) {

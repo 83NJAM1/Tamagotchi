@@ -45,15 +45,19 @@ public class Game {
 	
 	//############################ METHODES #####################################
 	
-	public Game() {
+	public Game(String petType, String roomName) {
 		
-		pet = new Pet();
-		room = new Room();
+		pet = new Pet(petType);
+		room = new Room(roomName);
 		model = new app.model.Game( pet.getModel(), room.getModel() );
 		view = new app.view.Game( pet.getView(), room.getView() );
 		gameover = new SimpleBooleanProperty(this, "gameover", false);
 		
 		actionLoop.start();
+	}
+	
+	public void setPet(Pet new_pet) {
+		pet = new_pet;
 	}
 	
 	public void updateGame() {

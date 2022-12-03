@@ -8,11 +8,16 @@ package app.model;
 public class Animal extends Pet {
 
 	// ATTENTION: Reference partagé avec constroller.Stat
+	private String type;
 	private Stat hunger;
 	private Stat thirst;
 	private Stat weight;
 	private Stat hygiene;
 	private Stat moral;
+	
+	public Animal(String type) {
+		this.type = type;
+	}
 	
 	public void setHunger(Stat hunger) {
 		this.hunger = hunger;
@@ -28,6 +33,10 @@ public class Animal extends Pet {
 	}
 	public void setMoral(Stat moral) {
 		this.moral = moral;
+	}
+	
+	public String getType() {
+		return type;
 	}
 	
 	public Stat getHunger() {
@@ -46,12 +55,4 @@ public class Animal extends Pet {
 		return moral;
 	}
 	
-	public String toString() {
-		String output = hunger.toString() + System.lineSeparator()
-					  + thirst.toString() + System.lineSeparator()
-					  + weight.toString() + System.lineSeparator()
-					  + hygiene.toString() + System.lineSeparator()
-					  + moral.toString() + System.lineSeparator();
-		return output;
-	}
 }

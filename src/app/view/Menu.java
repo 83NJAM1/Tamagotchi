@@ -41,6 +41,9 @@ public class Menu extends StackPane {
 	// Bouton pour revenir dans le jeu
 	private Button buttonOpt;
 	
+	private Button buttonNew;
+
+	
 	//######################### EVENT-ACTION ####################################
 	
 	/**
@@ -87,6 +90,18 @@ public class Menu extends StackPane {
 		}
 	};
 	
+	/**
+	 * ActionEvent effectué quand t-on veut afficher la vue Load
+	 * déclencheur -> this
+	 */
+	private EventHandler<ActionEvent> click_new = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			load.setLoadAsNew(true);
+			load.getValidate().fireEvent(e);
+			load.setLoadAsNew(false);
+		}
+	};
+	
 	//############################ METHODES #####################################
 	
 	public Menu() {
@@ -100,19 +115,21 @@ public class Menu extends StackPane {
 		buttonQuit = new Button();
 		buttonLoad = new Button();
 		buttonOpt = new Button();
+		buttonNew = new Button();
 		
 		//assignation action
 		buttonOpt.setOnAction(click_opt);
 		option.setQuitAction(click_quit_opt);
 		buttonLoad.setOnAction(click_load);
 		load.setQuitAction(click_quit_load);
+		buttonNew.setOnAction(click_new);
 		
 		//initalisations
 		updateText();
 		updateStyle();
 		
 		//constructions de la vue
-		listButtons.getChildren().addAll(buttonLoad, buttonOpt, buttonQuit);
+		listButtons.getChildren().addAll(buttonNew, buttonLoad, buttonOpt, buttonQuit);
 		this.getChildren().add(listButtons);
 	}
 	
@@ -121,6 +138,7 @@ public class Menu extends StackPane {
 	 */
 	public void updateText() {
 		buttonQuit.setText(App.language.getString("button-quit"));
+		buttonNew.setText(App.language.getString("button-newg"));
 		buttonLoad.setText(App.language.getString("button-load"));
 		buttonOpt.setText(App.language.getString("button-opts"));
 		option.updateText();

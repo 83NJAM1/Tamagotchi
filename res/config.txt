@@ -1,4 +1,5 @@
-language : fr
-volume : 0.0222580511471272
-width_window : 640
-height_window : 360
+last_save : res/save3.tmg
+language : en
+volume : 0.0039164490861618795
+width_window : 1280
+height_window : 720
