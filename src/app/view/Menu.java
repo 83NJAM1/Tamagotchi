@@ -110,8 +110,7 @@ public class Menu extends StackPane {
 		customPet = new CustomPet();
 		load = new Load();
 		option = new Option();
-		listButtons = new VBox(15);
-		listButtons.setAlignment(Pos.CENTER);
+		listButtons = new VBox();
 		buttonQuit = new Button();
 		buttonLoad = new Button();
 		buttonOpt = new Button();
@@ -153,6 +152,8 @@ public class Menu extends StackPane {
 		setMargin(option, new Insets(50., 250. , 50.   , 250.));
 		setMargin(load, new Insets(50., 50. , 50.   , 50.));
 		setBackground(new Background(new BackgroundFill( Color.WHITESMOKE, null, null) ) );
+		listButtons.setSpacing(15);
+		listButtons.setAlignment(Pos.CENTER);
 	}
 	
 	/**

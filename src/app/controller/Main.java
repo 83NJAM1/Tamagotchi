@@ -2,12 +2,9 @@ package app.controller;
 
 import java.nio.file.Paths;
 import java.text.NumberFormat;
-import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import app.App;
-import javafx.animation.AnimationTimer;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
@@ -17,7 +14,9 @@ import javafx.event.EventHandler;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
- 
+
+import app.App;
+
 /**
  * 
  * @author ben
@@ -166,18 +165,6 @@ public class Main {
 		menu.getView().getOption().setVolumeAction(change_volume_value);
 	}
 	
-	public app.view.Main getView() {
-		return view;
-	}
-	
-	public Menu getMenu() {
-		return menu;
-	}
-	
-	public Game getGame() {
-		return game;
-	}
-	
 	public void updateText() {
 		menu.getView().updateText();
 		game.getView().updateText();
@@ -212,7 +199,10 @@ public class Main {
 		game.getPet().getHygiene().setValue(save.getStat("hygiene"));
 		game.getPet().getMoral().setValue(save.getStat("moral"));
 	}
-	// Test save
+	
+	/*
+	 * ecrit les données du jeu dans un fichier
+	 */
 	public void saveGame() {
 		save.save();
 		System.out.println("Save done");
@@ -234,4 +224,17 @@ public class Main {
 		musicBackground=null;
 		musicGameover=null;
 	}
+	
+	public app.view.Main getView() {
+		return view;
+	}
+	
+	public Menu getMenu() {
+		return menu;
+	}
+	
+	public Game getGame() {
+		return game;
+	}
+	
 }

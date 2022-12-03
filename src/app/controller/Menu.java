@@ -4,11 +4,6 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-
 import app.App;
 
 /**

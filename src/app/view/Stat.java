@@ -1,10 +1,11 @@
 package app.view;
- 
-import app.App;
+
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+
+import app.App;
 
 /**
  * 

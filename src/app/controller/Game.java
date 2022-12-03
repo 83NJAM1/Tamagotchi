@@ -3,6 +3,8 @@ package app.controller;
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
  
 /**
  * 
@@ -42,6 +44,27 @@ public class Game {
 			}
         }
     };
+    
+	private EventHandler<ActionEvent> gotoRoomA = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			setRoom(new Room("kitchen"));
+			checkRoomAllowedAction();
+		}
+	};
+	
+	private EventHandler<ActionEvent> gotoRoomB = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			setRoom(new Room("livingroom"));
+			checkRoomAllowedAction();
+		}
+	};
+	
+	private EventHandler<ActionEvent> gotoRoomC = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			setRoom(new Room("test"));
+			checkRoomAllowedAction();
+		}
+	};
 	
 	//############################ METHODES #####################################
 	
@@ -53,11 +76,21 @@ public class Game {
 		view = new app.view.Game( pet.getView(), room.getView() );
 		gameover = new SimpleBooleanProperty(this, "gameover", false);
 		
+		view.getActionBar().setActionRoomA(gotoRoomA);
+		view.getActionBar().setActionRoomB(gotoRoomB);
+		view.getActionBar().setActionRoomC(gotoRoomC);
+		
+		checkRoomAllowedAction();
 		actionLoop.start();
 	}
 	
 	public void setPet(Pet new_pet) {
 		pet = new_pet;
+	}
+	public void setRoom(Room new_room) {
+		room = new_room;
+		model.setRoom(room.getModel());
+		view.setRoom(room.getView());
 	}
 	
 	public void updateGame() {
@@ -87,6 +120,22 @@ public class Game {
 		}
 		
 		return false;
+	}
+	
+	public void checkRoomAllowedAction() {
+		switch (room.getModel().toString()) {
+			case "kitchen":
+				view.getActionBar().setActive(true, true, false, false, true, true);
+				break;
+			case "livingroom":
+				view.getActionBar().setActive(true, true, false, false, true, true);
+				break;
+			case "test":
+				view.getActionBar().setActive(true, true, true, true, false, true);
+				break;
+			default:
+				break;
+		}
 	}
 	
 	public Pet getPet() {

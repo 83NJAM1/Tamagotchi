@@ -1,6 +1,5 @@
 package app.view;
- 
-import app.App;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -8,10 +7,9 @@ import javafx.geometry.Side;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.CustomMenuItem;
-import javafx.scene.control.MenuBar;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.PopupWindow.AnchorLocation;
+
+import app.App;
 
 /**
  * 
@@ -113,6 +111,30 @@ public class Action extends HBox {
 	 */
 	public void setActionStat(EventHandler<ActionEvent> e) {
 		butStat.setOnAction(e);
+	}
+	
+	/**
+	 * change de salle
+	 * @param e ActionEvent qui doit être déclencher par le bouton butRoomA
+	 */
+	public void setActionRoomA(EventHandler<ActionEvent> e) {
+		butRoomA.setOnAction(e);
+	}
+	
+	/**
+	 * change de salle
+	 * @param e ActionEvent qui doit être déclencher par le bouton butRoomB
+	 */
+	public void setActionRoomB(EventHandler<ActionEvent> e) {
+		butRoomB.setOnAction(e);
+	}
+	
+	/**
+	 * change de salle
+	 * @param e ActionEvent qui doit être déclencher par le bouton butRoomC
+	 */
+	public void setActionRoomC(EventHandler<ActionEvent> e) {
+		butRoomC.setOnAction(e);
 	}
 	
 	public void setActive(boolean stats, boolean rooms, boolean kitchen, boolean garden, boolean bathroom, boolean menu) {

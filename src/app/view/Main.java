@@ -27,9 +27,7 @@ public class Main extends StackPane {
 	 */
 	private EventHandler<ActionEvent> click_quit_menu = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			//getChildren().remove(menu);
-			game.setDisable(false);
-			menu.toBack();
+			hideMenu();
 		}
 	};
 
@@ -39,9 +37,7 @@ public class Main extends StackPane {
 	 */
 	private EventHandler<ActionEvent> click_open_menu = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			//getChildren().add(menu);
-			game.setDisable(true);
-			menu.toFront();
+			showMenu();
 		}
 	};
 	

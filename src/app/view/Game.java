@@ -1,17 +1,11 @@
 package app.view;
  
 import javafx.animation.AnimationTimer;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -45,6 +39,7 @@ public class Game extends StackPane {
 	// besoin de garder les etat du gameover si on change de resolution après la fin
 	private boolean gameover;
 	private String gameover_msg;
+	
 	//######################### EVENT-ACTION ####################################
 
 	/**
@@ -165,6 +160,11 @@ public class Game extends StackPane {
 		this.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
 		drawingArea.setBackground(new Background(new BackgroundFill(Color.rgb(255, 255, 0, 0.5), null, null)));
 		//hud.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
+	}
+	
+	public void setRoom(Room new_room) {
+		room = new_room;
+		updateDraw();
 	}
 	
 	public Action getActionBar() {

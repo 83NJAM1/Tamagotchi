@@ -13,6 +13,7 @@ package app.model;
  * d'un nom et de zones
  */
 public class Room {
+	
 	String id_name;
 	
 	public Room(String id_name) {

@@ -36,7 +36,7 @@ public class Option extends VBox {
 	public Option() {
 		
 		// instanciation
-		super(15);
+		super();
 		buttonQuit = new Button();
 		choiceLang = new ChoiceBox<String>();
 		volume = new Slider(0.0, 1.0, 0.5);
@@ -75,12 +75,14 @@ public class Option extends VBox {
 	 */
 	public void updateStyle() {
 		this.setAlignment(Pos.CENTER);
+		this.setSpacing(15);
 		this.setBackground(new Background(new BackgroundFill( Color.WHITESMOKE, null, null) ) );
 	}
 	
 	public void setSelectedDim(int i) {
 		choiceDimWindow.setValue(choiceDimWindow.getItems().get(i));
 	}
+	
 	public void setVolumeValue(double v) {
 		volume.setValue(v);
 	}

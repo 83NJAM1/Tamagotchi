@@ -1,7 +1,8 @@
 package app.controller;
- 
-import app.App;
+
 import javafx.animation.AnimationTimer;
+
+import app.App;
 
 /**
  * 
@@ -59,7 +60,8 @@ public class Stat {
 				
 				// fin du bonus
 				if ( global_time > bonusTime ) {
-					System.out.println("Bonus " + bonusName + " for " + model.getKeyName() + " ended after: " + global_time/1_000_000_000.0 + " seconds");
+					System.out.println( "Bonus " + bonusName + " for " + model.getKeyName() 
+									  + " ended after: " + global_time/1_000_000_000.0 + " seconds");
 					this.stop();
 					global_time=0;
 					old_time=0;

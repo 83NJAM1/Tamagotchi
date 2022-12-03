@@ -46,7 +46,7 @@ public class App extends Application{
 	WIP  : Système de sauvegarde/chargement (Automatique)
 	TODO : Utilisable sur une montre
 	WIP  : Etat moral (météo/hygiène)
-	TODO : Apparences (Chien, chat, lapin, robot)
+	WIP : Apparences (Chien, chat, lapin, robot)
 	WIP  : Plusieurs salles (Jardin, salon, cuisine, salle de bain)
 	TODO : notifications (besoins du tamagotchi)
 	TODO : Météo changeante dans le jardin
@@ -144,12 +144,15 @@ public class App extends Application{
 		mainController.getMenu().getView().getOption().setDimensionAction(choose_dim);
 		mainController.getMenu().getView().getLoad().setValidateAction(load_file);
 		
-		Scene scene = new Scene( mainController.getView(), mainController.getMenu().getOption().getWindowWidth(), mainController.getMenu().getOption().getWindowHeight());
+		Scene scene = new Scene( mainController.getView(), 
+								 mainController.getMenu().getOption().getWindowWidth()  , 
+								 mainController.getMenu().getOption().getWindowHeight() );
 		stage.setScene(scene);
         stage.show();
 	}
 	
     public static void main(String[] args) {
+    	System.out.println("v-"+version);
         launch();
     }
 }
