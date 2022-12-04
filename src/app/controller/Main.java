@@ -12,6 +12,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
@@ -35,7 +36,6 @@ public class Main {
 	private Media musicBackground;
 	private Media musicGameover;
 	private MediaPlayer mediaplayer;
-	
 	private BooleanProperty gameover;
 	
 	//######################### EVENT-ACTION ####################################
@@ -102,11 +102,11 @@ public class Main {
 		// creer une nouvelle partie en écrasant la partie en cours
 		if ( pathsave != null && pathsave.equals("new") ) {
 			if ( lastSave != null ) {
-				System.out.println("new game: " + lastSave);
+				System.out.println("NEW GAME: " + lastSave);
 				save = new app.model.Save(lastSave);
 			}
 			else {
-				System.out.println("new game: save.tmg");
+				System.out.println("NEW GAME: save.tmg");
 				menu.getOption().setLastSave("res/save.tmg");
 				menu.getOption().save();
 				save = new app.model.Save("res/save.tmg");
@@ -116,7 +116,7 @@ public class Main {
 		}
 		// charge la sauvegarde selectionnée
 		else if ( pathsave != null ) {
-			System.out.println("load: " + pathsave);
+			System.out.println("LOAD: " + pathsave);
 			menu.getOption().setLastSave("res/"+pathsave);
 			menu.getOption().save();
 			save = new app.model.Save("res/"+pathsave);
@@ -127,7 +127,7 @@ public class Main {
 		}
 		// charge la dernière sauvegarde utilisée
 		else if ( lastSave != null ) {
-			System.out.println("continue: " + lastSave);
+			System.out.println("CONTINUE: " + lastSave);
 			save = new app.model.Save(lastSave);
 			save.load(lastSave);
 			System.out.println("loading data:\n" + save.toString().indent(4));
@@ -136,7 +136,7 @@ public class Main {
 		}
 		// crée un nouveau fichier de sauvgarde
 		else {
-			System.out.println("new game: save.tmg");
+			System.out.println("FIRST GAME: save.tmg");
 			menu.getOption().setLastSave("res/save.tmg");
 			menu.getOption().save();
 			save = new app.model.Save("res/save.tmg");
@@ -148,8 +148,8 @@ public class Main {
 		// suite instantiation
 		view = new app.view.Main( game.getView(), menu.getView() );
 		gameover = new SimpleBooleanProperty(this, "gameover", false);
-		musicBackground = new Media(Paths.get("bin/res/musiques/DogsAndCats.mp3").toUri().toString());
-		musicGameover = new Media(Paths.get("bin/res/musiques/LowBattery.mp3").toUri().toString());
+		musicBackground = loadMediaFile("bin/res/musiques/DogsAndCats", "mp3");
+		musicGameover = loadMediaFile("bin/res/musiques/LowBattery", "mp3");
 		
 		// suite initialisation
 		setBackgroundMusic();
@@ -165,33 +165,102 @@ public class Main {
 		menu.getView().getOption().setVolumeAction(change_volume_value);
 	}
 	
+	/**
+	 * Met à jour le texte de tous les élements
+	 */
 	public void updateText() {
 		menu.getView().updateText();
 		game.getView().updateText();
 		game.getPet().updateText();
 	}
 	
+	/*
+	 * Change les dimensions de rendu du jeu
+	 */
 	public void changeGameDim(int numChoice) {
 		game.getView().changeDimension(numChoice);
 	}
 	
+	/**
+	 * Essaie de charger le media avec le format voulue sinon essaie avec d'autres formats
+	 * @param pathfileNOEXT le chemin du fichier sans son extension
+	 * @param ext l'extension voulue
+	 * @return le media si aucune erreur
+	 */
+	public Media loadMediaFile(String pathfileNOEXT, String ext) {
+
+		Media result = null;
+		
+		try {
+			if (ext.equals("mp3"))
+				result = new Media(Paths.get(pathfileNOEXT+".mp3").toUri().toString());
+			else if (ext.equals("wav"))
+				result = new Media(Paths.get(pathfileNOEXT+".wav").toUri().toString());
+			
+		} catch(MediaException e) {
+			if (ext.equals("mp3")) {
+				System.err.println(e + "\nRetry with .wav");
+				result = loadMediaFile(pathfileNOEXT, "wav");
+			}
+			else if (ext.equals("wav")) {
+				System.err.println(e);
+				//result = un autre format
+				System.exit(1);
+			}
+			else {
+				System.err.println(e);
+				System.exit(1);
+			}
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Reinstancie le mediaplayer et joue la musique du jeu
+	 * affiche aussi les metadatas du media de manière asynchrone (autre thread)
+	 */
 	public void setBackgroundMusic() {
 		mediaplayer = new MediaPlayer(musicBackground);
+		mediaplayer.setOnReady( new Runnable() {
+	        @Override
+	        public void run() {
+	        	System.out.println("Play: " + musicBackground.getSource()); 
+    			System.out.println(("       title: " + musicBackground.getMetadata().get("title") + "\n"
+	        					   +"album artist: " + musicBackground.getMetadata().get("album artist") + "\n"
+	        					   +"      artist: " + musicBackground.getMetadata().get("artist")).indent(2));
+	        }
+	    });
 		mediaplayer.setStopTime(Duration.seconds(113));
 		mediaplayer.setCycleCount(MediaPlayer.INDEFINITE);
 		mediaplayer.play();
 		mediaplayer.setVolume(menu.getVolume());
-		System.out.println("Play: " + musicBackground.getSource());
+
 	}
 	
+	/**
+	 * Reinstancie le mediaplayer et joue la musique du Gomeover
+	 * affiche aussi les metadatas du media de manière asynchrone (autre thread)
+	 */
 	public void setGameoverMusic() {
 		mediaplayer.stop();
 		mediaplayer = new MediaPlayer(musicGameover);
+		mediaplayer.setOnReady( new Runnable() {
+	        @Override
+	        public void run() {
+	        	System.out.println("Play: " + musicGameover.getSource()); 
+    			System.out.println(("      title : " + musicGameover.getMetadata().get("title") + "\n"
+	        					   +"album artist: " + musicGameover.getMetadata().get("album artist") + "\n"
+	        					   +"     artist : " + musicGameover.getMetadata().get("artist")).indent(2));
+	        }
+	    });
 		mediaplayer.play();
 		mediaplayer.setVolume(menu.getVolume());
-		System.out.println("Play: " + musicGameover.getSource());
 	}
 	
+	/*
+	 * Initialise les données de jeu par celles enregistrées dans la sauvgarde
+	 */
 	public void initGameWithSaveData() {
 		game.getPet().getHunger().setValue(save.getStat("hunger"));
 		game.getPet().getThirst().setValue(save.getStat("thirst"));
