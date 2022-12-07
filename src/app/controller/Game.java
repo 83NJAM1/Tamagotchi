@@ -39,7 +39,7 @@ public class Game {
         public void handle(long new_time) {
 			if (new_time > old_time ) {
 				old_time = new_time+1_000_000_000;
-				
+
 				updateGame();
 			}
         }
@@ -160,5 +160,4 @@ public class Game {
 		room = null;
 		actionLoop = null;
 	}
-	
 }

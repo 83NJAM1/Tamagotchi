@@ -40,7 +40,6 @@ public class Load extends StackPane {
 	private Button butRight;
 	private Button butValidate;
 	private Button butCancel;
-	
 	private boolean loadAsNew;
 	//######################### EVENT-ACTION ####################################
 	
