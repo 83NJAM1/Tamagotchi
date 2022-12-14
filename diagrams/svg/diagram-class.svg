@@ -64,7 +64,11 @@ class App {
 
 package model {
     class ModelRoom
-    class ModelGame
+    class ModelGame{
+        Pet getPet()
+        Room getRoom()
+        void setRoom(Room new_room)
+    }
     class ModelStat
     class ModelOption {
     	-language : string
