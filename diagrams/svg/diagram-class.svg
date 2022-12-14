@@ -64,7 +64,11 @@ class App {
 
 package model {
     class ModelRoom
-    class ModelGame
+    class ModelGame{
+        Pet getPet()
+        Room getRoom()
+        void setRoom(Room new_room)
+    }
     class ModelStat
     class ModelOption {
     	-language : string
@@ -78,7 +82,21 @@ package model {
     	-info_gme : list<string>
     	-info_usr : list<string>
     }
-    interface ModelPet
+    interface ModelPet{
+        void sethunger(Stat hunger)
+        void setThrist(Stat thirst)
+        void setWeight(Stat weight)
+        void setHygiene(Stat hygiene)
+        void setMoral(Stat moral)
+        Stat getHunger()
+        Stat getThirst()
+        Stat getWeight()
+        Stat getHygiene()
+        Stat getMoral()
+        String getType()
+        String toString()
+        int getStatsNumber()
+    }
     class Robot
     class Animal
     
