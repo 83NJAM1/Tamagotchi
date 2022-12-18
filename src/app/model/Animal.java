@@ -6,7 +6,7 @@ package app.model;
  * L'animal à prendre soin
  */
 public class Animal extends Pet {
-
+ 
 	// ATTENTION: Reference partagé avec constroller.Stat
 	private String type;
 	private Stat hunger;

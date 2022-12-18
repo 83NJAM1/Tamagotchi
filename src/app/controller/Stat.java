@@ -12,7 +12,7 @@ import app.App;
 public class Stat {
 	
 	//########################### ATTRIBUTS #####################################
-
+ 
 	// ATTENTION: Reference partagé avec model.Pet
 	private app.model.Stat model;
 	

@@ -20,7 +20,7 @@ import javafx.scene.text.TextAlignment;
  * Permet les opérations d'affichage concernant le jeu
  */
 public class Game extends StackPane {
-	
+	 
 	//########################### ATTRIBUTS #####################################
 	
 	// le view.pet a manipuler

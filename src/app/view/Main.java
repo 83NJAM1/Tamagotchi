@@ -15,7 +15,7 @@ public class Main extends StackPane {
 
 	//ATTENTION: reference partagé avec controller.Game
 	private Game game;
-	
+	 
 	//ATTENTION: reference partagé avec controller.Menu
 	private Menu menu;
 	

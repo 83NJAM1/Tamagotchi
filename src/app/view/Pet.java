@@ -13,7 +13,7 @@ import javafx.scene.image.Image;
 public class Pet extends Image {
 
 	//########################### ATTRIBUTS #####################################
-	
+	 
 	private Stat hunger;
 	private Stat thirst;
 	private Stat weight;

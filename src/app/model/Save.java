@@ -17,7 +17,7 @@ import java.util.Scanner;
 public class Save {
 
 	private File file;
-	
+	 
 	private Game gameRecord;
 	private Date dateLoaded;
 	private String idRoom;

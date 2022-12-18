@@ -28,7 +28,7 @@ public class Game {
 	
 	// gestion des données
 	private app.model.Save save;
-	
+	 
 	// lié à c.Main
 	public BooleanProperty gameover;
 	

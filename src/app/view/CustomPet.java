@@ -9,5 +9,5 @@ import javafx.scene.layout.AnchorPane;
  * car le choix de design implique qu'il soit composé de sous vue
  */
 public class CustomPet extends AnchorPane {
-
+ 
 }

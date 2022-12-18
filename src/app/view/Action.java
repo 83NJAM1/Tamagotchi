@@ -18,7 +18,7 @@ import app.App;
  * Elle permet de selectionner les actions du jeu et d'aller au menu
  */
 public class Action extends HBox {
-	
+	 
 	//########################### ATTRIBUTS #####################################
 	
 	// On est obligé de faire un menu perso car

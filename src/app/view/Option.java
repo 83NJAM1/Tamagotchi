@@ -25,7 +25,7 @@ import app.App;
 public class Option extends VBox {
 	
 	//########################### ATTRIBUTS #####################################
-
+ 
 	private Button buttonQuit;
 	private ChoiceBox<String> choiceLang;
 	private Slider volume;

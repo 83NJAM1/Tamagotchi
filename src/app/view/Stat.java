@@ -19,7 +19,7 @@ public class Stat extends VBox {
 	Label valueTxt;
 	ProgressBar valueBar;
 	StackPane fieldValue;
-	
+	 
 	public Stat(String name) {
 		
 		this.name = new Label(name);

@@ -8,7 +8,7 @@ package app.controller;
 public class Room {
 	
 	//########################### ATTRIBUTS #####################################
-
+ 
 	// ATTENTION: reference partagé avec model.Game 
 	private app.model.Room model;
 	

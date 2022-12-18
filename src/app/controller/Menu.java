@@ -12,7 +12,7 @@ import app.App;
  * Permet de mettre a jour la vue avec le model
  */
 public class Menu {
-	
+	 
 	//########################### ATTRIBUTS #####################################
 	
 	private app.model.Option model;

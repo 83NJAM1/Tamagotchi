@@ -6,7 +6,7 @@ package app.model;
  * Le compagnon à prendre soin
  */
 public abstract class Pet {
-	
+	 
 	public abstract void setHunger(Stat hunger);
 	public abstract void setThirst(Stat thirst);
 	public abstract void setWeight(Stat weight);

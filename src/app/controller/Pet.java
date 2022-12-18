@@ -8,7 +8,7 @@ package app.controller;
 public class Pet {
 	
 	//########################### ATTRIBUTS #####################################
-	
+	 
 	// ATTENTION: référence partagé avec model.Game
 	private app.model.Pet model;
 	

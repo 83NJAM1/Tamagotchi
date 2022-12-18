@@ -12,7 +12,7 @@ public class Stat {
 	private Double value;
 	private Double malusFactor;
 	private Double bonusFactor;
-	
+	 
 	public Stat(String keyName) {
 		this.keyName = keyName;
 		value = 0.5;

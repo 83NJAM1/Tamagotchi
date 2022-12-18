@@ -23,7 +23,7 @@ import app.App;
  * il fait le lien avec le thread javafx
  */
 public class Main {
-	
+	 
 	//########################### ATTRIBUTS #####################################
 	
 	private app.view.Main view;

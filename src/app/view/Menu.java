@@ -22,7 +22,7 @@ import app.App;
 public class Menu extends StackPane {
 
 	//########################### ATTRIBUTS #####################################
-
+ 
 	// La vue pour customiser le pet
 	private CustomPet customPet;
 	

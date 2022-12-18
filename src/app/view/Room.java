@@ -13,7 +13,7 @@ import javafx.scene.image.Image;
 public class Room extends Image {
 
 	//########################### ATTRIBUTS #####################################
-	
+	 
 	private double x;
 	private double y;
 	private double w;

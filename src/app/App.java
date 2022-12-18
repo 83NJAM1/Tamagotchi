@@ -99,7 +99,7 @@ public class App extends Application{
 			System.out.println(language.getString("bye"));
 		}
 	};
-
+ 
 	/**
 	 * ActionEvent effectué quand t-on veut charger une partie
 	 * déclencheur -> c.Menu -> v.Menu -> v.Load
