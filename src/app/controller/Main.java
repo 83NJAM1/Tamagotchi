@@ -5,8 +5,6 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -29,20 +27,18 @@ public class Main {
 	//########################### ATTRIBUTS #####################################
 	
 	private app.view.Main view;
-	private app.model.Save save;
 	
 	private Menu menu;
 	private Game game;
 	private Media musicBackground;
 	private Media musicGameover;
 	private MediaPlayer mediaplayer;
-	private BooleanProperty gameover;
 	
 	//######################### EVENT-ACTION ####################################
 	
 	/**
 	 * Action effectué quand t-on perd la partie
-	 * déclencher -> this -> v.Menu -< v.Option
+	 * déclencher -> c.Game
 	 */
 	ChangeListener<Boolean> change_gameover_value = new ChangeListener<Boolean>() {
 		public void changed(ObservableValue<? extends Boolean> obs, Boolean vold, Boolean vnew) {
@@ -52,7 +48,7 @@ public class Main {
 	
 	/**
 	 * Action effectué quand t-on modifie le volume via la vue Option
-	 * déclencher -> this -> v.Menu -< v.Option
+	 * déclencher -> v.Option
 	 */
 	ChangeListener<Number> change_volume_value = new ChangeListener<Number>() {
 		public void changed(ObservableValue<? extends Number> obs, Number vold, Number vnew) {
@@ -65,7 +61,7 @@ public class Main {
 	
 	/**
 	 * ActionEvent effectué quand t-on change la langue via la vue Option
-	 * déclencher -> this -> v.Menu -< v.Option
+	 * déclencher -> v.Option
 	 */
 	private EventHandler<ActionEvent> choose_lang = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
@@ -100,54 +96,34 @@ public class Main {
 		String lastSave = menu.getOption().getLastSave();
 		
 		// creer une nouvelle partie en écrasant la partie en cours
-		if ( pathsave != null && pathsave.equals("new") ) {
-			if ( lastSave != null ) {
-				System.out.println("NEW GAME: " + lastSave);
-				save = new app.model.Save(lastSave);
-			}
-			else {
-				System.out.println("NEW GAME: save.tmg");
-				menu.getOption().setLastSave("res/save.tmg");
-				menu.getOption().save();
-				save = new app.model.Save("res/save.tmg");
-			}
+		if ( pathsave != null && pathsave.equals("new") && lastSave != null ) {
+			System.out.println("NEW GAME: " + lastSave);
 			// crée une nouvelle partie, la customisation devrai être demandé ici
-			game = new Game("cat", "test");
+			game = new Game("cat", "test", lastSave);
 		}
 		// charge la sauvegarde selectionnée
 		else if ( pathsave != null ) {
 			System.out.println("LOAD: " + pathsave);
-			menu.getOption().setLastSave("res/"+pathsave);
+			menu.getOption().setLastSave(pathsave);
 			menu.getOption().save();
-			save = new app.model.Save("res/"+pathsave);
-			save.load("res/"+pathsave);
-			System.out.println("loading data:\n" + save.toString().indent(4));
-			game = new Game(save.getPetType(), save.getRoomId());
-			initGameWithSaveData();
+			game = new Game(pathsave);
 		}
 		// charge la dernière sauvegarde utilisée
 		else if ( lastSave != null ) {
 			System.out.println("CONTINUE: " + lastSave);
-			save = new app.model.Save(lastSave);
-			save.load(lastSave);
-			System.out.println("loading data:\n" + save.toString().indent(4));
-			game = new Game(save.getPetType(), save.getRoomId());
-			initGameWithSaveData();
+			game = new Game(lastSave);
 		}
 		// crée un nouveau fichier de sauvgarde
 		else {
 			System.out.println("FIRST GAME: save.tmg");
-			menu.getOption().setLastSave("res/save.tmg");
+			menu.getOption().setLastSave("save.tmg");
 			menu.getOption().save();
-			save = new app.model.Save("res/save.tmg");
 			// crée une nouvelle partie, la customisation devrai être demandé ici
-			game = new Game("dog", "test");
+			game = new Game("dog", "test", "save.tmg");
 		}
-		save.setGameInstance(game.getModel());
 		
 		// suite instantiation
 		view = new app.view.Main( game.getView(), menu.getView() );
-		gameover = new SimpleBooleanProperty(this, "gameover", false);
 		musicBackground = loadMediaFile("bin/res/musiques/DogsAndCats", "mp3");
 		musicGameover = loadMediaFile("bin/res/musiques/LowBattery", "mp3");
 		
@@ -157,8 +133,7 @@ public class Main {
 		changeGameDim(menu.getChoosenDim());
 		
 		// assignation action
-		gameover.addListener(change_gameover_value);
-		gameover.bind(game.gameover);
+		game.gameover.addListener(change_gameover_value);
 		
 		// construction
 		menu.getView().getOption().setLangAction(choose_lang);
@@ -203,8 +178,9 @@ public class Main {
 				result = loadMediaFile(pathfileNOEXT, "wav");
 			}
 			else if (ext.equals("wav")) {
+				// si autre format faire un autre appel
+				// sinon afficher erreur
 				System.err.println(e);
-				//result = un autre format
 				System.exit(1);
 			}
 			else {
@@ -259,33 +235,21 @@ public class Main {
 	}
 	
 	/*
-	 * Initialise les données de jeu par celles enregistrées dans la sauvgarde
-	 */
-	public void initGameWithSaveData() {
-		game.getPet().getHunger().setValue(save.getStat("hunger"));
-		game.getPet().getThirst().setValue(save.getStat("thirst"));
-		game.getPet().getWeight().setValue(save.getStat("weight"));
-		game.getPet().getHygiene().setValue(save.getStat("hygiene"));
-		game.getPet().getMoral().setValue(save.getStat("moral"));
-	}
-	
-	/*
-	 * ecrit les données du jeu dans un fichier
+	 * Sauvegarde les données de jeu
 	 */
 	public void saveGame() {
-		save.save();
+		game.save();
 		System.out.println("Save done");
 	}
 	
 	/**
-	 * essaie d'aider au mieu le Garbage Collector
+	 * Essaie d'aider au mieu le Garbage Collector
 	 */
 	public void exit() {
 		mediaplayer.stop();
 		game.exit();
 		menu.exit();
 		view = null;
-		save = null;
 		menu = null;
 		game = null;
 		choose_lang = null;

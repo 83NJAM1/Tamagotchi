@@ -20,12 +20,16 @@ public class Game {
 	//ATTENTION: reference partagé avec view.Main
 	private app.view.Game view;
 	
-	// le pet à manipuler
+	// le controller du pet à manipuler
 	private Pet pet;
 	
-	// la pièce active
+	// le controller de la pièce active
 	private Room room;
 	
+	// gestion des données
+	private app.model.Save save;
+	
+	// lié à c.Main
 	public BooleanProperty gameover;
 	
 	//######################### EVENT-ACTION ####################################
@@ -45,6 +49,10 @@ public class Game {
         }
     };
     
+	/**
+	 * ActionLoop effectué pour aller dans la pièce A ( kitchen )
+	 * déclendeur -> v.Action
+	 */ 
 	private EventHandler<ActionEvent> gotoRoomA = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			setRoom(new Room("kitchen"));
@@ -52,6 +60,10 @@ public class Game {
 		}
 	};
 	
+	/**
+	 * ActionLoop effectué pour aller dans la pièce B ( livingroom )
+	 * déclendeur -> v.Action
+	 */ 
 	private EventHandler<ActionEvent> gotoRoomB = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			setRoom(new Room("livingroom"));
@@ -59,6 +71,10 @@ public class Game {
 		}
 	};
 	
+	/**
+	 * ActionLoop effectué pour aller dans la pièce C ( test )
+	 * déclendeur -> v.Action
+	 */ 
 	private EventHandler<ActionEvent> gotoRoomC = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			setRoom(new Room("test"));
@@ -68,7 +84,12 @@ public class Game {
 	
 	//############################ METHODES #####################################
 	
-	public Game(String petType, String roomName) {
+	/*
+	 * Constructeur nouvelle partie
+	 */
+	public Game(String petType, String roomName, String saveName) {
+		
+		save = new app.model.Save("res/"+saveName);
 		
 		pet = new Pet(petType);
 		room = new Room(roomName);
@@ -76,12 +97,48 @@ public class Game {
 		view = new app.view.Game( pet.getView(), room.getView() );
 		gameover = new SimpleBooleanProperty(this, "gameover", false);
 		
+		init();
+	}
+	
+	/*
+	 * Constructeur charger partie
+	 */
+	public Game(String saveName) {
+		
+		save = new app.model.Save("res/"+saveName);
+		save.load("res/"+saveName);
+		pet = new Pet(save.getPetType());
+		room = new Room(save.getRoomId());
+		model = new app.model.Game( pet.getModel(), room.getModel() );
+		view = new app.view.Game( pet.getView(), room.getView() );
+		gameover = new SimpleBooleanProperty(this, "gameover", false);
+		
+		pet.getHunger().setValue(save.getStat("hunger"));
+		pet.getThirst().setValue(save.getStat("thirst"));
+		pet.getWeight().setValue(save.getStat("weight"));
+		pet.getHygiene().setValue(save.getStat("hygiene"));
+		pet.getMoral().setValue(save.getStat("moral"));
+		
+		init();
+	}
+	
+	/*
+	 * Initialisation commune entre constructeurs
+	 */
+	private void init() {
+		
+		save.setGameInstance(model);
+		
 		view.getActionBar().setActionRoomA(gotoRoomA);
 		view.getActionBar().setActionRoomB(gotoRoomB);
 		view.getActionBar().setActionRoomC(gotoRoomC);
 		
 		checkRoomAllowedAction();
 		actionLoop.start();
+	}
+	
+	public void save() {
+		save.save();
 	}
 	
 	public void setPet(Pet new_pet) {
@@ -154,6 +211,7 @@ public class Game {
 		actionLoop.stop();
 		pet.exit();
 		room.exit();
+		save = null;
 		view = null;
 		model = null;
 		pet = null;

@@ -46,7 +46,7 @@ public class App extends Application{
 	WIP  : Système de sauvegarde/chargement (Automatique)
 	TODO : Utilisable sur une montre
 	WIP  : Etat moral (météo/hygiène)
-	WIP : Apparences (Chien, chat, lapin, robot)
+	WIP  : Apparences (Chien, chat, lapin, robot)
 	WIP  : Plusieurs salles (Jardin, salon, cuisine, salle de bain)
 	TODO : notifications (besoins du tamagotchi)
 	TODO : Météo changeante dans le jardin
@@ -65,7 +65,7 @@ public class App extends Application{
 	
 	/**
 	 * ActionEvent pour changer les dimensions de la fenêtre
-	 * déclancheur -> c.Menu -> v.Menu -> v.Option
+	 * déclancheur -> v.Option
 	 */
 	private EventHandler<ActionEvent> choose_dim = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
@@ -90,7 +90,7 @@ public class App extends Application{
 	
 	/**
 	 * WindowEvent pour sauvegarder si on ferme l'application
-	 * déclancheur -> c.Main -> m.Save
+	 * déclancheur -> this
 	 */
 	private EventHandler<WindowEvent> close_app = new EventHandler<WindowEvent>() {
 		public void handle(WindowEvent e) {
@@ -121,9 +121,10 @@ public class App extends Application{
 	
 	//############################ METHODES #####################################
 	
+	@Override
 	public void start(Stage stage) {
 		
-		// enregistre la référence pour pouvoir fair des actions dessus
+		// enregistre la référence pour pouvoir faire des actions dessus
 		this.stage = stage;
 		
 		stage.setOnCloseRequest(close_app);
@@ -131,12 +132,12 @@ public class App extends Application{
 		language = ResourceBundle.getBundle("language");
 		languageNumber = NumberFormat.getInstance(Locale.FRENCH);
 		
-		System.out.println(language.getString("wellcome"));
-		
 		load(null);
 		
         stageWidthDiff = stage.getWidth() - mainController.getMenu().getOption().getWindowWidth();
         stageHeightDiff = stage.getHeight() - mainController.getMenu().getOption().getWindowHeight();
+        
+        System.out.println(language.getString("wellcome"));
 	}
 	
 	public void load(String pathsave) {

@@ -20,11 +20,11 @@ public class Pet extends Image {
 	private Stat hygiene;
 	private Stat moral;
 	
-	
 	private double x;
 	private double y;
 	private double w;
 	private double h;
+	
 	//############################ METHODES #####################################
 	
 	// Constructeur obligatoire car de type Image

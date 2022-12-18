@@ -45,7 +45,7 @@ public class Menu {
 			App.languageNumber = NumberFormat.getNumberInstance(Locale.FRENCH);
 		}
 		
-		if ( model.getWindowWidth() == 640 )
+		if ( model.getWindowWidth() <= 640 )
 			view.getOption().setSelectedDim(0);
 		else
 			view.getOption().setSelectedDim(1);
