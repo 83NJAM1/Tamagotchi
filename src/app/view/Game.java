@@ -41,7 +41,23 @@ public class Game extends StackPane {
 	private String gameover_msg;
 	
 	//######################### EVENT-ACTION ####################################
-
+	
+	/**
+	 * ActionLoop effectué toute les 1 second (1e+9 ns)
+	 * déclendeur -> this
+	 */ 
+	private AnimationTimer drawLoop = new AnimationTimer() {
+		long old_time=0;
+		
+        public void handle(long new_time) {
+			if (new_time > old_time ) {
+				old_time = new_time+33_000_000;
+				
+				updateDraw();
+			}
+        }
+    };
+    
 	/**
 	 * DrawLoop effectué toute les 0.335 second
 	 * déclendeur -> this
@@ -55,7 +71,7 @@ public class Game extends StackPane {
 		
         public void handle(long new_time) {
 			if (new_time > old_time ) {
-				old_time = new_time+(1<<25); // aproximativement 33 millisecond
+				old_time = new_time+33_000_000; // 33 millisecond
 				
 				drawGameOver(fade, gameover_msg.substring(0, pos));
 				
@@ -72,7 +88,7 @@ public class Game extends StackPane {
 				
 				if(!doonce) {
 					hud.hideStats();
-					hud.getActionBar().setActive(false, false, false, false, false, true);
+					hud.getActionBar().setAllowedButtons(false, false, false, false, false, true);
 				}
 			}
         }
@@ -85,19 +101,18 @@ public class Game extends StackPane {
 		room = room_instance;
 		hud = new Hud(pet.getHygiene(), pet.getHunger(), pet.getMoral(), pet.getWeight(), pet.getThirst());
 		drawingArea = new AnchorPane();
-		
 		canvas = new Canvas(640, 360);
+		
 		gc = canvas.getGraphicsContext2D();
-		font = Font.font("Linux Biolinum Keyboard O", FontWeight.NORMAL, FontPosture.REGULAR, 46);
-		updateDraw();
-		updateStyle();
 		gameover=false;
 		gameover_msg="GAME OVER";
+		updateStyle();
+		updateDraw();
+		
 		drawingArea.getChildren().add(canvas);
-		AnchorPane.setLeftAnchor(canvas, 0.);
-		AnchorPane.setTopAnchor(canvas, 0.);
 		this.getChildren().addAll(drawingArea, hud);
 		
+		drawLoop.start();
 		/*for ( String f : Font.getFamilies() ) {
 			System.out.println(f);
 		}*/
@@ -112,10 +127,14 @@ public class Game extends StackPane {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		
 		gc.drawImage(room, 0, 0, canvas.getWidth(), canvas.getHeight());
-		gc.drawImage(pet, canvas.getWidth()/2-pet.getW()/2, pet.getY()+canvas.getHeight()/2-pet.getH()/2, pet.getW(),pet.getH());
+		gc.drawImage(pet, pet.getSrcX()                       , pet.getSrcY(), 
+				          pet.getSrcW()                       , pet.getSrcH(),
+						  canvas.getWidth()/2-pet.getDestW()/2, pet.getDestY()+canvas.getHeight()/2-pet.getDestH()/2,
+				          pet.getDestW()                      , pet.getDestH()                                       );
 	}
 	
 	private void drawGameOver(double fade, String text) {
+		//gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		
 		gc.setFill(Color.rgb(255, 192, 128, fade));
 		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -124,9 +143,15 @@ public class Game extends StackPane {
 		gc.setFill(Color.rgb(255, 255, 255, fade));
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.fillText(text, canvas.getWidth()/2, canvas.getHeight()/2);
+		
+		gc.drawImage(pet, pet.getSrcX()                       , pet.getSrcY(), 
+		             	  pet.getSrcW()                       , pet.getSrcH(),
+		             	  canvas.getWidth()/2-pet.getDestW()/2, pet.getDestY()+canvas.getHeight()/2-pet.getDestH()/2,
+		             	  pet.getDestW()                      , pet.getDestH()                                       );
 	}
 	
 	public void startDrawingGameOver() {
+		drawLoop.stop();
 		drawGameoverLoop.start();
 	}
 	
@@ -137,26 +162,26 @@ public class Game extends StackPane {
 				//canvas.resize(640.,  360.);
 				canvas.setWidth(640);
 				canvas.setHeight(360);
-				pet.setY(92);
-				pet.setH(128);
-				pet.setW(128);
+				pet.setSize(0, 92, 128, 128);
 				break;
 			case 1:
 				//canvas.resize(1280., 720.);
 				canvas.setWidth(1280);
 				canvas.setHeight(720);
-				pet.setY(184);
-				pet.setH(256);
-				pet.setW(256);
-				break;	
+				pet.setSize(0, 184, 256, 256);
+				break;
 		}
 		
 		updateDraw();
+		
 		if ( gameover )
 			drawGameOver(1.0, "GAME OVER");
 	}
 	
 	public void updateStyle() {
+		font = Font.font("Linux Biolinum Keyboard O", FontWeight.NORMAL, FontPosture.REGULAR, 46);
+		AnchorPane.setLeftAnchor(canvas, 0.);
+		AnchorPane.setTopAnchor(canvas, 0.);
 		this.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
 		drawingArea.setBackground(new Background(new BackgroundFill(Color.rgb(255, 255, 0, 0.5), null, null)));
 		//hud.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));

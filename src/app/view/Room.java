@@ -21,8 +21,6 @@ public class Room extends Image {
 	
 	//############################ METHODES #####################################
 	
-	// Constructeur obligatoire car de type Image
-	// NOTE: nescesaire uniquement pour la vue
 	public Room(String imagepath) {
 		super(imagepath);
 		x = 0;

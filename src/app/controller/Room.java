@@ -24,7 +24,7 @@ public class Room {
 				view = new app.view.Room("./res/test_room.png");
 				break;
 			case "livingroom":
-				model = new app.model.Room("kitchen");
+				model = new app.model.Room("livingroom");
 				view = new app.view.Room("./res/no_image.png");
 				break;
 			case "kitchen":

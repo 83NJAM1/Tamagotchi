@@ -6,20 +6,51 @@ package app.model;
  * Le compagnon à prendre soin
  */
 public abstract class Pet {
-	 
-	public abstract void setHunger(Stat hunger);
-	public abstract void setThirst(Stat thirst);
-	public abstract void setWeight(Stat weight);
-	public abstract void setHygiene(Stat hygiene);
-	public abstract void setMoral(Stat moral);
 	
-	public abstract Stat getHunger();
-	public abstract Stat getThirst();
-	public abstract Stat getWeight();
-	public abstract Stat getHygiene();
-	public abstract Stat getMoral();
+	protected String type;
 	
-	public abstract String getType();
+	// ATTENTION: References partagées avec c.Stat
+	protected Stat hunger;
+	protected Stat thirst;
+	protected Stat weight;
+	protected Stat hygiene;
+	protected Stat moral;
+	
+	public void setHunger(Stat hunger) {
+		this.hunger = hunger;
+	}
+	public void setThirst(Stat thirst) {
+		this.thirst = thirst;
+	}
+	public void setWeight(Stat weight) {
+		this.weight = weight;
+	}
+	public void setHygiene(Stat hygiene) {
+		this.hygiene = hygiene;
+	}
+	public void setMoral(Stat moral) {
+		this.moral = moral;
+	}
+	
+	public String getType() {
+		return type;
+	}
+	
+	public Stat getHunger() {
+		return hunger;
+	}
+	public Stat getThirst() {
+		return thirst;
+	}
+	public Stat getWeight() {
+		return weight;
+	}
+	public Stat getHygiene() {
+		return hygiene;
+	}
+	public Stat getMoral() {
+		return moral;
+	}
 	
 	public String toString() {
 		String output = getType() + System.lineSeparator() 
