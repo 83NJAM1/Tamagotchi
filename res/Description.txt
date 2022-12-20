@@ -45,7 +45,7 @@
 [4,3]			  - Malade (cassé)
 
 
-	Coloriage_Chat ; 
+	Coloriage_Chat/Lapin ; 
 [1;] - Couleur unie
 [2;] - Tigré (bicolore)
 [3;] - Tacheté (tricolore)
