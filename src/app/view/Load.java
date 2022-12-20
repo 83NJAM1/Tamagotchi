@@ -30,7 +30,7 @@ import app.App;
 public class Load extends StackPane {
 	
 	//########################### ATTRIBUTS #####################################
-	
+	 
 	private int currentIndex;
 	private ObservableList<String> savesObsList;
 	private ListView<String> savesList;

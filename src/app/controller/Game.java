@@ -28,7 +28,7 @@ public class Game {
 	
 	// gestion des données
 	private app.model.Save save;
-	
+	 
 	// lié à c.Main
 	public BooleanProperty gameover;
 	
@@ -53,9 +53,20 @@ public class Game {
 	 * ActionLoop effectué pour aller dans la pièce A ( kitchen )
 	 * déclendeur -> v.Action
 	 */ 
-	private EventHandler<ActionEvent> gotoRoomA = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> gotoKitchen = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			setRoom(new Room("kitchen"));
+			checkRoomAllowedAction();
+		}
+	};
+	
+	/**
+	 * ActionLoop effectué pour aller dans la pièce A ( kitchen )
+	 * déclendeur -> v.Action
+	 */ 
+	private EventHandler<ActionEvent> gotoGarden = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			setRoom(new Room("garden"));
 			checkRoomAllowedAction();
 		}
 	};
@@ -64,9 +75,9 @@ public class Game {
 	 * ActionLoop effectué pour aller dans la pièce B ( livingroom )
 	 * déclendeur -> v.Action
 	 */ 
-	private EventHandler<ActionEvent> gotoRoomB = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> gotoBathroom = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			setRoom(new Room("livingroom"));
+			setRoom(new Room("bathroom"));
 			checkRoomAllowedAction();
 		}
 	};
@@ -75,7 +86,7 @@ public class Game {
 	 * ActionLoop effectué pour aller dans la pièce C ( test )
 	 * déclendeur -> v.Action
 	 */ 
-	private EventHandler<ActionEvent> gotoRoomC = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> gotoLivingroom = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			setRoom(new Room("test"));
 			checkRoomAllowedAction();
@@ -129,9 +140,10 @@ public class Game {
 		
 		save.setGameInstance(model);
 		
-		view.getActionBar().setActionRoomA(gotoRoomA);
-		view.getActionBar().setActionRoomB(gotoRoomB);
-		view.getActionBar().setActionRoomC(gotoRoomC);
+		view.getActionBar().setActionButKitchen(gotoKitchen);
+		view.getActionBar().setActionButBathroom(gotoBathroom);
+		view.getActionBar().setActionButLivingroom(gotoLivingroom);
+		view.getActionBar().setActionButGarden(gotoGarden);
 		
 		checkRoomAllowedAction();
 		actionLoop.start();
@@ -173,6 +185,7 @@ public class Game {
 		  || pet.getMoral().getModel().getValue()  < 0.0 ) 
 		{
 			gameover.setValue(true);
+			pet.setDead();
 			return true;
 		}
 		
@@ -182,13 +195,16 @@ public class Game {
 	public void checkRoomAllowedAction() {
 		switch (room.getModel().toString()) {
 			case "kitchen":
-				view.getActionBar().setActive(true, true, false, false, true, true);
+				view.getActionBar().setAllowedButtons(true, true, false, false, true, true);
 				break;
 			case "livingroom":
-				view.getActionBar().setActive(true, true, false, false, true, true);
+				view.getActionBar().setAllowedButtons(true, true, false, false, true, true);
+				break;
+			case "garden":
+				view.getActionBar().setAllowedButtons(true, true, false, false, true, true);
 				break;
 			case "test":
-				view.getActionBar().setActive(true, true, true, true, false, true);
+				view.getActionBar().setAllowedButtons(true, true, true, true, false, true);
 				break;
 			default:
 				break;

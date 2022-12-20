@@ -1,6 +1,6 @@
 package app.view;
- 
-import javafx.scene.image.Image;
+
+import javafx.scene.shape.Rectangle;
 
 /**
  * 
@@ -10,32 +10,21 @@ import javafx.scene.image.Image;
  *      Ca me semble mieux de faire une classe Sprite et que view.Pet
  *      hérite de Sprite
  */
-public class Pet extends Image {
+public class Pet extends AnimatedSprite {
 
 	//########################### ATTRIBUTS #####################################
-	
+	 
 	private Stat hunger;
 	private Stat thirst;
 	private Stat weight;
 	private Stat hygiene;
 	private Stat moral;
 	
-	private double x;
-	private double y;
-	private double w;
-	private double h;
-	
 	//############################ METHODES #####################################
 	
-	// Constructeur obligatoire car de type Image
-	// REMARQUE: nescesaire uniquement pour la vue
-	//			 ?? chemin de l'image dans le model ??
 	public Pet(String spritesheet) {
-		super(spritesheet);
-		x = 0;
-		y = 92;
-		w = 128;
-		h = 128;
+		super(spritesheet, 0, 0, 512, 512);
+		setSize(0, 92, 128, 128);
 	}
 	
 	public void setHunger(Stat hunger) {
@@ -68,31 +57,6 @@ public class Pet extends Image {
 	}
 	public Stat getMoral() {
 		return moral;
-	}
-	
-	public void setX(double v) {
-		x=v;
-	}
-	public void setY(double v) {
-		y=v;
-	}
-	public void setW(double v) {
-		w=v;
-	}
-	public void setH(double v) {
-		h=v;
-	}
-	public double getX() {
-		return x;
-	}
-	public double getY() {
-		return y;
-	}
-	public double getW() {
-		return w;
-	}
-	public double getH() {
-		return h;
 	}
 
 }

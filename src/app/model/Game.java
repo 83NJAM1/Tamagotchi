@@ -6,7 +6,7 @@ package app.model;
  * Encapsule tous les élements du jeu
  */
 public class Game {
-	
+	 
 	// ATTENTION: référence partagé avec controller.Pet
 	private Pet pet;
 	

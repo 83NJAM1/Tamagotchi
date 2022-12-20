@@ -13,7 +13,7 @@ import javafx.scene.image.Image;
 public class Room extends Image {
 
 	//########################### ATTRIBUTS #####################################
-	
+	 
 	private double x;
 	private double y;
 	private double w;
@@ -21,8 +21,6 @@ public class Room extends Image {
 	
 	//############################ METHODES #####################################
 	
-	// Constructeur obligatoire car de type Image
-	// NOTE: nescesaire uniquement pour la vue
 	public Room(String imagepath) {
 		super(imagepath);
 		x = 0;

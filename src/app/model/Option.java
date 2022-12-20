@@ -13,7 +13,7 @@ import java.util.Scanner;
  * Les options de l'application
  */
 public class Option {
-	
+	 
 	private String lastSave;
 	private String language;
 	private double volume;

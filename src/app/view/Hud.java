@@ -15,7 +15,7 @@ import javafx.scene.layout.VBox;
 public class Hud extends AnchorPane{
 	
 	//########################### ATTRIBUTS #####################################
-
+ 
 	// Barre des actions pour le moment car plus simple a implémenter
 	// les futures version pourront implémenter le clique sur objets
 	private Action actionBar;

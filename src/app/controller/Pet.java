@@ -1,5 +1,7 @@
 package app.controller;
- 
+
+import javafx.scene.shape.Rectangle;
+
 /**
  * 
  * @author ben
@@ -8,7 +10,7 @@ package app.controller;
 public class Pet {
 	
 	//########################### ATTRIBUTS #####################################
-	
+	 
 	// ATTENTION: référence partagé avec model.Game
 	private app.model.Pet model;
 	
@@ -33,15 +35,29 @@ public class Pet {
 		switch(type) {
 			case "cat":
 				model = new app.model.Animal("cat");
-				view = new app.view.Pet("./res/test_cat.png");
+				view = new app.view.Pet("./res/Animation_Chat_Normal.png");
+				view.addAnime("heureux", new Rectangle(0, 0, 512, 512), new Rectangle(512, 0, 512, 512), new Rectangle(1024, 0, 512, 512));
+				view.addAnime("mort", new Rectangle(1024, 1536, 512, 512));
+				view.setAnime("heureux");
+				view.play();
 				break;
 			case "dog":
 				model = new app.model.Animal("dog");
-				view = new app.view.Pet("./res/test_dog.png");
+				view = new app.view.Pet("./res/Animation_Chien_Normal.png");
+				view.addAnime("heureux", new Rectangle(0, 0, 512, 512), 
+										 new Rectangle(512, 0, 512, 512), new Rectangle(1024, 0, 512, 512),
+										 new Rectangle(1536, 0, 512, 512), new Rectangle(2048, 0, 512, 512));
+				view.addAnime("mort", new Rectangle(4*512, 3*512, 512, 512));
+				view.setAnime("heureux");
+				view.play();
 				break;
 			case "robot":
 				model = new app.model.Robot();
-				view = new app.view.Pet("./res/test_robot.png");
+				view = new app.view.Pet("./res/Animation_Robot.png");
+				view.addAnime("heureux", new Rectangle(0, 0, 512, 512), new Rectangle(512, 0, 512, 512));
+				view.addAnime("mort", new Rectangle(3*512, 512, 512, 512));
+				view.setAnime("heureux");
+				view.play();
 				break;
 			default:
 				model = new app.model.Robot();
@@ -86,6 +102,9 @@ public class Pet {
 		moral.decreaseValue();
 	}
 	
+	public void setDead() {
+		view.setAnime("mort");
+	}
 	public Stat getHunger() {
 		return hunger;
 	}

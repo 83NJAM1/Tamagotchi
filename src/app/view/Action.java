@@ -18,7 +18,7 @@ import app.App;
  * Elle permet de selectionner les actions du jeu et d'aller au menu
  */
 public class Action extends HBox {
-	
+	 
 	//########################### ATTRIBUTS #####################################
 	
 	// On est obligé de faire un menu perso car
@@ -30,9 +30,11 @@ public class Action extends HBox {
 	private CustomMenuItem customMenuA;
 	private CustomMenuItem customMenuB;
 	private CustomMenuItem customMenuC;
-	private Button butRoomA;
-	private Button butRoomB;
-	private Button butRoomC;
+	private CustomMenuItem customMenuD;
+	private Button butKitchen;
+	private Button butGarden;
+	private Button butBathroom;
+	private Button butLivingroom;
 	private ContextMenu roomContextMenu;
 	
 	//######################### EVENT-ACTION ####################################
@@ -59,12 +61,14 @@ public class Action extends HBox {
 		butMenu = new Button();
 		butStat = new Button();
 		butRoomMenu = new Button();
-		butRoomA = new Button();
-		butRoomB = new Button();
-		butRoomC = new Button();
-		customMenuA = new CustomMenuItem(butRoomA);
-		customMenuB = new CustomMenuItem(butRoomB);
-		customMenuC = new CustomMenuItem(butRoomC);
+		butKitchen = new Button();
+		butGarden = new Button();
+		butBathroom = new Button();
+		butLivingroom = new Button();
+		customMenuA = new CustomMenuItem(butKitchen);
+		customMenuB = new CustomMenuItem(butGarden);
+		customMenuC = new CustomMenuItem(butBathroom);
+		customMenuD = new CustomMenuItem(butLivingroom);
 		roomContextMenu = new ContextMenu();
 		
 		//assignation action
@@ -75,7 +79,7 @@ public class Action extends HBox {
 		updateText();
 		
 		//constructions de la vue
-		roomContextMenu.getItems().addAll(customMenuA, customMenuB, customMenuC);
+		roomContextMenu.getItems().addAll(customMenuA, customMenuB, customMenuC, customMenuD);
 		this.getChildren().addAll(butStat, butRoomMenu, butMenu);
 	}
 	
@@ -83,9 +87,10 @@ public class Action extends HBox {
 		butMenu.setText(App.language.getString("button-menu"));
 		butStat.setText(App.language.getString("button-stats"));
 		butRoomMenu.setText(App.language.getString("button-rooms"));
-		butRoomA.setText(App.language.getString("button-kitchen"));
-		butRoomB.setText(App.language.getString("button-garden"));
-		butRoomC.setText(App.language.getString("button-bathroom"));
+		butKitchen.setText(App.language.getString("button-kitchen"));
+		butGarden.setText(App.language.getString("button-garden"));
+		butBathroom.setText(App.language.getString("button-bathroom"));
+		butLivingroom.setText(App.language.getString("button-livingroom"));
 	}
 	
 	/**
@@ -117,32 +122,67 @@ public class Action extends HBox {
 	 * change de salle
 	 * @param e ActionEvent qui doit être déclencher par le bouton butRoomA
 	 */
-	public void setActionRoomA(EventHandler<ActionEvent> e) {
-		butRoomA.setOnAction(e);
+	public void setActionButKitchen(EventHandler<ActionEvent> e) {
+		butKitchen.setOnAction(e);
 	}
 	
 	/**
 	 * change de salle
-	 * @param e ActionEvent qui doit être déclencher par le bouton butRoomB
+	 * @param e ActionEvent qui doit être déclencher par le bouton butGarden
 	 */
-	public void setActionRoomB(EventHandler<ActionEvent> e) {
-		butRoomB.setOnAction(e);
+	public void setActionButGarden(EventHandler<ActionEvent> e) {
+		butGarden.setOnAction(e);
 	}
 	
 	/**
 	 * change de salle
-	 * @param e ActionEvent qui doit être déclencher par le bouton butRoomC
+	 * @param e ActionEvent qui doit être déclencher par le bouton butBathroom
 	 */
-	public void setActionRoomC(EventHandler<ActionEvent> e) {
-		butRoomC.setOnAction(e);
+	public void setActionButBathroom(EventHandler<ActionEvent> e) {
+		butBathroom.setOnAction(e);
 	}
 	
-	public void setActive(boolean stats, boolean rooms, boolean kitchen, boolean garden, boolean bathroom, boolean menu) {
+	/**
+	 * change de salle
+	 * @param e ActionEvent qui doit être déclencher par le bouton butLivingroom
+	 */
+	public void setActionButLivingroom(EventHandler<ActionEvent> e) {
+		butLivingroom.setOnAction(e);
+	}
+	
+	/**
+	 * Autorise de cliquer sur les boutons suivants
+	 * @param stats true si autorisé false sinon
+	 * @param rooms true si autorisé false sinon
+	 * @param kitchen true si autorisé false sinon
+	 * @param garden true si autorisé false sinon
+	 * @param bathroom true si autorisé false sinon
+	 * @param menu true si autorisé false sinon
+	 */
+	public void setAllowedButtons(boolean stats, boolean rooms, boolean kitchen, boolean garden, boolean bathroom, boolean menu) {
 		butStat.setDisable(!stats);
 		butRoomMenu.setDisable(!rooms);
-		butRoomA.setDisable(!kitchen);
-		butRoomB.setDisable(!garden);
-		butRoomC.setDisable(!bathroom);
+		butKitchen.setDisable(!kitchen);
+		butGarden.setDisable(!garden);
+		butBathroom.setDisable(!bathroom);
 		butMenu.setDisable(!menu);
+	}
+
+	/**
+	 * Autorise de cliquer sur les boutons suivants
+	 * @param list liste de booleen
+	 */
+	public void setAllowedButtons(boolean ... list) {
+		
+		Button butlist[] = {butStat, butRoomMenu, butKitchen, butGarden, butBathroom, butMenu, butLivingroom};
+		
+		try {
+			for ( int i = 0; i < list.length; i++) {
+				butlist[i].setDisable(!list[i]);
+			}
+		}
+		catch (Exception e) {
+			
+		}
 	}
 }

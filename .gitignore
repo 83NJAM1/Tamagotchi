@@ -31,3 +31,5 @@ snapshot.png
 hs_err_pid*
 /bin/
 /tuto_pullrequest/
+/compile_perso.sh
+/launch_perso.sh

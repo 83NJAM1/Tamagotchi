@@ -7,6 +7,8 @@ import java.text.NumberFormat;
 
 //javafx import
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -38,6 +40,9 @@ public class App extends Application{
 
 	public static ResourceBundle language;
 	public static NumberFormat languageNumber;
+	
+	public static Double x_window;
+	public static Double y_window;
 	
 	/* 
 	WIP  : Meurt au bout d’un certain temps
@@ -99,7 +104,25 @@ public class App extends Application{
 			System.out.println(language.getString("bye"));
 		}
 	};
-
+ 
+	/**
+	 * Action effectué quand t-on modifie le volume via la vue Option
+	 * déclencher -> v.Option
+	 */
+	ChangeListener<Number> change_x = new ChangeListener<Number>() {
+		public void changed(ObservableValue<? extends Number> obs, Number vold, Number vnew) {
+			x_window = vnew.doubleValue();
+		}
+	};
+	/**
+	 * Action effectué quand t-on modifie le volume via la vue Option
+	 * déclencher -> v.Option
+	 */
+	ChangeListener<Number> change_y = new ChangeListener<Number>() {
+		public void changed(ObservableValue<? extends Number> obs, Number vold, Number vnew) {
+			y_window = vnew.doubleValue();
+		}
+	};
 	/**
 	 * ActionEvent effectué quand t-on veut charger une partie
 	 * déclencheur -> c.Menu -> v.Menu -> v.Load
@@ -129,6 +152,9 @@ public class App extends Application{
 		
 		stage.setOnCloseRequest(close_app);
 		
+		stage.xProperty().addListener(change_x);
+		stage.yProperty().addListener(change_y);
+		
 		language = ResourceBundle.getBundle("language");
 		languageNumber = NumberFormat.getInstance(Locale.FRENCH);
 		
@@ -136,7 +162,9 @@ public class App extends Application{
 		
         stageWidthDiff = stage.getWidth() - mainController.getMenu().getOption().getWindowWidth();
         stageHeightDiff = stage.getHeight() - mainController.getMenu().getOption().getWindowHeight();
-        
+		x_window = stage.getX();
+		y_window = stage.getY();
+		
         System.out.println(language.getString("wellcome"));
 	}
 	
@@ -152,8 +180,15 @@ public class App extends Application{
         stage.show();
 	}
 	
+	public double getX() {
+		return x_window;
+	}
+	public double getY() {
+		return x_window;
+	}
+	
     public static void main(String[] args) {
-    	System.out.println("v-"+version);
+    	System.out.println("v-"+version+Locale.FRENCH);
         launch();
     }
 }
