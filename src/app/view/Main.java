@@ -19,6 +19,9 @@ public class Main extends StackPane {
 	//ATTENTION: reference partagé avec controller.Menu
 	private Menu menu;
 	
+	// La vue pour customiser le pet
+	private CustomPet customPet;
+	
 	//######################### EVENT-ACTION ####################################
 	
 	/**
@@ -52,6 +55,38 @@ public class Main extends StackPane {
 		
 		this.getChildren().add(menu);
 		this.getChildren().add(game);
+	}
+	
+	public Main() {
+		customPet = new CustomPet();
+		this.getChildren().add(customPet);
+	}
+	
+	public void init(Game game_instance, Menu menu_instance) {
+		this.game = game_instance;
+		this.menu = menu_instance;
+		
+		menu.setQuitAction(click_quit_menu);
+		game.getActionBar().setActionMenu(click_open_menu);
+		
+		this.getChildren().remove(customPet);
+		this.getChildren().add(menu);
+		this.getChildren().add(game);
+	}
+	
+	public CustomPet getCustomPet() {
+		return customPet;
+	}
+	
+	public void showCustom() {
+		game.setDisable(true);
+		menu.setDisable(true);
+		customPet.toFront();
+	}
+	public void hideCustom() {
+		game.setDisable(false);
+		menu.setDisable(false);
+		customPet.toBack();
 	}
 	
 	public void showMenu() {

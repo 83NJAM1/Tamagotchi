@@ -22,9 +22,6 @@ import app.App;
 public class Menu extends StackPane {
 
 	//########################### ATTRIBUTS #####################################
- 
-	// La vue pour customiser le pet
-	private CustomPet customPet;
 	
 	// La vue pour l'affichages et la selection des sauvegardes
 	private Load load;
@@ -107,7 +104,6 @@ public class Menu extends StackPane {
 	public Menu() {
 		
 		//instanciations
-		customPet = new CustomPet();
 		load = new Load();
 		option = new Option();
 		listButtons = new VBox();

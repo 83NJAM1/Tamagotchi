@@ -85,6 +85,19 @@ public class Main {
 		}
 	};
 	
+	/**
+	 * ActionEvent effectué quand t-on veut crer une nouvelle partie
+	 * déclencheur -> this
+	 */
+	private EventHandler<ActionEvent> new_game = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			game = new Game(view.getCustomPet().getPetType(), "test", "save.tmg");
+			view.init(game.getView(), menu.getView());
+			updateText();
+			changeGameDim(menu.getChoosenDim());
+			game.gameover.addListener(change_gameover_value);
+		}
+	};
 	//############################ METHODES #####################################
 
 	public Main(String pathsave) {
@@ -95,11 +108,25 @@ public class Main {
 		
 		String lastSave = menu.getOption().getLastSave();
 		
+		initGame(lastSave, pathsave);
+		
+		musicBackground = loadMediaFile("bin/res/musiques/DogsAndCats", "mp3");
+		musicGameover = loadMediaFile("bin/res/musiques/LowBattery", "mp3");
+		setBackgroundMusic();
+		
+		// construction
+		menu.getView().getOption().setLangAction(choose_lang);
+		menu.getView().getOption().setVolumeAction(change_volume_value);
+	}
+	
+	public void initGame(String lastSave, String pathsave) {
+		
 		// creer une nouvelle partie en écrasant la partie en cours
 		if ( pathsave != null && pathsave.equals("new") && lastSave != null ) {
 			System.out.println("NEW GAME: " + lastSave);
 			// crée une nouvelle partie, la customisation devrai être demandé ici
-			game = new Game("cat", "test", lastSave);
+			view = new app.view.Main();
+			view.getCustomPet().setActionValidate(new_game);
 		}
 		// charge la sauvegarde selectionnée
 		else if ( pathsave != null ) {
@@ -107,11 +134,13 @@ public class Main {
 			menu.getOption().setLastSave(pathsave);
 			menu.getOption().save();
 			game = new Game(pathsave);
+			view = new app.view.Main( game.getView(), menu.getView() );
 		}
 		// charge la dernière sauvegarde utilisée
 		else if ( lastSave != null ) {
 			System.out.println("CONTINUE: " + lastSave);
 			game = new Game(lastSave);
+			view = new app.view.Main( game.getView(), menu.getView() );
 		}
 		// crée un nouveau fichier de sauvgarde
 		else {
@@ -119,27 +148,16 @@ public class Main {
 			menu.getOption().setLastSave("save.tmg");
 			menu.getOption().save();
 			// crée une nouvelle partie, la customisation devrai être demandé ici
-			game = new Game("dog", "test", "save.tmg");
+			view = new app.view.Main();
+			view.getCustomPet().setActionValidate(new_game);
 		}
 		
-		// suite instantiation
-		view = new app.view.Main( game.getView(), menu.getView() );
-		musicBackground = loadMediaFile("bin/res/musiques/DogsAndCats", "mp3");
-		musicGameover = loadMediaFile("bin/res/musiques/LowBattery", "mp3");
-		
-		// suite initialisation
-		setBackgroundMusic();
-		updateText();
-		changeGameDim(menu.getChoosenDim());
-		
-		// assignation action
-		game.gameover.addListener(change_gameover_value);
-		
-		// construction
-		menu.getView().getOption().setLangAction(choose_lang);
-		menu.getView().getOption().setVolumeAction(change_volume_value);
+		if ( game != null ) {
+			updateText();
+			changeGameDim(menu.getChoosenDim());
+			game.gameover.addListener(change_gameover_value);
+		}
 	}
-	
 	/**
 	 * Met à jour le texte de tous les élements
 	 */
@@ -238,8 +256,10 @@ public class Main {
 	 * Sauvegarde les données de jeu
 	 */
 	public void saveGame() {
-		game.save();
-		System.out.println("Save done");
+		if ( game != null ) {
+			game.save();
+			System.out.println("Save done");
+		}
 	}
 	
 	/**
@@ -247,7 +267,9 @@ public class Main {
 	 */
 	public void exit() {
 		mediaplayer.stop();
-		game.exit();
+		if ( game != null ) {
+			game.exit();
+		}
 		menu.exit();
 		view = null;
 		menu = null;
