@@ -18,14 +18,14 @@ public class Game {
 		this.room = room_instance;
 	}
 	
-	public Pet getPet() {
+	public Pet getChildPet() {
 		return pet;
 	}
 	
-	public Room getRoom() {
+	public Room getChildRoom() {
 		return room;
 	}
-	public void setRoom(Room new_room) {
+	public void setChildRoom(Room new_room) {
 		room = new_room;
 	}
 	

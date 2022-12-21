@@ -15,19 +15,19 @@ public class Game {
 	
 	//########################### ATTRIBUTS #####################################
 
-	private app.model.Game model;
+	private app.model.Game gameModel;
 	
-	//ATTENTION: reference partagé avec view.Main
-	private app.view.Game view;
+	//ATTENTION: reference partagé avec gameView.Main
+	private app.view.Game gameView;
 	
-	// le controller du pet à manipuler
-	private Pet pet;
+	// le controller du petController à manipuler
+	private Pet petController;
 	
 	// le controller de la pièce active
-	private Room room;
+	private Room roomController;
 	
 	// gestion des données
-	private app.model.Save save;
+	private app.model.Save saveModel;
 	 
 	// lié à c.Main
 	public BooleanProperty gameover;
@@ -72,12 +72,12 @@ public class Game {
 	};
 	
 	/**
-	 * ActionLoop effectué pour aller dans la pièce B ( livingroom )
+	 * ActionLoop effectué pour aller dans la pièce B ( livingroomController )
 	 * déclendeur -> v.Action
 	 */ 
-	private EventHandler<ActionEvent> gotoBathroom = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> gotoBathroomController = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			setRoom(new Room("bathroom"));
+			setRoom(new Room("bathroomController"));
 			checkRoomAllowedAction();
 		}
 	};
@@ -86,7 +86,7 @@ public class Game {
 	 * ActionLoop effectué pour aller dans la pièce C ( test )
 	 * déclendeur -> v.Action
 	 */ 
-	private EventHandler<ActionEvent> gotoLivingroom = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> gotoLivingroomController = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			setRoom(new Room("test"));
 			checkRoomAllowedAction();
@@ -98,14 +98,14 @@ public class Game {
 	/*
 	 * Constructeur nouvelle partie
 	 */
-	public Game(String petType, String roomName, String saveName) {
+	public Game(String petControllerType, String roomControllerName, String saveName) {
 		
-		save = new app.model.Save("res/"+saveName);
+		saveModel = new app.model.Save("res/"+saveName);
 		
-		pet = new Pet(petType);
-		room = new Room(roomName);
-		model = new app.model.Game( pet.getModel(), room.getModel() );
-		view = new app.view.Game( pet.getView(), room.getView() );
+		petController = new Pet(petControllerType);
+		roomController = new Room(roomControllerName);
+		gameModel = new app.model.Game( petController.getModel(), roomController.getModel() );
+		gameView = new app.view.Game( petController.getView(), roomController.getView() );
 		gameover = new SimpleBooleanProperty(this, "gameover", false);
 		
 		init();
@@ -116,19 +116,19 @@ public class Game {
 	 */
 	public Game(String saveName) {
 		
-		save = new app.model.Save("res/"+saveName);
-		save.load("res/"+saveName);
-		pet = new Pet(save.getPetType());
-		room = new Room(save.getRoomId());
-		model = new app.model.Game( pet.getModel(), room.getModel() );
-		view = new app.view.Game( pet.getView(), room.getView() );
+		saveModel = new app.model.Save("res/"+saveName);
+		saveModel.load("res/"+saveName);
+		petController = new Pet(saveModel.getPetType());
+		roomController = new Room(saveModel.getRoomId());
+		gameModel = new app.model.Game( petController.getModel(), roomController.getModel() );
+		gameView = new app.view.Game( petController.getView(), roomController.getView() );
 		gameover = new SimpleBooleanProperty(this, "gameover", false);
 		
-		pet.getHunger().setValue(save.getStat("hunger"));
-		pet.getThirst().setValue(save.getStat("thirst"));
-		pet.getWeight().setValue(save.getStat("weight"));
-		pet.getHygiene().setValue(save.getStat("hygiene"));
-		pet.getMoral().setValue(save.getStat("moral"));
+		petController.getHunger().setValue(saveModel.getStat("hunger"));
+		petController.getThirst().setValue(saveModel.getStat("thirst"));
+		petController.getWeight().setValue(saveModel.getStat("weight"));
+		petController.getHygiene().setValue(saveModel.getStat("hygiene"));
+		petController.getMoral().setValue(saveModel.getStat("moral"));
 		
 		init();
 	}
@@ -137,55 +137,54 @@ public class Game {
 	 * Initialisation commune entre constructeurs
 	 */
 	private void init() {
+		saveModel.setGameInstance(gameModel);
 		
-		save.setGameInstance(model);
-		
-		view.getActionBar().setActionButKitchen(gotoKitchen);
-		view.getActionBar().setActionButBathroom(gotoBathroom);
-		view.getActionBar().setActionButLivingroom(gotoLivingroom);
-		view.getActionBar().setActionButGarden(gotoGarden);
+		gameView.getActionBar().setActionButKitchen(gotoKitchen);
+		gameView.getActionBar().setActionButBathroom(gotoBathroomController);
+		gameView.getActionBar().setActionButLivingroom(gotoLivingroomController);
+		gameView.getActionBar().setActionButGarden(gotoGarden);
 		
 		checkRoomAllowedAction();
 		actionLoop.start();
 	}
 	
 	public void save() {
-		save.save();
+		saveModel.save();
 	}
 	
-	public void setPet(Pet new_pet) {
-		pet = new_pet;
+	public void setPet(Pet new_petController) {
+		petController = new_petController;
 	}
-	public void setRoom(Room new_room) {
-		room = new_room;
-		model.setRoom(room.getModel());
-		view.setRoom(room.getView());
+	public void setRoom(Room new_roomController) {
+		roomController = new_roomController;
+		gameModel.setChildRoom(roomController.getModel());
+		gameView.setChildRoom(roomController.getView());
 	}
 	
 	public void updateGame() {
 		
-		pet.statsDecreaseOvertime();
+		petController.statsDecreaseOvertime();
 		
-		if ( pet.getHygiene().getModel().getValue() < 0.48 )
-			pet.getHygiene().applyBonus(3.0, 10, "shower");
-		if ( pet.getHygiene().getModel().getValue() < 0.48 )
-			pet.getHygiene().applyBonus(2.0, 5, "brushing teeth");
+		if ( petController.getHygiene().getModel().getValue() < 0.48 )
+			petController.getHygiene().applyBonus(3.0, 10, "shower");
+		if ( petController.getHygiene().getModel().getValue() < 0.48 )
+			petController.getHygiene().applyBonus(2.0, 5, "brushing teeth");
 		
 		if ( isGameover() ) {
-			view.startDrawingGameOver();
+			gameView.startDrawingGameOver();
 			actionLoop.stop();
 		}
 	}
 	
 	public boolean isGameover() {
 		
-		if ( pet.getHunger().getModel().getValue() < 0.0 
-		  || pet.getThirst().getModel().getValue() < 0.0
-		  || pet.getWeight().getModel().getValue() < 0.0
-		  || pet.getMoral().getModel().getValue()  < 0.0 ) 
+		if ( petController.getHunger().getModel().getValue() < 0.0 
+		  || petController.getThirst().getModel().getValue() < 0.0
+		  || petController.getWeight().getModel().getValue() < 0.0
+		  || petController.getMoral().getModel().getValue()  < 0.0 ) 
 		{
 			gameover.setValue(true);
-			pet.setDead();
+			petController.setDead();
 			return true;
 		}
 		
@@ -193,45 +192,45 @@ public class Game {
 	}
 	
 	public void checkRoomAllowedAction() {
-		switch (room.getModel().toString()) {
+		switch (roomController.getModel().toString()) {
 			case "kitchen":
-				view.getActionBar().setAllowedButtons(true, true, false, false, true, true);
+				gameView.getActionBar().setAllowedButtons(true, true, false, false, true, true);
 				break;
-			case "livingroom":
-				view.getActionBar().setAllowedButtons(true, true, false, false, true, true);
+			case "livingroomController":
+				gameView.getActionBar().setAllowedButtons(true, true, false, false, true, true);
 				break;
 			case "garden":
-				view.getActionBar().setAllowedButtons(true, true, false, false, true, true);
+				gameView.getActionBar().setAllowedButtons(true, true, false, false, true, true);
 				break;
 			case "test":
-				view.getActionBar().setAllowedButtons(true, true, true, true, false, true);
+				gameView.getActionBar().setAllowedButtons(true, true, true, true, false, true);
 				break;
 			default:
 				break;
 		}
 	}
 	
-	public Pet getPet() {
-		return pet;
+	public Pet getChildPet() {
+		return petController;
 	}
 	
 	public app.view.Game getView() {
-		return view;
+		return gameView;
 	}
 	
-	public app.model.Game getModel() {
-		return model;
+	public app.model.Game getgameModel() {
+		return gameModel;
 	}
 	
 	public void exit() {
 		actionLoop.stop();
-		pet.exit();
-		room.exit();
-		save = null;
-		view = null;
-		model = null;
-		pet = null;
-		room = null;
+		petController.exit();
+		roomController.exit();
+		saveModel = null;
+		gameView = null;
+		gameModel = null;
+		petController = null;
+		roomController = null;
 		actionLoop = null;
 	}
 	

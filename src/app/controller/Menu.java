@@ -9,66 +9,64 @@ import app.App;
 /**
  * 
  * @author ben
- * Permet de mettre a jour la vue avec le model
+ * Permet de mettre a jour la vue avec le optionModel
  */
 public class Menu {
 	 
 	//########################### ATTRIBUTS #####################################
 	
-	private app.model.Option model;
+	private app.model.Option optionModel;
 	
 	//ATTENTION: reference partagé avec view.Main
-	private app.view.Menu view;
+	private app.view.Menu menuView;
 	
 	//############################ METHODES #####################################
 	
 	public Menu() {
-		model = new app.model.Option("res/config.txt");
-		view = new app.view.Menu();
+		optionModel = new app.model.Option("res/config.txt");
+		menuView = new app.view.Menu();
 	}
 	
 	public void setVolume(Double value) {
-		model.setVolume(value);
+		optionModel.setVolume(value);
 	}
 	public Double getVolume() {
-		return model.getVolume();
+		return optionModel.getVolume();
 	}
 	
 	public void loadOption() {
-		model.load();
-		if ( model.getLanguage().equals( Locale.ENGLISH.toString() ) ) {
-			App.language = ResourceBundle.getBundle("language", Locale.ENGLISH);
-			App.languageNumber = NumberFormat.getNumberInstance(Locale.ENGLISH);
+		optionModel.load();
+		if ( optionModel.getLanguage().equals( Locale.ENGLISH.toString() ) ) {
+			App.setLanguage(Locale.ENGLISH);
 		}
 		else {
-			App.language = ResourceBundle.getBundle("language", Locale.FRENCH);
-			App.languageNumber = NumberFormat.getNumberInstance(Locale.FRENCH);
+			App.setLanguage(Locale.FRENCH);
 		}
 		
-		if ( model.getWindowWidth() <= 640 )
-			view.getOption().setSelectedDim(0);
+		if ( optionModel.getWindowWidth() <= 640 )
+			menuView.getOption().setSelectedDim(0);
 		else
-			view.getOption().setSelectedDim(1);
+			menuView.getOption().setSelectedDim(1);
 		
-		view.getOption().setVolumeValue(model.getVolume());
+		menuView.getOption().setVolumeValue(optionModel.getVolume());
 		
-		System.out.println("loading option:\n" + model.toString().indent(4));
+		System.out.println("loading option:\n" + optionModel.toString().indent(4));
 	}
 	
 	public int getChoosenDim() {
-		return view.getOption().getChoosenDim();
+		return menuView.getOption().getChoosenDim();
 	}
 	
 	public app.model.Option getOption(){
-		return model;
+		return optionModel;
 	}
 	
 	public app.view.Menu getView(){
-		return view;
+		return menuView;
 	}
 	
 	public void exit() {
-		model = null;
-		view = null;
+		optionModel = null;
+		menuView = null;
 	}
 }

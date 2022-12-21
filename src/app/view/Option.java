@@ -57,15 +57,15 @@ public class Option extends VBox {
 	 * Met à jour le texte de tous les élements
 	 */
 	public void updateText() {
-		buttonQuit.setText(App.language.getString("button-quit"));
+		buttonQuit.setText(App.getString("button-quit"));
 		choiceLang.getItems().clear();
-		choiceLang.getItems().addAll(App.language.getString("choice-fr"), App.language.getString("choice-en"));
+		choiceLang.getItems().addAll(App.getString("choice-fr"), App.getString("choice-en"));
 		
-		if ( App.language.getLocale() == Locale.ENGLISH ) {
-			choiceLang.setValue(App.language.getString("choice-en"));
+		if ( App.getLocale() == Locale.ENGLISH ) {
+			choiceLang.setValue(App.getString("choice-en"));
 		}
 		else {
-			choiceLang.setValue(App.language.getString("choice-fr"));
+			choiceLang.setValue(App.getString("choice-fr"));
 		}
 		
 	}
@@ -79,12 +79,12 @@ public class Option extends VBox {
 		this.setBackground(new Background(new BackgroundFill( Color.WHITESMOKE, null, null) ) );
 	}
 	
-	public void setSelectedDim(int i) {
-		choiceDimWindow.setValue(choiceDimWindow.getItems().get(i));
+	public void setSelectedDim(int index) {
+		choiceDimWindow.setValue(choiceDimWindow.getItems().get(index));
 	}
 	
-	public void setVolumeValue(double v) {
-		volume.setValue(v);
+	public void setVolumeValue(double value) {
+		volume.setValue(value);
 	}
 	
 	/**
@@ -151,5 +151,16 @@ public class Option extends VBox {
 	 */
 	public String getChoosenDimValue() {
 		return choiceDimWindow.getSelectionModel().getSelectedItem();
+	}
+	
+	public void exit() {
+		buttonQuit.setDisable(true);
+		volume.setDisable(true);
+		choiceDimWindow.setDisable(true);
+		choiceLang.setDisable(true);
+		buttonQuit = null;
+		volume = null;
+		choiceDimWindow = null;
+		choiceLang = null;
 	}
 }

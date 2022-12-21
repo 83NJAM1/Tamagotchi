@@ -130,10 +130,10 @@ public class Load extends StackPane {
 	 * Met à jour le texte de tous les élements
 	 */
 	public void updateText() {
-		butLeft.setText(App.language.getString("button-prev"));
-		butRight.setText(App.language.getString("button-next"));
-		butValidate.setText(App.language.getString("button-validate"));
-		butCancel.setText(App.language.getString("button-cancel"));
+		butLeft.setText(App.getString("button-prev"));
+		butRight.setText(App.getString("button-next"));
+		butValidate.setText(App.getString("button-validate"));
+		butCancel.setText(App.getString("button-cancel"));
 	}
 	
 	/**
@@ -192,7 +192,19 @@ public class Load extends StackPane {
 		loadAsNew=b;
 	}
 	
-	public Button getValidate() {
+	public Button getChildValidateButton() {
 		return butValidate;
+	}
+	
+	public void exit() {
+		savesObsList.clear();
+		savesObsList = null;
+		savesList = null;
+		savesContent = null;
+		allContent = null;
+		butLeft = null;
+		butRight = null;
+		butValidate = null;
+		butCancel = null;
 	}
 }

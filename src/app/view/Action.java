@@ -84,13 +84,13 @@ public class Action extends HBox {
 	}
 	
 	public void updateText() {
-		butMenu.setText(App.language.getString("button-menu"));
-		butStat.setText(App.language.getString("button-stats"));
-		butRoomMenu.setText(App.language.getString("button-rooms"));
-		butKitchen.setText(App.language.getString("button-kitchen"));
-		butGarden.setText(App.language.getString("button-garden"));
-		butBathroom.setText(App.language.getString("button-bathroom"));
-		butLivingroom.setText(App.language.getString("button-livingroom"));
+		butMenu.setText(App.getString("button-menu"));
+		butStat.setText(App.getString("button-stats"));
+		butRoomMenu.setText(App.getString("button-rooms"));
+		butKitchen.setText(App.getString("button-kitchen"));
+		butGarden.setText(App.getString("button-garden"));
+		butBathroom.setText(App.getString("button-bathroom"));
+		butLivingroom.setText(App.getString("button-livingroom"));
 	}
 	
 	/**
@@ -182,7 +182,22 @@ public class Action extends HBox {
 			}
 		}
 		catch (Exception e) {
-			
+			System.err.println(e);
 		}
+	}
+	
+	public void exit() {
+		butMenu = null;
+		butStat = null;
+		butRoomMenu = null;
+		customMenuA = null;
+		customMenuB = null;
+		customMenuC = null;
+		customMenuD = null;
+		butKitchen = null;
+		butGarden = null;
+		butBathroom = null;
+		butLivingroom = null;
+		roomContextMenu = null;
 	}
 }

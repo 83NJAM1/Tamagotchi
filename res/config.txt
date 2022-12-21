@@ -1,4 +1,4 @@
-last_save : save.tmg
+last_save : save3.tmg
 language : en
 volume : 0.07258064516129033
 width_window : 640

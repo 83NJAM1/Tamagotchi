@@ -79,4 +79,11 @@ public class AnimatedSprite extends Sprite {
 	public void stop() {
 		animation.stop();
 	}
+	
+	public void exit() {
+		super.exit();
+		animation.stop();
+		anime_map.clear();
+		anime_map = null;
+	}
 }

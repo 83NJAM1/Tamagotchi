@@ -58,5 +58,13 @@ public class Pet extends AnimatedSprite {
 	public Stat getMoral() {
 		return moral;
 	}
-
+	
+	public void exit() {
+		super.exit();
+		hunger.exit();
+		thirst.exit();
+		weight.exit();
+		hygiene.exit();
+		moral.exit();
+	}
 }

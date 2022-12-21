@@ -41,4 +41,8 @@ public class Room extends Image {
 	public double getH() {
 		return h;
 	}
+	
+	public void exit() {
+		cancel();
+	}
 }

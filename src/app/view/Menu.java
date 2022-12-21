@@ -94,8 +94,9 @@ public class Menu extends StackPane {
 	private EventHandler<ActionEvent> click_new = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			load.setLoadAsNew(true);
-			load.getValidate().fireEvent(e);
-			load.setLoadAsNew(false);
+			setDisable(true);
+			load.getChildValidateButton().fireEvent(e);
+			//load.setLoadAsNew(false);
 		}
 	};
 	
@@ -132,10 +133,10 @@ public class Menu extends StackPane {
 	 * Met à jour le texte de tous les élements
 	 */
 	public void updateText() {
-		buttonQuit.setText(App.language.getString("button-quit"));
-		buttonNew.setText(App.language.getString("button-newg"));
-		buttonLoad.setText(App.language.getString("button-load"));
-		buttonOpt.setText(App.language.getString("button-opts"));
+		buttonQuit.setText(App.getString("button-quit"));
+		buttonNew.setText(App.getString("button-newg"));
+		buttonLoad.setText(App.getString("button-load"));
+		buttonOpt.setText(App.getString("button-opts"));
 		option.updateText();
 		load.updateText();
 	}
@@ -182,5 +183,17 @@ public class Menu extends StackPane {
 	public void closeLoad() {
 		getChildren().remove(load);
 		listButtons.setDisable(false);
+	}
+	
+	public void exit() {
+		option.exit();
+		load.exit();
+		option = null;
+		load = null;
+		listButtons = null;
+		buttonQuit = null;
+		buttonLoad = null;
+		buttonOpt = null;
+		buttonNew = null;
 	}
 }
