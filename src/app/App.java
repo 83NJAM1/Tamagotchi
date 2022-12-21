@@ -38,11 +38,11 @@ public class App extends Application{
 	private Double stageWidthDiff;
 	private Double stageHeightDiff;
 
-	public static ResourceBundle language;
-	public static NumberFormat languageNumber;
+	private static ResourceBundle language;
+	private static NumberFormat languageNumber;
 	
-	public static Double x_window;
-	public static Double y_window;
+	private static Double x_window;
+	private static Double y_window;
 	
 	/* 
 	WIP  : Meurt au bout d’un certain temps
@@ -74,22 +74,22 @@ public class App extends Application{
 	 */
 	private EventHandler<ActionEvent> choose_dim = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			if ( mainController.getMenu().getView().getOption().getChoosenDim() == 0) {
+			if ( mainController.getChildMenu().getView().getOption().getChoosenDim() == 0) {
 				stage.setWidth(640+stageWidthDiff);
 				stage.setHeight(360+stageHeightDiff);
-				mainController.getMenu().getOption().setWindowWidth(640);
-				mainController.getMenu().getOption().setWindowHeight(360);
+				mainController.getChildMenu().getOption().setWindowWidth(640);
+				mainController.getChildMenu().getOption().setWindowHeight(360);
 				mainController.changeGameDim(0);
 			}
 			else {
 				stage.setWidth(1280+stageWidthDiff);
 				stage.setHeight(720+stageHeightDiff);
-				mainController.getMenu().getOption().setWindowWidth(1280);
-				mainController.getMenu().getOption().setWindowHeight(720);
+				mainController.getChildMenu().getOption().setWindowWidth(1280);
+				mainController.getChildMenu().getOption().setWindowHeight(720);
 				mainController.changeGameDim(1);
 			}
 
-			mainController.getMenu().getOption().save();
+			mainController.getChildMenu().getOption().save();
 		}
 	};
 	
@@ -101,7 +101,7 @@ public class App extends Application{
 		public void handle(WindowEvent e) {
 			mainController.saveGame();
 			mainController.exit();
-			System.out.println(language.getString("bye"));
+			System.out.println(getString("bye"));
 		}
 	};
  
@@ -129,10 +129,10 @@ public class App extends Application{
 	 */
 	private EventHandler<ActionEvent> load_file = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			String pathsave = mainController.getMenu().getView().getLoad().getChoosenSave();
+			String pathsave = mainController.getChildMenu().getView().getLoad().getChoosenSave();
 			mainController.saveGame();
 			stage.close();
-			mainController.getMenu().getView().closeLoad();
+			mainController.getChildMenu().getView().closeLoad();
 			mainController.exit();
 			stage.setScene(null);
 			mainController=null;
@@ -160,31 +160,44 @@ public class App extends Application{
 		
 		load(null);
 		
-        stageWidthDiff = stage.getWidth() - mainController.getMenu().getOption().getWindowWidth();
-        stageHeightDiff = stage.getHeight() - mainController.getMenu().getOption().getWindowHeight();
+        stageWidthDiff = stage.getWidth() - mainController.getChildMenu().getOption().getWindowWidth();
+        stageHeightDiff = stage.getHeight() - mainController.getChildMenu().getOption().getWindowHeight();
 		x_window = stage.getX();
 		y_window = stage.getY();
 		
         System.out.println(language.getString("wellcome"));
 	}
 	
-	public void load(String pathsave) {
+	private void load(String pathsave) {
 		mainController = new Main(pathsave);
-		mainController.getMenu().getView().getOption().setDimensionAction(choose_dim);
-		mainController.getMenu().getView().getLoad().setValidateAction(load_file);
-		
+		mainController.getChildMenu().getView().getOption().setDimensionAction(choose_dim);
+		mainController.getChildMenu().getView().getLoad().setValidateAction(load_file);
+
 		Scene scene = new Scene( mainController.getView(), 
-								 mainController.getMenu().getOption().getWindowWidth()  , 
-								 mainController.getMenu().getOption().getWindowHeight() );
+								 mainController.getChildMenu().getOption().getWindowWidth()  , 
+								 mainController.getChildMenu().getOption().getWindowHeight() );
 		stage.setScene(scene);
         stage.show();
 	}
 	
-	public double getX() {
+	public static double getX() {
 		return x_window;
 	}
-	public double getY() {
-		return x_window;
+	public static double getY() {
+		return y_window;
+	}
+	public static void setLanguage(Locale local) {
+		App.language = ResourceBundle.getBundle("language", local);
+		App.languageNumber = NumberFormat.getNumberInstance(local);
+	}
+	public static String getString(String key) {
+		return language.getString(key);
+	}
+	public static String getString(Double number) {
+		return languageNumber.format(number);
+	}
+	public static Locale getLocale() {
+		return language.getLocale();
 	}
 	
     public static void main(String[] args) {

@@ -88,7 +88,7 @@ public class Game extends StackPane {
 				
 				if(!doonce) {
 					hud.hideStats();
-					hud.getActionBar().setAllowedButtons(false, false, false, false, false, true);
+					hud.getChildAction().setAllowedButtons(false, false, false, false, false, true);
 				}
 			}
         }
@@ -187,12 +187,28 @@ public class Game extends StackPane {
 		//hud.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
 	}
 	
-	public void setRoom(Room new_room) {
+	public void setChildRoom(Room new_room) {
 		room = new_room;
 		updateDraw();
 	}
 	
 	public Action getActionBar() {
-		return hud.getActionBar();
+		return hud.getChildAction();
+	}
+	
+	public void exit() {
+		drawLoop.stop();
+		drawGameoverLoop.stop();
+		pet.exit();
+		room.exit();
+		hud.exit();
+		pet = null;
+		room = null;
+		canvas = null;
+		gc = null;
+		font = null;
+		drawingArea = null;
+		hud = null;
+		gameover_msg = null;
 	}
 }

@@ -47,14 +47,7 @@ public class Main extends StackPane {
 	//############################ METHODES #####################################
 	
 	public Main(Game game_instance, Menu menu_instance) {
-		this.game = game_instance;
-		this.menu = menu_instance;
-		
-		menu.setQuitAction(click_quit_menu);
-		game.getActionBar().setActionMenu(click_open_menu);
-		
-		this.getChildren().add(menu);
-		this.getChildren().add(game);
+		initNoCustomPet(game_instance, menu_instance);
 	}
 	
 	public Main() {
@@ -62,16 +55,20 @@ public class Main extends StackPane {
 		this.getChildren().add(customPet);
 	}
 	
-	public void init(Game game_instance, Menu menu_instance) {
+	private void initNoCustomPet(Game game_instance, Menu menu_instance) {
 		this.game = game_instance;
 		this.menu = menu_instance;
 		
 		menu.setQuitAction(click_quit_menu);
 		game.getActionBar().setActionMenu(click_open_menu);
 		
-		this.getChildren().remove(customPet);
 		this.getChildren().add(menu);
 		this.getChildren().add(game);
+	}
+	
+	public void initWithCustomPet(Game game_instance, Menu menu_instance) {
+		this.getChildren().remove(customPet);
+		initNoCustomPet(game_instance, menu_instance);
 	}
 	
 	public CustomPet getCustomPet() {
@@ -96,5 +93,16 @@ public class Main extends StackPane {
 	public void hideMenu() {
 		game.setDisable(false);
 		menu.toBack();
+	}
+	
+	public void exit() {
+		menu.exit();
+		game.exit();
+		if ( customPet != null ) {
+			customPet.exit();
+		}
+		menu = null;
+		game = null;
+		customPet = null;
 	}
 }

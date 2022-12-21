@@ -3,59 +3,59 @@ package app.controller;
 /**
  * 
  * @author ben
- * Permet de mettre a jour la vue avec le model
+ * Permet de mettre a jour la vue avec le roomModel
  */
 public class Room {
 	
 	//########################### ATTRIBUTS #####################################
  
-	// ATTENTION: reference partagé avec model.Game 
-	private app.model.Room model;
+	// ATTENTION: reference partagé avec roomModel.Game 
+	private app.model.Room roomModel;
 	
-	// ATTENTION: reference partagé avec view.Game 
-	private app.view.Room view;
+	// ATTENTION: reference partagé avec roomView.Game 
+	private app.view.Room roomView;
 	
 	//############################ METHODES #####################################
 	
 	public Room(String roomName) {
 		switch(roomName) {
 			case "test":
-				model = new app.model.Room("test");
-				view = new app.view.Room("./res/test_room.png");
+				roomModel = new app.model.Room("test");
+				roomView = new app.view.Room("./res/test_room.png");
 				break;
 			case "livingroom":
-				model = new app.model.Room("livingroom");
-				view = new app.view.Room("./res/no_image.png");
+				roomModel = new app.model.Room("livingroom");
+				roomView = new app.view.Room("./res/no_image.png");
 				break;
 			case "kitchen":
-				model = new app.model.Room("kitchen");
-				view = new app.view.Room("./res/no_image.png");
+				roomModel = new app.model.Room("kitchen");
+				roomView = new app.view.Room("./res/no_image.png");
 				break;
 			case "bathroom":
-				model = new app.model.Room("bathroom");
-				view = new app.view.Room("./res/no_image.png");
+				roomModel = new app.model.Room("bathroom");
+				roomView = new app.view.Room("./res/no_image.png");
 				break;
 			case "garden":
-				model = new app.model.Room("garden");
-				view = new app.view.Room("./res/no_image.png");
+				roomModel = new app.model.Room("garden");
+				roomView = new app.view.Room("./res/no_image.png");
 				break;
 			default:
-				model = new app.model.Room("undefined");
-				view = new app.view.Room("./res/no_image.png");
+				roomModel = new app.model.Room("undefined");
+				roomView = new app.view.Room("./res/no_image.png");
 				break;
 		}
 	}
 	
 	public app.model.Room getModel() {
-		return model;
+		return roomModel;
 	}
 	
 	public app.view.Room getView() {
-		return view;
+		return roomView;
 	}
 	
 	public void exit() {
-		model = null;
-		view = null;
+		roomModel = null;
+		roomView = null;
 	}
 }

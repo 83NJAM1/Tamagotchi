@@ -66,7 +66,7 @@ public class CustomPet extends StackPane {
 	
 	private Button currentButton;
 	
-	private String petId;
+	private String currentPetType;
 	
 	//######################### EVENT-ACTION ####################################
 	
@@ -87,8 +87,8 @@ public class CustomPet extends StackPane {
 	private EventHandler<ActionEvent> bckColorA = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			currentButton = butBckColorA;
-			popup.show(butBckColorA, App.x_window+butBckColorA.getLocalToSceneTransform().getTx(), 
-					 				 App.y_window+butBckColorA.getLocalToSceneTransform().getTy());
+			popup.show(butBckColorA, App.getX()+butBckColorA.getLocalToSceneTransform().getTx(), 
+					 				 App.getY()+butBckColorA.getLocalToSceneTransform().getTy());
 		}
 	};
 	/**
@@ -98,8 +98,8 @@ public class CustomPet extends StackPane {
 	private EventHandler<ActionEvent> bckColorB = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			currentButton = butBckColorB;
-			popup.show(butBckColorB, App.x_window+butBckColorB.getLocalToSceneTransform().getTx(), 
-					 				 App.y_window+butBckColorB.getLocalToSceneTransform().getTy());
+			popup.show(butBckColorB, App.getX()+butBckColorB.getLocalToSceneTransform().getTx(), 
+					 				 App.getY()+butBckColorB.getLocalToSceneTransform().getTy());
 		}
 	};
 	/**
@@ -109,8 +109,8 @@ public class CustomPet extends StackPane {
 	private EventHandler<ActionEvent> bckColorC = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			currentButton = butBckColorC;
-			popup.show(butBckColorC, App.x_window+butBckColorC.getLocalToSceneTransform().getTx(), 
-									 App.y_window+butBckColorC.getLocalToSceneTransform().getTy());
+			popup.show(butBckColorC, App.getX()+butBckColorC.getLocalToSceneTransform().getTx(), 
+									 App.getY()+butBckColorC.getLocalToSceneTransform().getTy());
 		}
 	};
 	/**
@@ -120,8 +120,8 @@ public class CustomPet extends StackPane {
 	private EventHandler<ActionEvent> frtColorA = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			currentButton = butFrtColorA;
-			popup.show(butFrtColorA, App.x_window+butFrtColorA.getLocalToSceneTransform().getTx(), 
-					 				 App.y_window+butFrtColorA.getLocalToSceneTransform().getTy());
+			popup.show(butFrtColorA, App.getX()+butFrtColorA.getLocalToSceneTransform().getTx(), 
+					 				 App.getY()+butFrtColorA.getLocalToSceneTransform().getTy());
 		}
 	};
 	/**
@@ -131,8 +131,8 @@ public class CustomPet extends StackPane {
 	private EventHandler<ActionEvent> frtColorB = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			currentButton = butFrtColorB;
-			popup.show(butFrtColorB, App.x_window+butFrtColorB.getLocalToSceneTransform().getTx(), 
-					 				 App.y_window+butFrtColorB.getLocalToSceneTransform().getTy());
+			popup.show(butFrtColorB, App.getX()+butFrtColorB.getLocalToSceneTransform().getTx(), 
+					 				 App.getY()+butFrtColorB.getLocalToSceneTransform().getTy());
 		}
 	};
 	/**
@@ -142,8 +142,8 @@ public class CustomPet extends StackPane {
 	private EventHandler<ActionEvent> frtColorC = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			currentButton = butFrtColorC;
-			popup.show(butFrtColorC, App.x_window+butFrtColorC.getLocalToSceneTransform().getTx(), 
-									 App.y_window+butFrtColorC.getLocalToSceneTransform().getTy());
+			popup.show(butFrtColorC, App.getX()+butFrtColorC.getLocalToSceneTransform().getTx(), 
+									 App.getY()+butFrtColorC.getLocalToSceneTransform().getTy());
 		}
 	};
 	/**
@@ -153,7 +153,7 @@ public class CustomPet extends StackPane {
 	private EventHandler<ActionEvent> petTypeA = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			preview.setImage(new Image("res/test_cat.png"));
-			petId="cat";
+			currentPetType="cat";
 		}
 	};
 	/**
@@ -163,7 +163,7 @@ public class CustomPet extends StackPane {
 	private EventHandler<ActionEvent> petTypeB = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			preview.setImage(new Image("res/test_dog.png"));
-			petId="dog";
+			currentPetType="dog";
 		}
 	};
 	/**
@@ -173,7 +173,7 @@ public class CustomPet extends StackPane {
 	private EventHandler<ActionEvent> petTypeC = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			preview.setImage(new Image("res/test_robot.png"));
-			petId="robot";
+			currentPetType="robot";
 		}
 	};
 	
@@ -244,7 +244,7 @@ public class CustomPet extends StackPane {
 		colorpicker.hide();
 		
 		updateStype();
-		petId="dog";
+		currentPetType="dog";
 	}
 	
 	public void updateStype() {
@@ -275,6 +275,42 @@ public class CustomPet extends StackPane {
 	}
 	
 	public String getPetType() {
-		return petId;
+		return currentPetType;
+	}
+	
+	public void exit() {
+		preview = null;
+		colorpicker = null;
+		popup = null;
+		
+		labelPetType = null;
+		
+		petType = null;
+		butPetTypeA = null;
+		butPetTypeB = null;
+		butPetTypeC = null;
+		
+		labelBackPalet = null;
+		
+		backPalet = null;
+		butBckColorA = null;
+		butBckColorB = null;
+		butBckColorC = null;
+		
+		labelFrontPalet = null;
+		
+		frontPalet = null;
+		butFrtColorA = null;
+		butFrtColorB = null;
+		butFrtColorC = null;
+		
+		TopCenterBottom = null;
+		LeftCenterRight = null;
+		leftSide = null;
+		rightSide = null;
+		validate = null;
+		
+		currentButton = null;
+		currentPetType = null;
 	}
 }

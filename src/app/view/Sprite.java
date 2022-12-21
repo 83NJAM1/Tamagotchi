@@ -61,4 +61,8 @@ public class Sprite extends Image {
 	public double getSrcH() {
 		return src_h;
 	}
+	
+	public void exit() {
+		cancel();
+	}
 }

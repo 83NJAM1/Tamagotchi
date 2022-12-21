@@ -23,7 +23,7 @@ public class Stat extends VBox {
 	public Stat(String name) {
 		
 		this.name = new Label(name);
-		this.valueTxt = new Label("0.0");
+		valueTxt = new Label("0.0");
 		valueBar = new ProgressBar();
 		fieldValue = new StackPane();
 		
@@ -32,14 +32,21 @@ public class Stat extends VBox {
 	}
 	
 	public void updateText(String key) {
-		name.setText(App.language.getString(key));
+		name.setText(App.getString(key));
 	}
 	
 	public void updateStyle() {
 	}
 	
-	public void updateValue(Double v) {
-		valueTxt.setText(App.languageNumber.format(v));
-		valueBar.setProgress(v);
+	public void updateValue(Double value) {
+		valueTxt.setText(App.getString(value));
+		valueBar.setProgress(value);
+	}
+	
+	public void exit() {
+		name = null;
+		valueTxt = null;
+		valueBar = null;
+		fieldValue = null;
 	}
 }

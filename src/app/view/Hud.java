@@ -64,11 +64,18 @@ public class Hud extends AnchorPane{
 		AnchorPane.setLeftAnchor(actionBar, 10.);
 	}
 	
-	public Action getActionBar() {
+	public Action getChildAction() {
 		return actionBar;
 	}
 	
 	public void hideStats() {
 		statsBox.setVisible(false);;
+	}
+	
+	public void exit() {
+		stats.clear();
+		actionBar = null;
+		statsBox = null;
+		stats = null;
 	}
 }

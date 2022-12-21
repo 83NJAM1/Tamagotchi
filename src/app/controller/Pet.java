@@ -5,134 +5,135 @@ import javafx.scene.shape.Rectangle;
 /**
  * 
  * @author ben
- * Permet de mettre a jour la vue avec le model
+ * Permet de mettre a jour la vue avec le petModel
  */
 public class Pet {
 	
 	//########################### ATTRIBUTS #####################################
 	 
-	// ATTENTION: référence partagé avec model.Game
-	private app.model.Pet model;
+	// ATTENTION: référence partagé avec petModel.Game
+	private app.model.Pet petModel;
 	
-	// ATTENTION: référence partagé avec view.Game
-	private app.view.Pet view;
+	// ATTENTION: référence partagé avec petView.Game
+	private app.view.Pet petView;
 	
-	private Stat hunger;
-	private Stat thirst;
-	private Stat weight;
-	private Stat hygiene;
-	private Stat moral;
+	private Stat hungerController;
+	private Stat thirstController;
+	private Stat weightController;
+	private Stat hygieneController;
+	private Stat moralController;
 	
 	//############################ METHODES #####################################
 	
 	public Pet(String type) {
-		hunger = new Stat("hunger");
-		thirst = new Stat("thirst");
-		weight = new Stat("weight");
-		hygiene = new Stat("hygiene");
-		moral = new Stat("moral");
+		
+		hungerController = new Stat("hunger");
+		thirstController = new Stat("thirst");
+		weightController = new Stat("weight");
+		hygieneController = new Stat("hygiene");
+		moralController = new Stat("moral");
 		
 		switch(type) {
 			case "cat":
-				model = new app.model.Animal("cat");
-				view = new app.view.Pet("./res/Animation_Chat_Normal.png");
-				view.addAnime("heureux", new Rectangle(0, 0, 512, 512), new Rectangle(512, 0, 512, 512), new Rectangle(1024, 0, 512, 512));
-				view.addAnime("mort", new Rectangle(1024, 1536, 512, 512));
-				view.setAnime("heureux");
-				view.play();
+				petModel = new app.model.Animal("cat");
+				petView = new app.view.Pet("./res/Animation_Chat_Normal.png");
+				petView.addAnime("heureux", new Rectangle(0, 0, 512, 512), new Rectangle(512, 0, 512, 512), new Rectangle(1024, 0, 512, 512));
+				petView.addAnime("mort", new Rectangle(1024, 1536, 512, 512));
+				petView.setAnime("heureux");
+				petView.play();
 				break;
 			case "dog":
-				model = new app.model.Animal("dog");
-				view = new app.view.Pet("./res/Animation_Chien_Normal.png");
-				view.addAnime("heureux", new Rectangle(0, 0, 512, 512), 
+				petModel = new app.model.Animal("dog");
+				petView = new app.view.Pet("./res/Animation_Chien_Normal.png");
+				petView.addAnime("heureux", new Rectangle(0, 0, 512, 512), 
 										 new Rectangle(512, 0, 512, 512), new Rectangle(1024, 0, 512, 512),
 										 new Rectangle(1536, 0, 512, 512), new Rectangle(2048, 0, 512, 512));
-				view.addAnime("mort", new Rectangle(4*512, 3*512, 512, 512));
-				view.setAnime("heureux");
-				view.play();
+				petView.addAnime("mort", new Rectangle(4*512, 3*512, 512, 512));
+				petView.setAnime("heureux");
+				petView.play();
 				break;
 			case "robot":
-				model = new app.model.Robot();
-				view = new app.view.Pet("./res/Animation_Robot.png");
-				view.addAnime("heureux", new Rectangle(0, 0, 512, 512), new Rectangle(512, 0, 512, 512));
-				view.addAnime("mort", new Rectangle(3*512, 512, 512, 512));
-				view.setAnime("heureux");
-				view.play();
+				petModel = new app.model.Robot();
+				petView = new app.view.Pet("./res/Animation_Robot.png");
+				petView.addAnime("heureux", new Rectangle(0, 0, 512, 512), new Rectangle(512, 0, 512, 512));
+				petView.addAnime("mort", new Rectangle(3*512, 512, 512, 512));
+				petView.setAnime("heureux");
+				petView.play();
 				break;
 			default:
-				model = new app.model.Robot();
-				view = new app.view.Pet("./res/no_image.png");
+				petModel = new app.model.Robot();
+				petView = new app.view.Pet("./res/no_image.png");
 				break;
 		}
 		
-		model.setHunger(hunger.getModel());
-		model.setThirst(thirst.getModel());
-		model.setWeight(weight.getModel());
-		model.setHygiene(hygiene.getModel());
-		model.setMoral(moral.getModel());
+		petModel.setHunger(hungerController.getModel());
+		petModel.setThirst(thirstController.getModel());
+		petModel.setWeight(weightController.getModel());
+		petModel.setHygiene(hygieneController.getModel());
+		petModel.setMoral(moralController.getModel());
 		
-		view.setHunger(hunger.getView());
-		view.setThirst(thirst.getView());
-		view.setWeight(weight.getView());
-		view.setHygiene(hygiene.getView());
-		view.setMoral(moral.getView());
+		petView.setHunger(hungerController.getView());
+		petView.setThirst(thirstController.getView());
+		petView.setWeight(weightController.getView());
+		petView.setHygiene(hygieneController.getView());
+		petView.setMoral(moralController.getView());
 	}
 	
 	public app.model.Pet getModel() {
-		return model;
+		return petModel;
 	}
 	
 	public app.view.Pet getView() {
-		return view;
+		return petView;
 	}
 	
 	public void updateText() {
-		hunger.updateText();
-		thirst.updateText();
-		weight.updateText();
-		hygiene.updateText();
-		moral.updateText();
+		hungerController.updateText();
+		thirstController.updateText();
+		weightController.updateText();
+		hygieneController.updateText();
+		moralController.updateText();
 	}
 	
 	public void statsDecreaseOvertime() {
-		hunger.decreaseValue();
-		thirst.decreaseValue();
-		weight.decreaseValue();
-		hygiene.decreaseValue();
-		moral.decreaseValue();
+		hungerController.decreaseValue();
+		thirstController.decreaseValue();
+		weightController.decreaseValue();
+		hygieneController.decreaseValue();
+		moralController.decreaseValue();
 	}
 	
 	public void setDead() {
-		view.setAnime("mort");
+		petView.setAnime("mort");
 	}
 	public Stat getHunger() {
-		return hunger;
+		return hungerController;
 	}
 	public Stat getThirst() {
-		return thirst;
+		return thirstController;
 	}
 	public Stat getWeight() {
-		return weight;
+		return weightController;
 	}
 	public Stat getHygiene() {
-		return hygiene;
+		return hygieneController;
 	}
 	public Stat getMoral() {
-		return moral;
+		return moralController;
 	}
 	
 	public void exit() {
-		hunger.exit();
-		thirst.exit();
-		weight.exit();
-		hygiene.exit();
-		moral.exit();
-		model = null;
-		view = null;
-		hunger = null;
-		thirst = null;
-		weight = null;
-		hygiene = null;
-		moral = null;
+		hungerController.exit();
+		thirstController.exit();
+		weightController.exit();
+		hygieneController.exit();
+		moralController.exit();
+		petModel = null;
+		petView = null;
+		hungerController = null;
+		thirstController = null;
+		weightController = null;
+		hygieneController = null;
+		moralController = null;
 	}
 }

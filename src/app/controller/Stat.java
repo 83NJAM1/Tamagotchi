@@ -7,17 +7,17 @@ import app.App;
 /**
  * 
  * @author ben
- * Permet de mettre a jour la vue avec le model
+ * Permet de mettre a jour la vue avec le statModel
  */
 public class Stat {
 	
 	//########################### ATTRIBUTS #####################################
  
 	// ATTENTION: Reference partagé avec model.Pet
-	private app.model.Stat model;
+	private app.model.Stat statModel;
 	
-	// ATTENTION: Reference partagé avec view.Hud
-	private app.view.Stat view;
+	// ATTENTION: Reference partagé avec view.Hud + view.Pet
+	private app.view.Stat statView;
 	
 	// Bonus
 	private long bonusTime; // en nanosecondes
@@ -49,7 +49,7 @@ public class Stat {
 				}
 				else {
 					doonce = true;
-					System.out.println("Bonus " + bonusName + " for " + model.getKeyName() + " activated");
+					System.out.println("Bonus " + bonusName + " for " + statModel.getKeyName() + " activated");
 				}
 				
 				// le nouveau temps à attendre
@@ -60,7 +60,7 @@ public class Stat {
 				
 				// fin du bonus
 				if ( global_time > bonusTime ) {
-					System.out.println( "Bonus " + bonusName + " for " + model.getKeyName() 
+					System.out.println( "Bonus " + bonusName + " for " + statModel.getKeyName() 
 									  + " ended after: " + global_time/1_000_000_000.0 + " seconds");
 					this.stop();
 					global_time=0;
@@ -75,28 +75,28 @@ public class Stat {
 	//############################ METHODES #####################################
 	
 	public Stat(String name) {
-		model = new app.model.Stat(name);
-		view = new app.view.Stat(App.language.getString(name));
+		statModel = new app.model.Stat(name);
+		statView = new app.view.Stat(App.getString(name));
 		bonusTime=0;
 	}
 	
 	public void updateText() {
-		view.updateText(model.getKeyName());
+		statView.updateText(statModel.getKeyName());
 	}
 	
 	public void decreaseValue() {
-		model.dec();
-		view.updateValue(model.getValue());
+		statModel.dec();
+		statView.updateValue(statModel.getValue());
 	}
 	
 	public void increaseValue() {
-		model.inc();
-		view.updateValue(model.getValue());
+		statModel.inc();
+		statView.updateValue(statModel.getValue());
 	}
 	
 	public void applyBonus(Double factor, long seconds, String name) {
 		
-		if ( !bonusIsActivate && model.setBonus(factor) ) {
+		if ( !bonusIsActivate && statModel.setBonus(factor) ) {
 			
 			bonusTime = seconds*1_000_000_000;
 			bonusName = name;
@@ -111,22 +111,22 @@ public class Stat {
 	}
 	
 	public void setValue(Double value) {
-		model.setValue(value);
-		view.updateValue(value);
+		statModel.setValue(value);
+		statView.updateValue(value);
 	}
 	
 	public app.model.Stat getModel() {
-		return model;
+		return statModel;
 	}
 	
 	public app.view.Stat getView() {
-		return view;
+		return statView;
 	}
 	
 	public void exit() {
 		activeBonus.stop();
-		activeBonus=null;
-		model = null;
-		view = null;
+		activeBonus = null;
+		statModel = null;
+		statView = null;
 	}
 }
