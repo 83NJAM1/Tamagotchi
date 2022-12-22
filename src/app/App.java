@@ -64,32 +64,32 @@ public class App extends Application{
 	TODO : Evènements affectants les attributs (Rêves, cauchemars affectent le moral)
 	TODO : Notification lors de la sauvegarde 
 	*/
-	public final static String version = "0.0.0";
+	private final static String version = "0.0.7";
 	
 	//######################### EVENT-ACTION ####################################
 	
 	/**
-	 * ActionEvent pour changer les dimensions de la fenêtre
+	 * ActionEvent pour changer la definition de la fenêtre
 	 * déclancheur -> v.Option
 	 */
-	private EventHandler<ActionEvent> choose_dim = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> choose_definition = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			if ( mainController.getChildMenu().getView().getOption().getChoosenDim() == 0) {
+			if ( mainController.getChildMenu().getView().getChildOption().getChoosenDefinitionIndex() == 0) {
 				stage.setWidth(640+stageWidthDiff);
 				stage.setHeight(360+stageHeightDiff);
-				mainController.getChildMenu().getOption().setWindowWidth(640);
-				mainController.getChildMenu().getOption().setWindowHeight(360);
+				mainController.getChildMenu().getModelOption().setWindowWidth(640);
+				mainController.getChildMenu().getModelOption().setWindowHeight(360);
 				mainController.changeGameDim(0);
 			}
 			else {
 				stage.setWidth(1280+stageWidthDiff);
 				stage.setHeight(720+stageHeightDiff);
-				mainController.getChildMenu().getOption().setWindowWidth(1280);
-				mainController.getChildMenu().getOption().setWindowHeight(720);
+				mainController.getChildMenu().getModelOption().setWindowWidth(1280);
+				mainController.getChildMenu().getModelOption().setWindowHeight(720);
 				mainController.changeGameDim(1);
 			}
 
-			mainController.getChildMenu().getOption().save();
+			mainController.getChildMenu().getModelOption().save();
 		}
 	};
 	
@@ -106,31 +106,37 @@ public class App extends Application{
 	};
  
 	/**
-	 * Action effectué quand t-on modifie le volume via la vue Option
-	 * déclencher -> v.Option
+	 * Action effectué quand t-on modifie la position x de la fenêtre
+	 * déclencher -> this
 	 */
 	ChangeListener<Number> change_x = new ChangeListener<Number>() {
 		public void changed(ObservableValue<? extends Number> obs, Number vold, Number vnew) {
 			x_window = vnew.doubleValue();
 		}
 	};
+	
 	/**
-	 * Action effectué quand t-on modifie le volume via la vue Option
-	 * déclencher -> v.Option
+	 * Action effectué quand t-on modifie la position y de la fenêtre
+	 * déclencher -> this
 	 */
 	ChangeListener<Number> change_y = new ChangeListener<Number>() {
 		public void changed(ObservableValue<? extends Number> obs, Number vold, Number vnew) {
 			y_window = vnew.doubleValue();
 		}
 	};
+	
 	/**
 	 * ActionEvent effectué quand t-on veut charger une partie
 	 * déclencheur -> c.Menu -> v.Menu -> v.Load
 	 */
-	private EventHandler<ActionEvent> load_file = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> load_game = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			String pathsave = mainController.getChildMenu().getView().getLoad().getChoosenSave();
+			
+			//sauvegarde les données
+			String saveName = mainController.getChildMenu().getView().getChildLoad().getChoosenSave();
 			mainController.saveGame();
+			
+			//detruit tout
 			stage.close();
 			mainController.getChildMenu().getView().closeLoad();
 			mainController.exit();
@@ -138,7 +144,31 @@ public class App extends Application{
 			mainController=null;
 			System.gc();
 			
-			load(pathsave);
+			//reconstruit
+			initMain(saveName);
+		}
+	};
+	
+	/**
+	 * ActionEvent effectué quand t-on veut recommencer une partie
+	 * déclencheur -> c.Menu -> v.Menu -> v.Load
+	 */
+	private EventHandler<ActionEvent> new_game = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			
+			//sauvegarde les données
+			mainController.saveGame();
+			
+			//detruit tout
+			stage.close();
+			mainController.getChildMenu().getView().closeLoad();
+			mainController.exit();
+			stage.setScene(null);
+			mainController=null;
+			System.gc();
+			
+			//reconstruit
+			initMain("new");
 		}
 	};
 	
@@ -147,35 +177,46 @@ public class App extends Application{
 	@Override
 	public void start(Stage stage) {
 		
-		// enregistre la référence pour pouvoir faire des actions dessus
+		// enregistre la référence pour pouvoir faire des actions dessus 
+		// lors d'un chargement ou d'une nouvelle partie
 		this.stage = stage;
 		
+		// associe les actions pour l'application
 		stage.setOnCloseRequest(close_app);
-		
 		stage.xProperty().addListener(change_x);
 		stage.yProperty().addListener(change_y);
 		
+		// definit la langue par default
 		language = ResourceBundle.getBundle("language");
 		languageNumber = NumberFormat.getInstance(Locale.FRENCH);
 		
-		load(null);
+		// initialise le main sans spécifier de sauvegarde 
+		initMain(null);
 		
-        stageWidthDiff = stage.getWidth() - mainController.getChildMenu().getOption().getWindowWidth();
-        stageHeightDiff = stage.getHeight() - mainController.getChildMenu().getOption().getWindowHeight();
+		// donnée traité ultérieurement
+        stageWidthDiff = stage.getWidth() - mainController.getChildMenu().getModelOption().getWindowWidth();
+        stageHeightDiff = stage.getHeight() - mainController.getChildMenu().getModelOption().getWindowHeight();
 		x_window = stage.getX();
 		y_window = stage.getY();
 		
+		// message de lancement
         System.out.println(language.getString("wellcome"));
 	}
 	
-	private void load(String pathsave) {
-		mainController = new Main(pathsave);
-		mainController.getChildMenu().getView().getOption().setDimensionAction(choose_dim);
-		mainController.getChildMenu().getView().getLoad().setValidateAction(load_file);
-
+	private void initMain(String saveName) {
+		
+		// initialise la vue principale incluant la vue du jeu
+		mainController = new Main(saveName);
+		mainController.getChildMenu().getView().getChildOption().setActionChoiceBoxDefinition(choose_definition);
+		mainController.getChildMenu().getView().getChildLoad().setActionButtonValidate(load_game);
+		mainController.getChildMenu().getView().setActionButtonNew(new_game);
+		
+		// initialise la scene utilisé pour affocher la vue principale
 		Scene scene = new Scene( mainController.getView(), 
-								 mainController.getChildMenu().getOption().getWindowWidth()  , 
-								 mainController.getChildMenu().getOption().getWindowHeight() );
+								 mainController.getChildMenu().getModelOption().getWindowWidth()  , 
+								 mainController.getChildMenu().getModelOption().getWindowHeight() );
+		
+		// la scene a utilisé pour l'application
 		stage.setScene(scene);
         stage.show();
 	}
@@ -186,7 +227,7 @@ public class App extends Application{
 	public static double getY() {
 		return y_window;
 	}
-	public static void setLanguage(Locale local) {
+	public static void setLocale(Locale local) {
 		App.language = ResourceBundle.getBundle("language", local);
 		App.languageNumber = NumberFormat.getNumberInstance(local);
 	}
@@ -199,9 +240,12 @@ public class App extends Application{
 	public static Locale getLocale() {
 		return language.getLocale();
 	}
+	public static String getVersion() {
+		return version;
+	}
 	
     public static void main(String[] args) {
-    	System.out.println("v-"+version+Locale.FRENCH);
+    	System.out.println("v"+getVersion());
         launch();
     }
 }

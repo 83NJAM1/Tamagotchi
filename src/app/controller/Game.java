@@ -139,10 +139,10 @@ public class Game {
 	private void init() {
 		saveModel.setGameInstance(gameModel);
 		
-		gameView.getActionBar().setActionButKitchen(gotoKitchen);
-		gameView.getActionBar().setActionButBathroom(gotoBathroomController);
-		gameView.getActionBar().setActionButLivingroom(gotoLivingroomController);
-		gameView.getActionBar().setActionButGarden(gotoGarden);
+		gameView.getChildHud().getChildAction().setActionButtonKitchen(gotoKitchen);
+		gameView.getChildHud().getChildAction().setActionButtonBathroom(gotoBathroomController);
+		gameView.getChildHud().getChildAction().setActionButtonLivingroom(gotoLivingroomController);
+		gameView.getChildHud().getChildAction().setActionButtonGarden(gotoGarden);
 		
 		checkRoomAllowedAction();
 		actionLoop.start();
@@ -194,16 +194,16 @@ public class Game {
 	public void checkRoomAllowedAction() {
 		switch (roomController.getModel().toString()) {
 			case "kitchen":
-				gameView.getActionBar().setAllowedButtons(true, true, false, false, true, true);
+				gameView.getChildHud().getChildAction().setAllowedButtons(true, true, false, false, true, true);
 				break;
 			case "livingroomController":
-				gameView.getActionBar().setAllowedButtons(true, true, false, false, true, true);
+				gameView.getChildHud().getChildAction().setAllowedButtons(true, true, false, false, true, true);
 				break;
 			case "garden":
-				gameView.getActionBar().setAllowedButtons(true, true, false, false, true, true);
+				gameView.getChildHud().getChildAction().setAllowedButtons(true, true, false, false, true, true);
 				break;
 			case "test":
-				gameView.getActionBar().setAllowedButtons(true, true, true, true, false, true);
+				gameView.getChildHud().getChildAction().setAllowedButtons(true, true, true, true, false, true);
 				break;
 			default:
 				break;

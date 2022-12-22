@@ -27,9 +27,9 @@ public class Option extends VBox {
 	//########################### ATTRIBUTS #####################################
  
 	private Button buttonQuit;
-	private ChoiceBox<String> choiceLang;
-	private Slider volume;
-	private ChoiceBox<String> choiceDimWindow;
+	private ChoiceBox<String> choiceLanguage;
+	private Slider sliderVolume;
+	private ChoiceBox<String> choiceWindowDefinition;
 	
 	//############################ METHODES #####################################
 	
@@ -38,19 +38,19 @@ public class Option extends VBox {
 		// instanciation
 		super();
 		buttonQuit = new Button();
-		choiceLang = new ChoiceBox<String>();
-		volume = new Slider(0.0, 1.0, 0.5);
-		choiceDimWindow = new ChoiceBox<String>();
+		choiceLanguage = new ChoiceBox<String>();
+		sliderVolume = new Slider(0.0, 1.0, 0.5);
+		choiceWindowDefinition = new ChoiceBox<String>();
 		
 		// initialisation
-		choiceDimWindow.getItems().addAll("640x360", "1280x720");
-		choiceDimWindow.setValue(choiceDimWindow.getItems().get(0));
+		choiceWindowDefinition.getItems().addAll("640x360", "1280x720");
+		choiceWindowDefinition.setValue(choiceWindowDefinition.getItems().get(0));
 		
 		updateText();
 		updateStyle();
 
 		// construction
-		this.getChildren().addAll(choiceDimWindow, choiceLang, volume, buttonQuit);
+		this.getChildren().addAll(choiceWindowDefinition, choiceLanguage, sliderVolume, buttonQuit);
 	}
 	
 	/**
@@ -58,14 +58,14 @@ public class Option extends VBox {
 	 */
 	public void updateText() {
 		buttonQuit.setText(App.getString("button-quit"));
-		choiceLang.getItems().clear();
-		choiceLang.getItems().addAll(App.getString("choice-fr"), App.getString("choice-en"));
+		choiceLanguage.getItems().clear();
+		choiceLanguage.getItems().addAll(App.getString("choice-fr"), App.getString("choice-en"));
 		
 		if ( App.getLocale() == Locale.ENGLISH ) {
-			choiceLang.setValue(App.getString("choice-en"));
+			choiceLanguage.setValue(App.getString("choice-en"));
 		}
 		else {
-			choiceLang.setValue(App.getString("choice-fr"));
+			choiceLanguage.setValue(App.getString("choice-fr"));
 		}
 		
 	}
@@ -79,19 +79,19 @@ public class Option extends VBox {
 		this.setBackground(new Background(new BackgroundFill( Color.WHITESMOKE, null, null) ) );
 	}
 	
-	public void setSelectedDim(int index) {
-		choiceDimWindow.setValue(choiceDimWindow.getItems().get(index));
+	public void setSelectedChoiceDefinition(int index) {
+		choiceWindowDefinition.setValue(choiceWindowDefinition.getItems().get(index));
 	}
 	
 	public void setVolumeValue(double value) {
-		volume.setValue(value);
+		sliderVolume.setValue(value);
 	}
 	
 	/**
 	 * Appelant <- v.Menu
 	 * @param e ActionEvent à déclencher pour masquer cette vue
 	 */
-	public void setQuitAction(EventHandler<ActionEvent> e) {
+	public void setActionButtonQuit(EventHandler<ActionEvent> e) {
 		buttonQuit.setOnAction(e);
 	}
 	
@@ -99,24 +99,24 @@ public class Option extends VBox {
 	 * Appelant <- v.Menu <- c.Menu
 	 * @param n ActionChange à déclencher pour obtenir la nouvelle valeur
 	 */
-	public void setVolumeAction(ChangeListener<?super Number> n) {
-		volume.valueProperty().addListener(n);
+	public void setActionSliderVolume(ChangeListener<?super Number> n) {
+		sliderVolume.valueProperty().addListener(n);
 	}
 	
 	/**
 	 * Appelant <- v.Menu <- c.Menu
 	 * @param e ActionEvent à déclencher pour mettre à jour la langue
 	 */
-	public void setLangAction(EventHandler<ActionEvent> e) {
-		choiceLang.setOnAction(e);
+	public void setActionChoiceBoxLanguage(EventHandler<ActionEvent> e) {
+		choiceLanguage.setOnAction(e);
 	}
 	
 	/**
 	 * Appelant <- v.Menu <- c.Menu <- c.Main <- App 
 	 * @param e ActionEvent à déclencher pour mettre à jour la définition
 	 */
-	public void setDimensionAction(EventHandler<ActionEvent> e) {
-		choiceDimWindow.setOnAction(e);
+	public void setActionChoiceBoxDefinition(EventHandler<ActionEvent> e) {
+		choiceWindowDefinition.setOnAction(e);
 	}
 	
 	/**
@@ -124,16 +124,16 @@ public class Option extends VBox {
 	 * Appelant <- v.Menu <- c.Menu 
 	 * @return l'index selectionné
 	 */
-	public int getChoosenLang() {
-		return choiceLang.getSelectionModel().getSelectedIndex();
+	public int getChoosenLanguageIndex() {
+		return choiceLanguage.getSelectionModel().getSelectedIndex();
 	}
 	
 	/**
 	 * Permet d'obtenir le nom de la langue choisie
 	 * @return le nom de la langue
 	 */
-	public String getChoosenLangValue() {
-		return choiceLang.getSelectionModel().getSelectedItem();
+	public String getChoosenLanguageValue() {
+		return choiceLanguage.getSelectionModel().getSelectedItem();
 	}
 	
 	/**
@@ -141,26 +141,26 @@ public class Option extends VBox {
 	 * Appelant <- v.Menu <- c.Menu <- c.Main <- App
 	 * @return l'index selectionné
 	 */
-	public int getChoosenDim() {
-		return choiceDimWindow.getSelectionModel().getSelectedIndex();
+	public int getChoosenDefinitionIndex() {
+		return choiceWindowDefinition.getSelectionModel().getSelectedIndex();
 	}
 	
 	/**
 	 * Permet de déterminer le nom de la définition choisi
 	 * @return le nom de la définition
 	 */
-	public String getChoosenDimValue() {
-		return choiceDimWindow.getSelectionModel().getSelectedItem();
+	public String getChoosenDefinitionValue() {
+		return choiceWindowDefinition.getSelectionModel().getSelectedItem();
 	}
 	
 	public void exit() {
 		buttonQuit.setDisable(true);
-		volume.setDisable(true);
-		choiceDimWindow.setDisable(true);
-		choiceLang.setDisable(true);
+		sliderVolume.setDisable(true);
+		choiceWindowDefinition.setDisable(true);
+		choiceLanguage.setDisable(true);
 		buttonQuit = null;
-		volume = null;
-		choiceDimWindow = null;
-		choiceLang = null;
+		sliderVolume = null;
+		choiceWindowDefinition = null;
+		choiceLanguage = null;
 	}
 }

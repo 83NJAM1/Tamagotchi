@@ -41,14 +41,13 @@ public class Load extends StackPane {
 	private Button butValidate;
 	private Button butCancel;
 	
-	private boolean loadAsNew;
 	//######################### EVENT-ACTION ####################################
 	
 	/**
 	 * ActionEvent pour changer l'indice de selection ( vers la gauche )
 	 * déclencheur -> this
 	 */
-	private EventHandler<ActionEvent> click_left = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> click_prev = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			if ( currentIndex > 0) {
 				savesList.scrollTo(--currentIndex);
@@ -62,7 +61,7 @@ public class Load extends StackPane {
 	 * ActionEvent pour changer l'indice de selection ( vers la droite )
 	 * déclencheur -> this
 	 */
-	private EventHandler<ActionEvent> click_right = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> click_next = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			if ( currentIndex < savesList.getItems().size()-1) {
 				savesList.scrollTo(++currentIndex);
@@ -99,14 +98,13 @@ public class Load extends StackPane {
 		updateFilesList();
 		savesList.setItems(savesObsList);
 		currentIndex = 0;
-		loadAsNew = false;
 		updateText();
 		updateStyle();
 		
 		//assignation action
 		savesList.setOnMouseClicked(click_elem);
-		butRight.setOnAction(click_right);
-		butLeft.setOnAction(click_left);
+		butRight.setOnAction(click_next);
+		butLeft.setOnAction(click_prev);
 		
 		//construction
 		savesContent.getChildren().addAll(butLeft, savesList, butRight);
@@ -157,7 +155,7 @@ public class Load extends StackPane {
 	 * Utile pour v.Menu pour cacher la vue
 	 * @param e ActionEvent qui doit être déclencher par la bouton quitter
 	 */
-	public void setQuitAction(EventHandler<ActionEvent> e) {
+	public void setActionButtonCancel(EventHandler<ActionEvent> e) {
 		butCancel.setOnAction(e);
 	}
 	
@@ -165,7 +163,7 @@ public class Load extends StackPane {
 	 * Utilisé par c.Main car réinitialise le jeu complet
 	 * @param e ActionEvent qui doit être déclencher par le bouton charger/valider
 	 */
-	public void setValidateAction(EventHandler<ActionEvent> e) {
+	public void setActionButtonValidate(EventHandler<ActionEvent> e) {
 		butValidate.setOnAction(e);
 	}
 
@@ -175,9 +173,9 @@ public class Load extends StackPane {
 	 */
 	public String getChoosenSave() {
 		
-		String output = savesList.getSelectionModel().getSelectedItem();
+		return savesList.getSelectionModel().getSelectedItem();
 		
-		if (loadAsNew) {
+		/*if (loadAsNew) {
 			return "new";
 		}
 		else if ( output != null ) {
@@ -185,11 +183,7 @@ public class Load extends StackPane {
 		}
 		else {
 			return savesList.getItems().get(0);
-		}
-	}
-	
-	public void setLoadAsNew(boolean b) {
-		loadAsNew=b;
+		}*/
 	}
 	
 	public Button getChildValidateButton() {

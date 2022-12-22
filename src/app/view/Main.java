@@ -59,8 +59,8 @@ public class Main extends StackPane {
 		this.game = game_instance;
 		this.menu = menu_instance;
 		
-		menu.setQuitAction(click_quit_menu);
-		game.getActionBar().setActionMenu(click_open_menu);
+		menu.setActionButtonQuit(click_quit_menu);
+		game.getChildHud().getChildAction().setActionButtonMenu(click_open_menu);
 		
 		this.getChildren().add(menu);
 		this.getChildren().add(game);

@@ -47,7 +47,7 @@ public class Hud extends AnchorPane{
 			statsBox.getChildren().add(s);
 		}
 		
-		actionBar.setActionStat(click_stat);
+		actionBar.setActionButtonStat(click_stat);
 		
 		this.getChildren().addAll(actionBar, statsBox);
 		updateStyle();

@@ -87,19 +87,6 @@ public class Menu extends StackPane {
 		}
 	};
 	
-	/**
-	 * ActionEvent effectué quand t-on veut afficher la vue Load
-	 * déclencheur -> this
-	 */
-	private EventHandler<ActionEvent> click_new = new EventHandler<ActionEvent>() {
-		public void handle(ActionEvent e) {
-			load.setLoadAsNew(true);
-			setDisable(true);
-			load.getChildValidateButton().fireEvent(e);
-			//load.setLoadAsNew(false);
-		}
-	};
-	
 	//############################ METHODES #####################################
 	
 	public Menu() {
@@ -115,10 +102,9 @@ public class Menu extends StackPane {
 		
 		//assignation action
 		buttonOpt.setOnAction(click_opt);
-		option.setQuitAction(click_quit_opt);
+		option.setActionButtonQuit(click_quit_opt);
 		buttonLoad.setOnAction(click_load);
-		load.setQuitAction(click_quit_load);
-		buttonNew.setOnAction(click_new);
+		load.setActionButtonCancel(click_quit_load);
 		
 		//initalisations
 		updateText();
@@ -157,15 +143,23 @@ public class Menu extends StackPane {
 	 * L'action agit sur des objets de couche superieur donc elle doit venir de la couche du dessus
 	 * @param e l'action-event à appliquer sur le boutton quitter du menu
 	 */
-	public void setQuitAction(EventHandler<ActionEvent> e) {
+	public void setActionButtonQuit(EventHandler<ActionEvent> e) {
 		buttonQuit.setOnAction(e);
+	}
+	
+	/**
+	 * L'action agit sur des objets de couche superieur donc elle doit venir de la couche du dessus
+	 * @param e l'action-event à appliquer sur le boutton quitter du menu
+	 */
+	public void setActionButtonNew(EventHandler<ActionEvent> e) {
+		buttonNew.setOnAction(e);
 	}
 	
 	/**
 	 * Permet l'acces à la vue et aux methodes Option sans necessairement passer par des methode de la vue Menu
 	 * @return l'instance d'Option
 	 */
-	public Option getOption() {
+	public Option getChildOption() {
 		return option;
 	}
 	
@@ -173,7 +167,7 @@ public class Menu extends StackPane {
 	 * Permet l'acces à la vue et aux methodes Load sans necessairement passer par des methode de la vue Menu
 	 * @return l'instance de Load
 	 */
-	public Load getLoad() {
+	public Load getChildLoad() {
 		return load;
 	}
 	
