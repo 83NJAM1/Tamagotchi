@@ -155,7 +155,7 @@ public class Game extends StackPane {
 		drawGameoverLoop.start();
 	}
 	
-	public void changeDimension(int numChoice) {
+	public void changeDefinition(int numChoice) {
 		
 		switch (numChoice) {
 			case 0:
@@ -192,8 +192,8 @@ public class Game extends StackPane {
 		updateDraw();
 	}
 	
-	public Action getActionBar() {
-		return hud.getChildAction();
+	public Hud getChildHud() {
+		return hud;
 	}
 	
 	public void exit() {

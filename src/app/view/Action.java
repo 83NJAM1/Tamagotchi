@@ -106,7 +106,7 @@ public class Action extends HBox {
 	 * Utilisé par v.Main car alterne les vues game et menu
 	 * @param e ActionEvent qui doit être déclencher par le bouton butMenu
 	 */
-	public void setActionMenu(EventHandler<ActionEvent> e) {
+	public void setActionButtonMenu(EventHandler<ActionEvent> e) {
 		butMenu.setOnAction(e);
 	}
 	
@@ -114,7 +114,7 @@ public class Action extends HBox {
 	 * Utilisé par v.Hud pour afficher masquer les stats
 	 * @param e ActionEvent qui doit être déclencher par le bouton butStat
 	 */
-	public void setActionStat(EventHandler<ActionEvent> e) {
+	public void setActionButtonStat(EventHandler<ActionEvent> e) {
 		butStat.setOnAction(e);
 	}
 	
@@ -122,7 +122,7 @@ public class Action extends HBox {
 	 * change de salle
 	 * @param e ActionEvent qui doit être déclencher par le bouton butRoomA
 	 */
-	public void setActionButKitchen(EventHandler<ActionEvent> e) {
+	public void setActionButtonKitchen(EventHandler<ActionEvent> e) {
 		butKitchen.setOnAction(e);
 	}
 	
@@ -130,7 +130,7 @@ public class Action extends HBox {
 	 * change de salle
 	 * @param e ActionEvent qui doit être déclencher par le bouton butGarden
 	 */
-	public void setActionButGarden(EventHandler<ActionEvent> e) {
+	public void setActionButtonGarden(EventHandler<ActionEvent> e) {
 		butGarden.setOnAction(e);
 	}
 	
@@ -138,7 +138,7 @@ public class Action extends HBox {
 	 * change de salle
 	 * @param e ActionEvent qui doit être déclencher par le bouton butBathroom
 	 */
-	public void setActionButBathroom(EventHandler<ActionEvent> e) {
+	public void setActionButtonBathroom(EventHandler<ActionEvent> e) {
 		butBathroom.setOnAction(e);
 	}
 	
@@ -146,7 +146,7 @@ public class Action extends HBox {
 	 * change de salle
 	 * @param e ActionEvent qui doit être déclencher par le bouton butLivingroom
 	 */
-	public void setActionButLivingroom(EventHandler<ActionEvent> e) {
+	public void setActionButtonLivingroom(EventHandler<ActionEvent> e) {
 		butLivingroom.setOnAction(e);
 	}
 	

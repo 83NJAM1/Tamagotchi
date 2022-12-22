@@ -1,8 +1,6 @@
 package app.controller;
 
-import java.text.NumberFormat;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 import app.App;
 
@@ -37,27 +35,23 @@ public class Menu {
 	public void loadOption() {
 		optionModel.load();
 		if ( optionModel.getLanguage().equals( Locale.ENGLISH.toString() ) ) {
-			App.setLanguage(Locale.ENGLISH);
+			App.setLocale(Locale.ENGLISH);
 		}
 		else {
-			App.setLanguage(Locale.FRENCH);
+			App.setLocale(Locale.FRENCH);
 		}
 		
 		if ( optionModel.getWindowWidth() <= 640 )
-			menuView.getOption().setSelectedDim(0);
+			menuView.getChildOption().setSelectedChoiceDefinition(0);
 		else
-			menuView.getOption().setSelectedDim(1);
+			menuView.getChildOption().setSelectedChoiceDefinition(1);
 		
-		menuView.getOption().setVolumeValue(optionModel.getVolume());
+		menuView.getChildOption().setVolumeValue(optionModel.getVolume());
 		
 		System.out.println("loading option:\n" + optionModel.toString().indent(4));
 	}
-	
-	public int getChoosenDim() {
-		return menuView.getOption().getChoosenDim();
-	}
-	
-	public app.model.Option getOption(){
+		
+	public app.model.Option getModelOption(){
 		return optionModel;
 	}
 	

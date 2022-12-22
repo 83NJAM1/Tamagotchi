@@ -1,9 +1,7 @@
 package app.controller;
 
 import java.nio.file.Paths;
-import java.text.NumberFormat;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -55,7 +53,7 @@ public class Main {
 			menuController.setVolume(vnew.doubleValue());
 			mediaplayer.setVolume(vnew.doubleValue());
 			
-			menuController.getOption().save();
+			menuController.getModelOption().save();
 		}
 	};
 	
@@ -67,18 +65,18 @@ public class Main {
 		public void handle(ActionEvent e) {
 			
 			Locale loc;
-			if ( menuController.getView().getOption().getChoosenLang() == 0) {
+			if ( menuController.getView().getChildOption().getChoosenLanguageIndex() == 0) {
 				loc = Locale.FRENCH;
 			}
 			else {
 				loc = Locale.ENGLISH;
 			}
 			
-			App.setLanguage(loc);
+			App.setLocale(loc);
 			
 			updateText();
-			menuController.getOption().setLanguage(loc.toString());
-			menuController.getOption().save();
+			menuController.getModelOption().setLanguage(loc.toString());
+			menuController.getModelOption().save();
 			
 			System.out.println("Source -> : " + e.getSource().getClass().getName() );
 			System.out.println("Locale:" + loc.getDisplayLanguage());
@@ -89,15 +87,17 @@ public class Main {
 	 * ActionEvent effectué quand t-on veut crer une nouvelle partie
 	 * déclencheur -> this
 	 */
-	private EventHandler<ActionEvent> new_game = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> new_game_generation = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			if ( gameController != null ) {
 				gameController.exit();
 			}
 			gameController = new Game(mainView.getCustomPet().getPetType(), "test", "save.tmg");
 			mainView.initWithCustomPet(gameController.getView(), menuController.getView());
-			updateText();
-			changeGameDim(menuController.getChoosenDim());
+			
+			//NOTE : ne pas faire de mise a jour du texte sinon bug
+			
+			changeGameDim(menuController.getView().getChildOption().getChoosenDefinitionIndex());
 			gameController.gameover.addListener(change_gameover_value);
 		}
 	};
@@ -109,7 +109,7 @@ public class Main {
 		menuController = new Menu();
 		menuController.loadOption();
 		
-		String lastSaveName = menuController.getOption().getLastSave();
+		String lastSaveName = menuController.getModelOption().getLastSave();
 		
 		initGame(lastSaveName, saveName);
 		
@@ -118,46 +118,46 @@ public class Main {
 		setBackgroundMusic();
 		
 		// construction
-		menuController.getView().getOption().setLangAction(choose_lang);
-		menuController.getView().getOption().setVolumeAction(change_volume_value);
+		menuController.getView().getChildOption().setActionChoiceBoxLanguage(choose_lang);
+		menuController.getView().getChildOption().setActionSliderVolume(change_volume_value);
 	}
 	
-	public void initGame(String lastSave, String pathsave) {
+	public void initGame(String lastSaveName, String saveName) {
 		
 		// creer une nouvelle partie en écrasant la partie en cours
-		if ( pathsave != null && pathsave.equals("new") && lastSave != null ) {
-			System.out.println("NEW GAME: " + lastSave);
+		if ( saveName != null && saveName.equals("new") && lastSaveName != null ) {
+			System.out.println("NEW GAME: " + lastSaveName);
 			// crée une nouvelle partie, la customisation devrai être demandé ici
 			mainView = new app.view.Main();
-			mainView.getCustomPet().setActionValidate(new_game);
+			mainView.getCustomPet().setActionValidate(new_game_generation);
 		}
 		// charge la sauvegarde selectionnée
-		else if ( pathsave != null ) {
-			System.out.println("LOAD: " + pathsave);
-			menuController.getOption().setLastSave(pathsave);
-			menuController.getOption().save();
-			gameController = new Game(pathsave);
+		else if ( saveName != null ) {
+			System.out.println("LOAD: " + saveName);
+			menuController.getModelOption().setLastSave(saveName);
+			menuController.getModelOption().save();
+			gameController = new Game(saveName);
 			mainView = new app.view.Main( gameController.getView(), menuController.getView() );
 		}
 		// charge la dernière sauvegarde utilisée
-		else if ( lastSave != null ) {
-			System.out.println("CONTINUE: " + lastSave);
-			gameController = new Game(lastSave);
+		else if ( lastSaveName != null ) {
+			System.out.println("CONTINUE: " + lastSaveName);
+			gameController = new Game(lastSaveName);
 			mainView = new app.view.Main( gameController.getView(), menuController.getView() );
 		}
 		// crée un nouveau fichier de sauvgarde
 		else {
 			System.out.println("FIRST GAME: save.tmg");
-			menuController.getOption().setLastSave("save.tmg");
-			menuController.getOption().save();
+			menuController.getModelOption().setLastSave("save.tmg");
+			menuController.getModelOption().save();
 			// crée une nouvelle partie, la customisation devrai être demandé ici
 			mainView = new app.view.Main();
-			mainView.getCustomPet().setActionValidate(new_game);
+			mainView.getCustomPet().setActionValidate(new_game_generation);
 		}
 		
 		if ( gameController != null ) {
 			updateText();
-			changeGameDim(menuController.getChoosenDim());
+			changeGameDim(menuController.getView().getChildOption().getChoosenDefinitionIndex());
 			gameController.gameover.addListener(change_gameover_value);
 		}
 	}
@@ -174,7 +174,7 @@ public class Main {
 	 * Change les dimensions de rendu du jeu
 	 */
 	public void changeGameDim(int numChoice) {
-		gameController.getView().changeDimension(numChoice);
+		gameController.getView().changeDefinition(numChoice);
 	}
 	
 	/**
