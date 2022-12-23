@@ -1,6 +1,8 @@
 package app.view;
- 
+
 import javafx.scene.image.Image;
+
+import app.Reinstanciable;
 
 /**
  * 
@@ -10,7 +12,7 @@ import javafx.scene.image.Image;
  * pour le moment car si zone cliquable alors le type Image
  * ne sera pas suffisant
  */
-public class Room extends Image {
+public class Room extends Image implements Reinstanciable {
 
 	//########################### ATTRIBUTS #####################################
 	 
@@ -42,6 +44,7 @@ public class Room extends Image {
 		return h;
 	}
 	
+	@Override
 	public void exit() {
 		cancel();
 	}

@@ -5,7 +5,9 @@ import java.util.HashMap;
 import javafx.animation.AnimationTimer;
 import javafx.scene.shape.Rectangle;
 
-public class AnimatedSprite extends Sprite {
+import app.Reinstanciable;
+
+public class AnimatedSprite extends Sprite implements Reinstanciable {
 
 	//########################### ATTRIBUTS #####################################
 
@@ -42,21 +44,41 @@ public class AnimatedSprite extends Sprite {
     
 	//############################ METHODES #####################################
 
+	/**
+	 * constructeur
+	 * @param spritesheet l'image des sprites
+	 * @param src_x l'origine x du sprite dans l'image
+	 * @param src_y l'origine y du sprite dans l'image
+	 * @param src_h sa hauteur
+	 * @param src_w sa largeur
+	 */
 	public AnimatedSprite(String spritesheet, int src_x, int src_y, int src_h, int src_w) {
 		super(spritesheet, src_x, src_y, src_h, src_w);
 		anime_map = new HashMap<>();
 		current_frame = 0;
 	}
 	
+	/**
+	 * ajoute une animation
+	 * @param name l'identifiant de l'animation
+	 * @param rects la liste des frames
+	 */
 	public void addAnime(String name, Rectangle ... rects) {
 		anime_map.put(name, rects);
 	}
 	
+	/**
+	 * définit l'animation à jouer
+	 * @param name l'identifiant de l'animation
+	 */
 	public void setAnime(String name) {
 		current_anime = name;
 		current_limit = anime_map.get(current_anime).length;
 	}
 	
+	/**
+	 * passe a la frame suivante ou boucle sur la 1er
+	 */
 	public void nextFrame() {
 		
 		if ( current_frame+1 < current_limit ) {
@@ -72,18 +94,33 @@ public class AnimatedSprite extends Sprite {
 		src_w = anime_map.get(current_anime)[current_frame].getWidth();
 	}
 	
+	/**
+	 * joue l'animation
+	 */
 	public void play() {
 		animation.start();
 	}
 	
+	/**
+	 * stop l'animation
+	 */
 	public void stop() {
 		animation.stop();
 	}
 	
+	@Override
 	public void exit() {
-		super.exit();
-		animation.stop();
-		anime_map.clear();
-		anime_map = null;
+		
+		cancel();
+		
+		if ( animation != null ) {
+			animation.stop();
+			animation = null;
+		}
+		
+		if ( anime_map != null ) {
+			anime_map.clear();
+			anime_map = null;
+		}
 	}
 }

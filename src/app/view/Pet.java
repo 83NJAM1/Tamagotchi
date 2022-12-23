@@ -1,6 +1,6 @@
 package app.view;
 
-import javafx.scene.shape.Rectangle;
+import app.Reinstanciable;
 
 /**
  * 
@@ -10,15 +10,16 @@ import javafx.scene.shape.Rectangle;
  *      Ca me semble mieux de faire une classe Sprite et que view.Pet
  *      hérite de Sprite
  */
-public class Pet extends AnimatedSprite {
+public class Pet extends AnimatedSprite implements Reinstanciable {
 
 	//########################### ATTRIBUTS #####################################
-	 
-	private Stat hunger;
-	private Stat thirst;
-	private Stat weight;
-	private Stat hygiene;
-	private Stat moral;
+	
+	//NOTE: references partagées avec c.Stat et v.Hud
+	private State hunger;
+	private State thirst;
+	private State weight;
+	private State hygiene;
+	private State moral;
 	
 	//############################ METHODES #####################################
 	
@@ -27,38 +28,39 @@ public class Pet extends AnimatedSprite {
 		setSize(0, 92, 128, 128);
 	}
 	
-	public void setHunger(Stat hunger) {
+	public void setChildHunger(State hunger) {
 		this.hunger = hunger;
 	}
-	public void setThirst(Stat thirst) {
+	public void setChildThirst(State thirst) {
 		this.thirst = thirst;
 	}
-	public void setWeight(Stat weight) {
+	public void setChildWeight(State weight) {
 		this.weight = weight;
 	}
-	public void setHygiene(Stat hygiene) {
+	public void setChildHygiene(State hygiene) {
 		this.hygiene = hygiene;
 	}
-	public void setMoral(Stat moral) {
+	public void setChildMoral(State moral) {
 		this.moral = moral;
 	}
 	
-	public Stat getHunger() {
+	public State getChildHunger() {
 		return hunger;
 	}
-	public Stat getThirst() {
+	public State getChildThirst() {
 		return thirst;
 	}
-	public Stat getWeight() {
+	public State getChildWeight() {
 		return weight;
 	}
-	public Stat getHygiene() {
+	public State getChildHygiene() {
 		return hygiene;
 	}
-	public Stat getMoral() {
+	public State getChildMoral() {
 		return moral;
 	}
 	
+	@Override
 	public void exit() {
 		super.exit();
 		hunger.exit();

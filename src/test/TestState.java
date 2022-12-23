@@ -8,29 +8,29 @@ import org.junit.jupiter.api.DisplayName;
 
 import app.model.*;
 
-class TestStat {
+class TestState {
 	
-	Stat stat;
+	State state;
 	
 	@BeforeEach
 	void setUp() {
-		stat = new Stat("Test");
+		state = new State("Test");
 	}
 
 	@Test
 	@DisplayName("decrement stat")
 	void testDecrementStat() {
-		double oldValue = stat.getValue();
-		stat.dec();
-		assertTrue(oldValue > stat.getValue());
+		double oldValue = state.getValue();
+		state.dec();
+		assertTrue(oldValue > state.getValue());
 	}
 	
 	@Test
 	@DisplayName("increment stat")
 	void testIncrementStat() {
-		double oldValue = stat.getValue();
-		stat.inc();
-		assertTrue(oldValue < stat.getValue());
+		double oldValue = state.getValue();
+		state.inc();
+		assertTrue(oldValue < state.getValue());
 	}
 
 }

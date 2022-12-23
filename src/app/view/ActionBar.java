@@ -10,69 +10,77 @@ import javafx.scene.control.CustomMenuItem;
 import javafx.scene.layout.HBox;
 
 import app.App;
+import app.Reinstanciable;
+import app.TextDisplayable;
 
 /**
  * 
  * @author ben
- * view.Action est de type HBox car elle sera vu en bas de l'écran de jeu
- * Elle permet de selectionner les actions du jeu et d'aller au menu
+ * permet de selectionner les actions du jeu et d'aller au menu
  */
-public class Action extends HBox {
+public class ActionBar extends HBox implements Reinstanciable, TextDisplayable {
 	 
 	//########################### ATTRIBUTS #####################################
 	
-	// On est obligé de faire un menu perso car
-	// le MenuBar de base n'est pas fait pour se 
-	// positionner en bas de l'écrant
+	// bouton affiche menu
 	private Button butMenu;
+	// bouton affiche/masque états
 	private Button butStat;
+	// bouton affiche sous menu pièces
 	private Button butRoomMenu;
-	private CustomMenuItem customMenuA;
-	private CustomMenuItem customMenuB;
-	private CustomMenuItem customMenuC;
-	private CustomMenuItem customMenuD;
-	private Button butKitchen;
-	private Button butGarden;
-	private Button butBathroom;
-	private Button butLivingroom;
+	
+	// sous menu pièces
 	private ContextMenu roomContextMenu;
+	// cuisine
+	private CustomMenuItem customMenuA;
+	private Button butKitchen;
+	// jardin
+	private CustomMenuItem customMenuB;
+	private Button butGarden;
+	// salle de bain
+	private CustomMenuItem customMenuC;
+	private Button butBathroom;
+	// salon
+	private CustomMenuItem customMenuD;
+	private Button butLivingroom;
 	
 	//######################### EVENT-ACTION ####################################
 	
+	/**
+	 * Action qui Affiche le sous menu des pièces
+	 */
 	private EventHandler<ActionEvent> click_room = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			//butRoomMenu.setDisable(true);
 			roomContextMenu.show(butRoomMenu, Side.TOP, 0, 0);
 		}
 	};
-	
-	/*private EventHandler<ActionEvent> hide_room = new EventHandler<ActionEvent>() {
-		public void handle(ActionEvent e) {
-			//butRoomMenu.setDisable(false);
-			roomContextMenu.hide();
-		}
-	};*/
-	
+		
 	//############################ METHODES #####################################
 	
-	public Action() {
+	/**
+	 * constructeur
+	 */
+	public ActionBar() {
 		
-		//instanciations
+		// instancie les boutons principaux
 		butMenu = new Button();
 		butStat = new Button();
 		butRoomMenu = new Button();
-		butKitchen = new Button();
-		butGarden = new Button();
-		butBathroom = new Button();
-		butLivingroom = new Button();
-		customMenuA = new CustomMenuItem(butKitchen);
-		customMenuB = new CustomMenuItem(butGarden);
-		customMenuC = new CustomMenuItem(butBathroom);
-		customMenuD = new CustomMenuItem(butLivingroom);
+		
+		// instancie le sous menu pièces
 		roomContextMenu = new ContextMenu();
+		// instancie le contenu du sous menu
+		butKitchen = new Button();
+		customMenuA = new CustomMenuItem(butKitchen);
+		butGarden = new Button();
+		customMenuB = new CustomMenuItem(butGarden);
+		butBathroom = new Button();
+		customMenuC = new CustomMenuItem(butBathroom);
+		butLivingroom = new Button();
+		customMenuD = new CustomMenuItem(butLivingroom);
 		
 		//assignation action
-		butRoomMenu.setOnAction(click_room); //Affiche les bouttons rooms quand on clique sur butRoomMenu
+		butRoomMenu.setOnAction(click_room); 
 		
 		//initalisations
 		updateStyle();
@@ -81,16 +89,6 @@ public class Action extends HBox {
 		//constructions de la vue
 		roomContextMenu.getItems().addAll(customMenuA, customMenuB, customMenuC, customMenuD);
 		this.getChildren().addAll(butStat, butRoomMenu, butMenu);
-	}
-	
-	public void updateText() {
-		butMenu.setText(App.getString("button-menu"));
-		butStat.setText(App.getString("button-stats"));
-		butRoomMenu.setText(App.getString("button-rooms"));
-		butKitchen.setText(App.getString("button-kitchen"));
-		butGarden.setText(App.getString("button-garden"));
-		butBathroom.setText(App.getString("button-bathroom"));
-		butLivingroom.setText(App.getString("button-livingroom"));
 	}
 	
 	/**
@@ -103,48 +101,48 @@ public class Action extends HBox {
 	}
 	
 	/**
-	 * Utilisé par v.Main car alterne les vues game et menu
-	 * @param e ActionEvent qui doit être déclencher par le bouton butMenu
+	 * Utilisé par v.Main
+	 * @param e ce qui doit être déclencher par le bouton butMenu
 	 */
 	public void setActionButtonMenu(EventHandler<ActionEvent> e) {
 		butMenu.setOnAction(e);
 	}
 	
 	/**
-	 * Utilisé par v.Hud pour afficher masquer les stats
-	 * @param e ActionEvent qui doit être déclencher par le bouton butStat
+	 * Utilisé par v.Hud
+	 * @param e ce qui doit être déclencher par le bouton butStat
 	 */
 	public void setActionButtonStat(EventHandler<ActionEvent> e) {
 		butStat.setOnAction(e);
 	}
 	
 	/**
-	 * change de salle
-	 * @param e ActionEvent qui doit être déclencher par le bouton butRoomA
+	 * utilisé par c.Game
+	 * @param e ce qui doit être déclencher par le bouton butRoomA
 	 */
 	public void setActionButtonKitchen(EventHandler<ActionEvent> e) {
 		butKitchen.setOnAction(e);
 	}
 	
 	/**
-	 * change de salle
-	 * @param e ActionEvent qui doit être déclencher par le bouton butGarden
+	 * utilisé par c.Game
+	 * @param e ce qui doit être déclencher par le bouton butGarden
 	 */
 	public void setActionButtonGarden(EventHandler<ActionEvent> e) {
 		butGarden.setOnAction(e);
 	}
 	
 	/**
-	 * change de salle
-	 * @param e ActionEvent qui doit être déclencher par le bouton butBathroom
+	 * utilisé par c.Game
+	 * @param e ce qui doit être déclencher par le bouton butBathroom
 	 */
 	public void setActionButtonBathroom(EventHandler<ActionEvent> e) {
 		butBathroom.setOnAction(e);
 	}
 	
 	/**
-	 * change de salle
-	 * @param e ActionEvent qui doit être déclencher par le bouton butLivingroom
+	 * utilisé par c.Game
+	 * @param e ce qui doit être déclencher par le bouton butLivingroom
 	 */
 	public void setActionButtonLivingroom(EventHandler<ActionEvent> e) {
 		butLivingroom.setOnAction(e);
@@ -169,8 +167,8 @@ public class Action extends HBox {
 	}
 
 	/**
-	 * Autorise de cliquer sur les boutons suivants
-	 * @param list liste de booleen
+	 * Autorise de cliquer sur les boutons
+	 * @param list liste de booleen dans le même ordre que l'affichage des boutons
 	 */
 	public void setAllowedButtons(boolean ... list) {
 		
@@ -186,6 +184,18 @@ public class Action extends HBox {
 		}
 	}
 	
+	@Override
+	public void updateText() {
+		butMenu.setText(App.getString("button-menu"));
+		butStat.setText(App.getString("button-stats"));
+		butRoomMenu.setText(App.getString("button-rooms"));
+		butKitchen.setText(App.getString("button-kitchen"));
+		butGarden.setText(App.getString("button-garden"));
+		butBathroom.setText(App.getString("button-bathroom"));
+		butLivingroom.setText(App.getString("button-livingroom"));
+	}
+	
+	@Override
 	public void exit() {
 		butMenu = null;
 		butStat = null;

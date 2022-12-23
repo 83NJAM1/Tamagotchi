@@ -2,24 +2,25 @@ package app.controller;
 
 import javafx.animation.AnimationTimer;
 
-import app.App;
+import app.Reinstanciable;
+import app.TextDisplayable;
 
 /**
  * 
  * @author ben
  * Permet de mettre a jour la vue avec le statModel
  */
-public class Stat {
+public class State implements Reinstanciable, TextDisplayable {
 	
 	//########################### ATTRIBUTS #####################################
  
-	// ATTENTION: Reference partagé avec model.Pet
-	private app.model.Stat statModel;
+	// données de l'état
+	private app.model.State stateModel; //NOTE: Reference partagé avec model.Pet
 	
-	// ATTENTION: Reference partagé avec view.Hud + view.Pet
-	private app.view.Stat statView;
+	// affichage de l'état
+	private app.view.State stateView; //NOTE: Reference partagé avec view.Hud + view.Pet
 	
-	// Bonus
+	// bonus, augmente la valeur
 	private long bonusTime; // en nanosecondes
 	private String bonusName;
 	private boolean bonusIsActivate;
@@ -49,7 +50,7 @@ public class Stat {
 				}
 				else {
 					doonce = true;
-					System.out.println("Bonus " + bonusName + " for " + statModel.getKeyName() + " activated");
+					System.out.println("Bonus " + bonusName + " for " + stateModel.getKeyName() + " activated");
 				}
 				
 				// le nouveau temps à attendre
@@ -60,7 +61,7 @@ public class Stat {
 				
 				// fin du bonus
 				if ( global_time > bonusTime ) {
-					System.out.println( "Bonus " + bonusName + " for " + statModel.getKeyName() 
+					System.out.println( "Bonus " + bonusName + " for " + stateModel.getKeyName() 
 									  + " ended after: " + global_time/1_000_000_000.0 + " seconds");
 					this.stop();
 					global_time=0;
@@ -74,29 +75,43 @@ public class Stat {
     
 	//############################ METHODES #####################################
 	
-	public Stat(String name) {
-		statModel = new app.model.Stat(name);
-		statView = new app.view.Stat(App.getString(name));
+    /**
+     * constructeur
+     * @param name la chaîne de charactère identifiant l'état
+     */
+	public State(String key) {
+		stateModel = new app.model.State(key);
+		stateView = new app.view.State(key);
 		bonusTime=0;
 	}
 	
-	public void updateText() {
-		statView.updateText(statModel.getKeyName());
-	}
-	
+	/**
+	 * decremente la valeur via le model
+	 * met à jour l'affiche via la vue
+	 */
 	public void decreaseValue() {
-		statModel.dec();
-		statView.updateValue(statModel.getValue());
+		stateModel.dec();
+		stateView.changeValue(stateModel.getValue());
 	}
 	
+	/**
+	 * incremente la valeur via le model
+	 * met à jour l'affiche via la vue
+	 */
 	public void increaseValue() {
-		statModel.inc();
-		statView.updateValue(statModel.getValue());
+		stateModel.inc();
+		stateView.changeValue(stateModel.getValue());
 	}
 	
+	/**
+	 * applique un bonus à l'état
+	 * @param factor plus la valeur est haute plus le bonus est important
+	 * @param seconds la durée du bonus
+	 * @param name l'identifiant du bonus
+	 */
 	public void applyBonus(Double factor, long seconds, String name) {
 		
-		if ( !bonusIsActivate && statModel.setBonus(factor) ) {
+		if ( !bonusIsActivate && stateModel.setBonus(factor) ) {
 			
 			bonusTime = seconds*1_000_000_000;
 			bonusName = name;
@@ -110,23 +125,44 @@ public class Stat {
 		}
 	}
 	
+	/**
+	 * change la valeur de l'état
+	 * @param value la valeur souhaité
+	 */
 	public void setValue(Double value) {
-		statModel.setValue(value);
-		statView.updateValue(value);
+		stateModel.setValue(value);
+		stateView.changeValue(value);
 	}
 	
-	public app.model.Stat getModel() {
-		return statModel;
+	/**
+	 * obtient le model State
+	 * @return State, le model
+	 */
+	public app.model.State getModel() {
+		return stateModel;
 	}
 	
-	public app.view.Stat getView() {
-		return statView;
+	/**
+	 * obtient la vue State
+	 * @return State, la vue
+	 */
+	public app.view.State getView() {
+		return stateView;
 	}
 	
+	@Override
+	public void updateText() {
+		stateView.updateText();
+	}
+	
+	@Override
 	public void exit() {
 		activeBonus.stop();
 		activeBonus = null;
-		statModel = null;
-		statView = null;
+		
+		stateModel = null;
+		
+		stateView.exit();
+		stateView = null;
 	}
 }

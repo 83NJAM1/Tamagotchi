@@ -109,14 +109,6 @@ public class Option {
 		}
 	}
 	
-	public String toString() {
-		return "last_save : " + lastSave + System.lineSeparator() +
-			   "language : " + language + System.lineSeparator() +
-			   "volume : " + volume + System.lineSeparator() +
-			   "width_window : " + w_window + System.lineSeparator() + 
-			   "height_window : " + h_window + System.lineSeparator();
-	}
-	
 	public void setLastSave(String value) {
 		lastSave=value;
 	}
@@ -150,5 +142,14 @@ public class Option {
 	}
 	public int getWindowHeight() {
 		return h_window;
+	}
+	
+	@Override
+	public String toString() {
+		return "last_save : " + lastSave + System.lineSeparator() +
+			   "language : " + language + System.lineSeparator() +
+			   "volume : " + volume + System.lineSeparator() +
+			   "width_window : " + w_window + System.lineSeparator() + 
+			   "height_window : " + h_window + System.lineSeparator();
 	}
 }

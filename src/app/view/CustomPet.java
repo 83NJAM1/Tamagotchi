@@ -1,6 +1,5 @@
 package app.view;
- 
-import app.App;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -11,17 +10,21 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Popup;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.TextAlignment;
-import javafx.stage.Popup;
+
+import app.App;
+import app.Reinstanciable;
+import app.TextDisplayable;
 
 /**
  * 
@@ -29,49 +32,54 @@ import javafx.stage.Popup;
  * view.CustomPet est de type AnchorPane
  * car le choix de design implique qu'il soit composé de sous vue
  */
-public class CustomPet extends StackPane {
+public class CustomPet extends StackPane implements Reinstanciable, TextDisplayable {
 
 	//########################### ATTRIBUTS #####################################
 	
-	private ImageView preview;
+	// popup
 	private ColorPicker colorpicker;
 	private Popup popup;
 	
-	private Label labelPetType;
+	// partie centrale
+	private ImageView preview;
 	
+	// partie droite
+	private Label labelPetType;
 	private VBox petType;
 	private Button butPetTypeA;
 	private Button butPetTypeB;
 	private Button butPetTypeC;
 	
+	// partie gauche-haut
 	private Label labelBackPalet;
-	
 	private HBox backPalet;
 	private Button butBckColorA;
 	private Button butBckColorB;
 	private Button butBckColorC;
 	
+	// partie gauche-bas
 	private Label labelFrontPalet;
-	
 	private HBox frontPalet;
 	private Button butFrtColorA;
 	private Button butFrtColorB;
 	private Button butFrtColorC;
 	
+	// l'ensemble
 	private VBox TopCenterBottom;
 	private HBox LeftCenterRight;
 	private VBox leftSide;
 	private VBox rightSide;
 	private Button validate;
 	
+	// le bouton à colorier
 	private Button currentButton;
-	
+	// le type de pet choisie
 	private String currentPetType;
 	
 	//######################### EVENT-ACTION ####################################
 	
 	/**
-	 * Action valider couleur choisie
+	 * valider couleur choisie
 	 * déclencheur -> this
 	 */ 
 	private EventHandler<ActionEvent> colorOk = new EventHandler<ActionEvent>() {
@@ -81,7 +89,7 @@ public class CustomPet extends StackPane {
 		}
 	};
 	/**
-	 * Action fait apperaître le popup choix des couleurs pour backColorA
+	 * fait apperaître le popup choix des couleurs pour backColorA
 	 * déclencheur -> this
 	 */ 
 	private EventHandler<ActionEvent> bckColorA = new EventHandler<ActionEvent>() {
@@ -92,7 +100,7 @@ public class CustomPet extends StackPane {
 		}
 	};
 	/**
-	 * Action fait apperaître le popup choix des couleurs pour backColorB
+	 * fait apperaître le popup choix des couleurs pour backColorB
 	 * déclencheur -> this
 	 */ 
 	private EventHandler<ActionEvent> bckColorB = new EventHandler<ActionEvent>() {
@@ -103,7 +111,7 @@ public class CustomPet extends StackPane {
 		}
 	};
 	/**
-	 * Action fait apperaître le popup choix des couleurs pour backColorC
+	 * fait apperaître le popup choix des couleurs pour backColorC
 	 * déclencheur -> this
 	 */ 
 	private EventHandler<ActionEvent> bckColorC = new EventHandler<ActionEvent>() {
@@ -114,7 +122,7 @@ public class CustomPet extends StackPane {
 		}
 	};
 	/**
-	 * Action fait apperaître le popup choix des couleurs pour backColorA
+	 * fait apperaître le popup choix des couleurs pour backColorA
 	 * déclencheur -> this
 	 */ 
 	private EventHandler<ActionEvent> frtColorA = new EventHandler<ActionEvent>() {
@@ -125,7 +133,7 @@ public class CustomPet extends StackPane {
 		}
 	};
 	/**
-	 * Action fait apperaître le popup choix des couleurs pour backColorB
+	 * fait apperaître le popup choix des couleurs pour backColorB
 	 * déclencheur -> this
 	 */ 
 	private EventHandler<ActionEvent> frtColorB = new EventHandler<ActionEvent>() {
@@ -136,7 +144,7 @@ public class CustomPet extends StackPane {
 		}
 	};
 	/**
-	 * Action fait apperaître le popup choix des couleurs pour backColorC
+	 * fait apperaître le popup choix des couleurs pour backColorC
 	 * déclencheur -> this
 	 */ 
 	private EventHandler<ActionEvent> frtColorC = new EventHandler<ActionEvent>() {
@@ -147,7 +155,7 @@ public class CustomPet extends StackPane {
 		}
 	};
 	/**
-	 * Action fait apperaître le popup choix des couleurs pour backColorA
+	 * fait apperaître le popup choix des couleurs pour backColorA
 	 * déclencheur -> this
 	 */ 
 	private EventHandler<ActionEvent> petTypeA = new EventHandler<ActionEvent>() {
@@ -157,7 +165,7 @@ public class CustomPet extends StackPane {
 		}
 	};
 	/**
-	 * Action fait apperaître le popup choix des couleurs pour backColorB
+	 * fait apperaître le popup choix des couleurs pour backColorB
 	 * déclencheur -> this
 	 */ 
 	private EventHandler<ActionEvent> petTypeB = new EventHandler<ActionEvent>() {
@@ -167,7 +175,7 @@ public class CustomPet extends StackPane {
 		}
 	};
 	/**
-	 * Action fait apperaître le popup choix des couleurs pour backColorC
+	 * fait apperaître le popup choix des couleurs pour backColorC
 	 * déclencheur -> this
 	 */ 
 	private EventHandler<ActionEvent> petTypeC = new EventHandler<ActionEvent>() {
@@ -179,6 +187,9 @@ public class CustomPet extends StackPane {
 	
 	//############################ METHODES #####################################
 	
+	/**
+	 * constructeur
+	 */
 	public CustomPet() {
 		
 		preview = new ImageView(new Image("res/test_dog.png"));
@@ -247,6 +258,22 @@ public class CustomPet extends StackPane {
 		currentPetType="dog";
 	}
 	
+	/**
+	 * définit l'action pour le bouton valider customisation
+	 * @param e EventHandler qui gère l'action
+	 */
+	public void setActionValidate(EventHandler<ActionEvent> e) {
+		validate.setOnAction(e);
+	}
+	
+	/**
+	 * obtient le type du pet voulue par l'utilisateur
+	 * @return l'identifiant du pet
+	 */
+	public String getPetType() {
+		return currentPetType;
+	}
+	
 	public void updateStype() {
 
 		petType.setAlignment(Pos.CENTER);
@@ -270,14 +297,11 @@ public class CustomPet extends StackPane {
 		rightSide.setBorder(border);*/
 	}
 	
-	public void setActionValidate(EventHandler<ActionEvent> e) {
-		validate.setOnAction(e);
+	@Override
+	public void updateText() {
 	}
 	
-	public String getPetType() {
-		return currentPetType;
-	}
-	
+	@Override
 	public void exit() {
 		preview = null;
 		colorpicker = null;

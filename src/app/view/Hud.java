@@ -7,26 +7,31 @@ import javafx.event.EventHandler;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
+import app.Reinstanciable;
+import app.TextDisplayable;
+
 /**
  * 
  * @author ben
  * affiche les stats ainsi que les actions
  */
-public class Hud extends AnchorPane{
+public class Hud extends AnchorPane implements Reinstanciable, TextDisplayable {
 	
 	//########################### ATTRIBUTS #####################################
  
-	// Barre des actions pour le moment car plus simple a implémenter
-	// les futures version pourront implémenter le clique sur objets
-	private Action actionBar;
+	// barre des actions
+	private ActionBar actionBar;
+	// encart des états
 	private VBox statsBox;
-
-	// ATTENTION: references partagées avec controller.Stat
-	private ArrayList<Stat> stats;
-	
+	// liste des états
+	private ArrayList<State> stats; //NOTE: references partagées avec c.Stat et v.Pet
 	
 	//######################### EVENT-ACTION ####################################
 	
+	/**
+	 * Action affectué quand on veut masquer les états du pet
+	 * déclencheur -> v.ActionBar
+	 */
 	private EventHandler<ActionEvent> click_stat = new EventHandler<ActionEvent>() {
 		boolean visible = true;
 		public void handle(ActionEvent e) {
@@ -37,12 +42,16 @@ public class Hud extends AnchorPane{
 	
 	//############################ METHODES #####################################
 	
-	public Hud(Stat ... stats_instances) {
-		this.actionBar = new Action();
+	/**
+	 * constructeur
+	 * @param stats_instances la listes de tous les états du pet
+	 */
+	public Hud(State ... stats_instances) {
+		this.actionBar = new ActionBar();
 		this.statsBox = new VBox();
 		this.stats = new ArrayList<>();
 		
-		for (Stat s : stats_instances) {
+		for (State s : stats_instances) {
 			stats.add(s);
 			statsBox.getChildren().add(s);
 		}
@@ -53,8 +62,19 @@ public class Hud extends AnchorPane{
 		updateStyle();
 	}
 	
-	public void updateText() {
-		actionBar.updateText();
+	/**
+	 * obtient la vue enfant ActionBar
+	 * @return l'instance de ActionBar
+	 */
+	public ActionBar getChildAction() {
+		return actionBar;
+	}
+	
+	/**
+	 * masque la liste des états
+	 */
+	public void hideStats() {
+		statsBox.setVisible(false);;
 	}
 	
 	public void updateStyle() {
@@ -64,14 +84,12 @@ public class Hud extends AnchorPane{
 		AnchorPane.setLeftAnchor(actionBar, 10.);
 	}
 	
-	public Action getChildAction() {
-		return actionBar;
+	@Override
+	public void updateText() {
+		actionBar.updateText();
 	}
 	
-	public void hideStats() {
-		statsBox.setVisible(false);;
-	}
-	
+	@Override
 	public void exit() {
 		stats.clear();
 		actionBar = null;

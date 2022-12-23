@@ -15,6 +15,8 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Slider;
 
 import app.App;
+import app.Reinstanciable;
+import app.TextDisplayable;
 
 /**
  * 
@@ -22,7 +24,7 @@ import app.App;
  * view.Option est de type HBox car l'affichage d'option
  * est souvant représenté sous forme de liste
  */
-public class Option extends VBox {
+public class Option extends VBox implements Reinstanciable, TextDisplayable {
 	
 	//########################### ATTRIBUTS #####################################
  
@@ -33,6 +35,9 @@ public class Option extends VBox {
 	
 	//############################ METHODES #####################################
 	
+	/**
+	 * constructeur
+	 */
 	public Option() {
 		
 		// instanciation
@@ -54,8 +59,92 @@ public class Option extends VBox {
 	}
 	
 	/**
-	 * Met à jour le texte de tous les élements
+	 * change la position du slider
+	 * @param value la valeur compris entre 0.0 et 1.0
 	 */
+	public void changeVolumeValue(double value) {
+		sliderVolume.setValue(value);
+	}
+	
+	/**
+	 * spécifie la definition selectionné 
+	 * @param index l'indice de la définition
+	 */
+	public void setSelectedChoiceDefinition(int index) {
+		choiceWindowDefinition.setValue(choiceWindowDefinition.getItems().get(index));
+	}
+	
+	/**
+	 * définit l'action pour le bouton quitter option
+	 * @param e EventHandler qui gère l'action
+	 */
+	public void setActionButtonQuit(EventHandler<ActionEvent> e) {
+		buttonQuit.setOnAction(e);
+	}
+	
+	/**
+	 * définit l'action lorsque l'on modifie la position du slider
+	 * @param c ChangeListener qui gère l'action
+	 */
+	public void setActionSliderVolume(ChangeListener<?super Number> c) {
+		sliderVolume.valueProperty().addListener(c);
+	}
+	
+	/**
+	 * définit l'action lorsque l'on choisie une langue
+	 * @param e EventHandler qui gère l'action
+	 */
+	public void setActionChoiceBoxLanguage(EventHandler<ActionEvent> e) {
+		choiceLanguage.setOnAction(e);
+	}
+	
+	/**
+	 * définit l'action lorsque l'on choisie une définition
+	 * @param e EventHandler qui gère l'action
+	 */
+	public void setActionChoiceBoxDefinition(EventHandler<ActionEvent> e) {
+		choiceWindowDefinition.setOnAction(e);
+	}
+	
+	/**
+	 * obtient l'indice de langue selectionnée 
+	 * @return l'indice selectionné
+	 */
+	public int getChoosenLanguageIndex() {
+		return choiceLanguage.getSelectionModel().getSelectedIndex();
+	}
+	
+	/**
+	 * obtient le nom de la langue selectionnée
+	 * @return le nom de la langue
+	 */
+	public String getChoosenLanguageValue() {
+		return choiceLanguage.getSelectionModel().getSelectedItem();
+	}
+	
+	/**
+	 * obtient l'indice de la définition selectionnée 
+	 * @return l'indice selectionné
+	 */
+	public int getChoosenDefinitionIndex() {
+		return choiceWindowDefinition.getSelectionModel().getSelectedIndex();
+	}
+	
+	/**
+	 * obtient le nom de la définition selectionnée
+	 * @return le nom de la définition
+	 */
+	public String getChoosenDefinitionValue() {
+		return choiceWindowDefinition.getSelectionModel().getSelectedItem();
+	}
+	
+	public void updateStyle() {
+		this.setAlignment(Pos.CENTER);
+		this.setSpacing(15);
+		this.setBackground(new Background(new BackgroundFill( Color.WHITESMOKE, null, null) ) );
+	}
+	
+	@Override
 	public void updateText() {
 		buttonQuit.setText(App.getString("button-quit"));
 		choiceLanguage.getItems().clear();
@@ -70,89 +159,7 @@ public class Option extends VBox {
 		
 	}
 	
-	/**
-	 * Met à jour le style de tous les élements
-	 */
-	public void updateStyle() {
-		this.setAlignment(Pos.CENTER);
-		this.setSpacing(15);
-		this.setBackground(new Background(new BackgroundFill( Color.WHITESMOKE, null, null) ) );
-	}
-	
-	public void setSelectedChoiceDefinition(int index) {
-		choiceWindowDefinition.setValue(choiceWindowDefinition.getItems().get(index));
-	}
-	
-	public void setVolumeValue(double value) {
-		sliderVolume.setValue(value);
-	}
-	
-	/**
-	 * Appelant <- v.Menu
-	 * @param e ActionEvent à déclencher pour masquer cette vue
-	 */
-	public void setActionButtonQuit(EventHandler<ActionEvent> e) {
-		buttonQuit.setOnAction(e);
-	}
-	
-	/**
-	 * Appelant <- v.Menu <- c.Menu
-	 * @param n ActionChange à déclencher pour obtenir la nouvelle valeur
-	 */
-	public void setActionSliderVolume(ChangeListener<?super Number> n) {
-		sliderVolume.valueProperty().addListener(n);
-	}
-	
-	/**
-	 * Appelant <- v.Menu <- c.Menu
-	 * @param e ActionEvent à déclencher pour mettre à jour la langue
-	 */
-	public void setActionChoiceBoxLanguage(EventHandler<ActionEvent> e) {
-		choiceLanguage.setOnAction(e);
-	}
-	
-	/**
-	 * Appelant <- v.Menu <- c.Menu <- c.Main <- App 
-	 * @param e ActionEvent à déclencher pour mettre à jour la définition
-	 */
-	public void setActionChoiceBoxDefinition(EventHandler<ActionEvent> e) {
-		choiceWindowDefinition.setOnAction(e);
-	}
-	
-	/**
-	 * Permet de déterminer quelle langue à été choisie
-	 * Appelant <- v.Menu <- c.Menu 
-	 * @return l'index selectionné
-	 */
-	public int getChoosenLanguageIndex() {
-		return choiceLanguage.getSelectionModel().getSelectedIndex();
-	}
-	
-	/**
-	 * Permet d'obtenir le nom de la langue choisie
-	 * @return le nom de la langue
-	 */
-	public String getChoosenLanguageValue() {
-		return choiceLanguage.getSelectionModel().getSelectedItem();
-	}
-	
-	/**
-	 * Permet de déterminer quelle définition à été choisi
-	 * Appelant <- v.Menu <- c.Menu <- c.Main <- App
-	 * @return l'index selectionné
-	 */
-	public int getChoosenDefinitionIndex() {
-		return choiceWindowDefinition.getSelectionModel().getSelectedIndex();
-	}
-	
-	/**
-	 * Permet de déterminer le nom de la définition choisi
-	 * @return le nom de la définition
-	 */
-	public String getChoosenDefinitionValue() {
-		return choiceWindowDefinition.getSelectionModel().getSelectedItem();
-	}
-	
+	@Override
 	public void exit() {
 		buttonQuit.setDisable(true);
 		sliderVolume.setDisable(true);
