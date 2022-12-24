@@ -104,6 +104,7 @@ public class Save {
 		}
 	}
 	
+	@Override
 	public String toString() {
 		return dateLoaded + System.lineSeparator()
 			 + idRoom + System.lineSeparator()

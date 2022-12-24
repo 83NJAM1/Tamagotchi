@@ -2,36 +2,44 @@ package app.controller;
 
 import javafx.scene.shape.Rectangle;
 
+import app.Reinstanciable;
+import app.TextDisplayable;
+
 /**
  * 
  * @author ben
- * Permet de mettre a jour la vue avec le petModel
+ * Permet de mettre a jour la vue avec le model
  */
-public class Pet {
+public class Pet implements Reinstanciable, TextDisplayable {
 	
 	//########################### ATTRIBUTS #####################################
 	 
-	// ATTENTION: référence partagé avec petModel.Game
-	private app.model.Pet petModel;
+	// donnée du pet
+	private app.model.Pet petModel; //NOTE: référence partagé avec model.Game
 	
-	// ATTENTION: référence partagé avec petView.Game
-	private app.view.Pet petView;
+	// affichage de pet
+	private app.view.Pet petView; //NOTE: référence partagé avec view.Game
 	
-	private Stat hungerController;
-	private Stat thirstController;
-	private Stat weightController;
-	private Stat hygieneController;
-	private Stat moralController;
+	// les controller des états du pet
+	private State hungerController;
+	private State thirstController;
+	private State weightController;
+	private State hygieneController;
+	private State moralController;
 	
 	//############################ METHODES #####################################
 	
+	/**
+	 * constructeur
+	 * @param type la chaîne de charactère identifiant le type: "cat", "dog", "rabbit" ou "robot"
+	 */
 	public Pet(String type) {
 		
-		hungerController = new Stat("hunger");
-		thirstController = new Stat("thirst");
-		weightController = new Stat("weight");
-		hygieneController = new Stat("hygiene");
-		moralController = new Stat("moral");
+		hungerController = new State("hunger");
+		thirstController = new State("thirst");
+		weightController = new State("weight");
+		hygieneController = new State("hygiene");
+		moralController = new State("moral");
 		
 		switch(type) {
 			case "cat":
@@ -72,21 +80,88 @@ public class Pet {
 		petModel.setHygiene(hygieneController.getModel());
 		petModel.setMoral(moralController.getModel());
 		
-		petView.setHunger(hungerController.getView());
-		petView.setThirst(thirstController.getView());
-		petView.setWeight(weightController.getView());
-		petView.setHygiene(hygieneController.getView());
-		petView.setMoral(moralController.getView());
+		petView.setChildHunger(hungerController.getView());
+		petView.setChildThirst(thirstController.getView());
+		petView.setChildWeight(weightController.getView());
+		petView.setChildHygiene(hygieneController.getView());
+		petView.setChildMoral(moralController.getView());
 	}
 	
+	/**
+	 * decremente la valeur des états
+	 */
+	public void descreaseStatesValue() {
+		hungerController.decreaseValue();
+		thirstController.decreaseValue();
+		weightController.decreaseValue();
+		hygieneController.decreaseValue();
+		moralController.decreaseValue();
+	}
+	
+	/**
+	 * met le pet dans en état de mort
+	 */
+	public void setDead() {
+		petView.setAnime("mort");
+	}
+	
+	/**
+	 * obtient le controller enfant hunger
+	 * @return hunger, un State controller
+	 */
+	public State getChildHunger() {
+		return hungerController;
+	}
+	
+	/**
+	 * obtient le controller enfant thirst
+	 * @return thirst, un State controller
+	 */
+	public State getChildThirst() {
+		return thirstController;
+	}
+	
+	/**
+	 * obtient le controller enfant weight
+	 * @return weight, un State controller
+	 */
+	public State getChildWeight() {
+		return weightController;
+	}
+	
+	/**
+	 * obtient le controller enfant hygienne
+	 * @return hygienne, un State controller
+	 */
+	public State getChildHygiene() {
+		return hygieneController;
+	}
+	
+	/**
+	 * obtient le controller enfant moral
+	 * @return moral, un State controller
+	 */
+	public State getChildMoral() {
+		return moralController;
+	}
+	
+	/**
+	 * obtient le model Pet
+	 * @return Pet, le model
+	 */
 	public app.model.Pet getModel() {
 		return petModel;
 	}
 	
+	/**
+	 * obtient la vue Pet
+	 * @return Pet, la vue
+	 */
 	public app.view.Pet getView() {
 		return petView;
 	}
 	
+	@Override
 	public void updateText() {
 		hungerController.updateText();
 		thirstController.updateText();
@@ -95,45 +170,28 @@ public class Pet {
 		moralController.updateText();
 	}
 	
-	public void statsDecreaseOvertime() {
-		hungerController.decreaseValue();
-		thirstController.decreaseValue();
-		weightController.decreaseValue();
-		hygieneController.decreaseValue();
-		moralController.decreaseValue();
-	}
-	
-	public void setDead() {
-		petView.setAnime("mort");
-	}
-	public Stat getHunger() {
-		return hungerController;
-	}
-	public Stat getThirst() {
-		return thirstController;
-	}
-	public Stat getWeight() {
-		return weightController;
-	}
-	public Stat getHygiene() {
-		return hygieneController;
-	}
-	public Stat getMoral() {
-		return moralController;
-	}
-	
+	@Override
 	public void exit() {
-		hungerController.exit();
-		thirstController.exit();
-		weightController.exit();
-		hygieneController.exit();
-		moralController.exit();
+		
+		petModel.exit();
 		petModel = null;
+		
+		petView.exit();
 		petView = null;
+		
+		hungerController.exit();
 		hungerController = null;
+		
+		thirstController.exit();
 		thirstController = null;
+		
+		weightController.exit();
 		weightController = null;
+		
+		hygieneController.exit();
 		hygieneController = null;
+		
+		moralController.exit();
 		moralController = null;
 	}
 }

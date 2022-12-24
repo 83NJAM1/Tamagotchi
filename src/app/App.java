@@ -1,11 +1,11 @@
 package app;
 
-//javasdk import
+//JDK
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.text.NumberFormat;
 
-//javafx import
+//JFX
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -14,15 +14,9 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-//app import
-import app.controller.Main;
 
-/**
- * Track: Dogs and Cats
- * Music by https://www.fiftysounds.com 
- * Track: Low Battery
- * Music by https://www.fiftysounds.com 
- */
+//APP
+import app.controller.Main;
 
 /**
  * 
@@ -33,14 +27,18 @@ public class App extends Application{
 	
 	//########################### ATTRIBUTS #####################################
 	
-	private Main mainController;
 	private Stage stage;
+	private Main mainController;
+	
+	// la taille des bordures du gestionnaire de fenêtre
 	private Double stageWidthDiff;
 	private Double stageHeightDiff;
-
+	
+	// gestion de la localisation
 	private static ResourceBundle language;
 	private static NumberFormat languageNumber;
 	
+	// position de la fenêtre 
 	private static Double x_window;
 	private static Double y_window;
 	
@@ -79,17 +77,17 @@ public class App extends Application{
 				stage.setHeight(360+stageHeightDiff);
 				mainController.getChildMenu().getModelOption().setWindowWidth(640);
 				mainController.getChildMenu().getModelOption().setWindowHeight(360);
-				mainController.changeGameDim(0);
+				mainController.changeGameDefinition(0);
 			}
 			else {
 				stage.setWidth(1280+stageWidthDiff);
 				stage.setHeight(720+stageHeightDiff);
 				mainController.getChildMenu().getModelOption().setWindowWidth(1280);
 				mainController.getChildMenu().getModelOption().setWindowHeight(720);
-				mainController.changeGameDim(1);
+				mainController.changeGameDefinition(1);
 			}
 
-			mainController.getChildMenu().getModelOption().save();
+			mainController.saveOption();
 		}
 	};
 	
@@ -203,6 +201,10 @@ public class App extends Application{
         System.out.println(language.getString("wellcome"));
 	}
 	
+	/**
+	 * initalise le controller principale ce qui implique l'intialisation de ses controller enfants
+	 * @param saveName le nom de la sauvegarde à charger pour initialiser le jeu. Si null une nouvelle partie est créée.
+	 */
 	private void initMain(String saveName) {
 		
 		// initialise la vue principale incluant la vue du jeu
@@ -221,29 +223,61 @@ public class App extends Application{
         stage.show();
 	}
 	
+	/**
+	 * obtient la position x de la fenêtre
+	 * @return x
+	 */
 	public static double getX() {
 		return x_window;
 	}
+	/**
+	 * obtient la position y de la fenêtre
+	 * @return y
+	 */
 	public static double getY() {
 		return y_window;
 	}
+	/**
+	 * définit la langue à utiliser
+	 * @param local définissant la région shouaité
+	 */
 	public static void setLocale(Locale local) {
 		App.language = ResourceBundle.getBundle("language", local);
 		App.languageNumber = NumberFormat.getNumberInstance(local);
 	}
+	/**
+	 * obtient un texte localisé
+	 * @param key la clé correspondant à la chaîne
+	 * @return la chaîne dans la langue courament utilisé par l'application
+	 */
 	public static String getString(String key) {
 		return language.getString(key);
 	}
+	/**
+	 * obtient un nombre localisé
+	 * @param number la valeur
+	 * @return le nombre en chaîne de charactère dans la langue courament utilisé par l'application
+	 */
 	public static String getString(Double number) {
 		return languageNumber.format(number);
 	}
+	/**
+	 * obtient la localisation actuelement définit pour l'application
+	 * @return l'objet de localisation
+	 */
 	public static Locale getLocale() {
 		return language.getLocale();
 	}
+	/**
+	 * obtient la version de l'application
+	 * @return une chaîne de charactère définissant la version
+	 */
 	public static String getVersion() {
 		return version;
 	}
-	
+	/**
+	 * point d'entré de l'application
+	 */
     public static void main(String[] args) {
     	System.out.println("v"+getVersion());
         launch();

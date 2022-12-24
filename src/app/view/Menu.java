@@ -12,6 +12,8 @@ import javafx.geometry.Pos;
 import javafx.event.ActionEvent;
 
 import app.App;
+import app.Reinstanciable;
+import app.TextDisplayable;
 
 /**
  * 
@@ -19,28 +21,25 @@ import app.App;
  * view.Menu de type StackPane car c'est le conteneur de tout les sous menus
  * il est composé de plusieurs vues qui se superposeront
  */
-public class Menu extends StackPane {
+public class Menu extends StackPane implements Reinstanciable, TextDisplayable {
 
 	//########################### ATTRIBUTS #####################################
 	
-	// La vue pour l'affichages et la selection des sauvegardes
+	// La vue de chargement
 	private Load load;
-	
 	// La vue des options
 	private Option option;
-	
 	// listes des boutons
 	private VBox listButtons;
-	// Bouton pour revenir dans le jeu
+	// Bouton quitter menu
 	private Button buttonQuit;
-	// Bouton pour revenir dans le jeu
+	// Bouton charger partie
 	private Button buttonLoad;
-	// Bouton pour revenir dans le jeu
+	// Bouton configuration
 	private Button buttonOpt;
-	
+	// Bouton nouvelle partie
 	private Button buttonNew;
 
-	
 	//######################### EVENT-ACTION ####################################
 	
 	/**
@@ -89,6 +88,9 @@ public class Menu extends StackPane {
 	
 	//############################ METHODES #####################################
 	
+	/**
+	 * constructeur
+	 */
 	public Menu() {
 		
 		//instanciations
@@ -116,18 +118,6 @@ public class Menu extends StackPane {
 	}
 	
 	/**
-	 * Met à jour le texte de tous les élements
-	 */
-	public void updateText() {
-		buttonQuit.setText(App.getString("button-quit"));
-		buttonNew.setText(App.getString("button-newg"));
-		buttonLoad.setText(App.getString("button-load"));
-		buttonOpt.setText(App.getString("button-opts"));
-		option.updateText();
-		load.updateText();
-	}
-	
-	/**
 	 * Met à jour le style de tous les élements
 	 */
 	public void updateStyle() {
@@ -140,31 +130,31 @@ public class Menu extends StackPane {
 	}
 	
 	/**
-	 * L'action agit sur des objets de couche superieur donc elle doit venir de la couche du dessus
-	 * @param e l'action-event à appliquer sur le boutton quitter du menu
+	 * définit l'action pour le bouton quitter menu
+	 * @param e EventHandler qui gère l'action
 	 */
 	public void setActionButtonQuit(EventHandler<ActionEvent> e) {
 		buttonQuit.setOnAction(e);
 	}
 	
 	/**
-	 * L'action agit sur des objets de couche superieur donc elle doit venir de la couche du dessus
-	 * @param e l'action-event à appliquer sur le boutton quitter du menu
+	 * définit l'action pour le bouton nouvelle partie
+	 * @param e EventHandler qui gère l'action
 	 */
 	public void setActionButtonNew(EventHandler<ActionEvent> e) {
 		buttonNew.setOnAction(e);
 	}
 	
 	/**
-	 * Permet l'acces à la vue et aux methodes Option sans necessairement passer par des methode de la vue Menu
-	 * @return l'instance d'Option
+	 * obtient la vue enfant Option
+	 * @return l'instance de Option
 	 */
 	public Option getChildOption() {
 		return option;
 	}
 	
 	/**
-	 * Permet l'acces à la vue et aux methodes Load sans necessairement passer par des methode de la vue Menu
+	 * obtient la vue enfant Load
 	 * @return l'instance de Load
 	 */
 	public Load getChildLoad() {
@@ -179,11 +169,29 @@ public class Menu extends StackPane {
 		listButtons.setDisable(false);
 	}
 	
+	@Override
+	public void updateText() {
+		buttonQuit.setText(App.getString("button-quit"));
+		buttonNew.setText(App.getString("button-newg"));
+		buttonLoad.setText(App.getString("button-load"));
+		buttonOpt.setText(App.getString("button-opts"));
+		option.updateText();
+		load.updateText();
+	}
+	
+	@Override
 	public void exit() {
-		option.exit();
-		load.exit();
-		option = null;
-		load = null;
+		
+		if ( option != null ) {
+			option.exit();
+			option = null;
+		}
+		
+		if ( load != null ) {
+			load.exit();
+			load = null;
+		}
+		
 		listButtons = null;
 		buttonQuit = null;
 		buttonLoad = null;

@@ -1,22 +1,28 @@
 package app.controller;
- 
+
+import app.Reinstanciable;
+
 /**
  * 
  * @author ben
  * Permet de mettre a jour la vue avec le roomModel
  */
-public class Room {
+public class Room implements Reinstanciable {
 	
 	//########################### ATTRIBUTS #####################################
  
-	// ATTENTION: reference partagé avec roomModel.Game 
-	private app.model.Room roomModel;
+	// donées de la pièce
+	private app.model.Room roomModel; //NOTE: reference partagé avec roomModel.Game 
 	
-	// ATTENTION: reference partagé avec roomView.Game 
-	private app.view.Room roomView;
+	// affichage de la pièce
+	private app.view.Room roomView; //NOTE: reference partagé avec roomView.Game 
 	
 	//############################ METHODES #####################################
 	
+	/**
+	 * constructeur
+	 * @param roomName la chaîne de charactère identifiant la pièce.
+	 */
 	public Room(String roomName) {
 		switch(roomName) {
 			case "test":
@@ -46,16 +52,27 @@ public class Room {
 		}
 	}
 	
+	/**
+	 * obtient le model Room
+	 * @return Room, le model
+	 */
 	public app.model.Room getModel() {
 		return roomModel;
 	}
 	
+	/**
+	 * obtient la vue Room
+	 * @return Room, la vue
+	 */
 	public app.view.Room getView() {
 		return roomView;
 	}
-	
+		
+	@Override
 	public void exit() {
 		roomModel = null;
+		
+		roomView.exit();
 		roomView = null;
 	}
 }

@@ -1,5 +1,5 @@
 package app.view;
- 
+
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -13,37 +13,44 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
+import app.Reinstanciable;
+import app.TextDisplayable;
+
 /**
  * 
  * @author ben
  * view.Game est de type StakPane
  * Permet les opérations d'affichage concernant le jeu
  */
-public class Game extends StackPane {
+public class Game extends StackPane implements Reinstanciable, TextDisplayable {
 	 
 	//########################### ATTRIBUTS #####################################
 	
-	// le view.pet a manipuler
-	// ATTENTION reference partagé avec controller.Pet
-	private Pet pet;
+	// la vue du pet
+	private Pet pet; //NOTE: reference partagé avec c.Pet
+	// la vue de la pièce
+	private Room room; //NOTE: reference partagé avec c.Room
 	
-	// ATTENTION reference partagé avec controller.Room
-	private Room room;
-	
+	// pixel buffer
 	private Canvas canvas;
+	// traite les opérations d'affichage
 	private GraphicsContext gc;
+	// police d'écriture
 	private Font font;
+	// la zone du canvas
 	private AnchorPane drawingArea;
+	// le head-up display
 	private Hud hud;
 	
-	// besoin de garder les etat du gameover si on change de resolution après la fin
+	// états partie
 	private boolean gameover;
 	private String gameover_msg;
 	
 	//######################### EVENT-ACTION ####################################
 	
 	/**
-	 * ActionLoop effectué toute les 1 second (1e+9 ns)
+	 * effectué tout les 1/3 secondes.
+	 * met à jour la vue
 	 * déclendeur -> this
 	 */ 
 	private AnimationTimer drawLoop = new AnimationTimer() {
@@ -59,7 +66,8 @@ public class Game extends StackPane {
     };
     
 	/**
-	 * DrawLoop effectué toute les 0.335 second
+	 * effectué tout les 1/3 secondes.
+	 * met à jour la vue lors d'un gameover
 	 * déclendeur -> this
 	 */ 
 	private AnimationTimer drawGameoverLoop = new AnimationTimer() {
@@ -96,10 +104,15 @@ public class Game extends StackPane {
     
 	//############################ METHODES #####################################
 	
+    /**
+     * constructeur
+     * @param pet_instance le pet de jeu
+     * @param room_instance la pièce courante
+     */
 	public Game(Pet pet_instance, Room room_instance) {
 		pet = pet_instance;
 		room = room_instance;
-		hud = new Hud(pet.getHygiene(), pet.getHunger(), pet.getMoral(), pet.getWeight(), pet.getThirst());
+		hud = new Hud(pet.getChildHygiene(), pet.getChildHunger(), pet.getChildMoral(), pet.getChildWeight(), pet.getChildThirst());
 		drawingArea = new AnchorPane();
 		canvas = new Canvas(640, 360);
 		
@@ -113,15 +126,11 @@ public class Game extends StackPane {
 		this.getChildren().addAll(drawingArea, hud);
 		
 		drawLoop.start();
-		/*for ( String f : Font.getFamilies() ) {
-			System.out.println(f);
-		}*/
 	}
 	
-	public void updateText() {
-		hud.updateText();
-	}
-	
+	/**
+	 * met à jour le jeu en redéssinant
+	 */
 	public void updateDraw() {
 		
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -132,7 +141,10 @@ public class Game extends StackPane {
 						  canvas.getWidth()/2-pet.getDestW()/2, pet.getDestY()+canvas.getHeight()/2-pet.getDestH()/2,
 				          pet.getDestW()                      , pet.getDestH()                                       );
 	}
-	
+
+	/**
+	 * dessine le gameover
+	 */
 	private void drawGameOver(double fade, String text) {
 		//gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		
@@ -150,11 +162,18 @@ public class Game extends StackPane {
 		             	  pet.getDestW()                      , pet.getDestH()                                       );
 	}
 	
+	/**
+	 * initie l'affichage du gameover
+	 */
 	public void startDrawingGameOver() {
 		drawLoop.stop();
 		drawGameoverLoop.start();
 	}
 	
+	/**
+	 * redimensionne la vue du jeu
+	 * @param numChoice l'indice du choix de définition
+	 */
 	public void changeDefinition(int numChoice) {
 		
 		switch (numChoice) {
@@ -178,6 +197,23 @@ public class Game extends StackPane {
 			drawGameOver(1.0, "GAME OVER");
 	}
 	
+	/**
+	 * définit une nouvelle instance de pièce
+	 * @param new_room la nouvelle pièce
+	 */
+	public void setChildRoom(Room new_room) {
+		room = new_room;
+		updateDraw();
+	}
+	
+	/**
+	 * obtient la vue enfant Hud
+	 * @return l'instance de Hud
+	 */
+	public Hud getChildHud() {
+		return hud;
+	}
+	
 	public void updateStyle() {
 		font = Font.font("Linux Biolinum Keyboard O", FontWeight.NORMAL, FontPosture.REGULAR, 46);
 		AnchorPane.setLeftAnchor(canvas, 0.);
@@ -187,28 +223,39 @@ public class Game extends StackPane {
 		//hud.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
 	}
 	
-	public void setChildRoom(Room new_room) {
-		room = new_room;
-		updateDraw();
+	@Override
+	public void updateText() {
+		hud.updateText();
 	}
 	
-	public Hud getChildHud() {
-		return hud;
-	}
-	
+	@Override
 	public void exit() {
-		drawLoop.stop();
-		drawGameoverLoop.stop();
-		pet.exit();
-		room.exit();
-		hud.exit();
-		pet = null;
-		room = null;
+		
+		if ( drawLoop != null) {
+			drawLoop.stop();
+			drawLoop = null;
+		}
+		if ( drawGameoverLoop != null) {
+			drawGameoverLoop.stop();
+			drawGameoverLoop = null;
+		}
+		if ( hud != null ) {
+			hud.exit();
+			hud = null;
+		}
+		if ( room != null ) {
+			room.exit();
+			room = null;
+		}
+		if ( pet != null ) {
+			pet.exit();
+			pet = null;
+		}
+
 		canvas = null;
 		gc = null;
 		font = null;
 		drawingArea = null;
-		hud = null;
 		gameover_msg = null;
 	}
 }

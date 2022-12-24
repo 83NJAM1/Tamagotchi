@@ -20,6 +20,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import app.App;
+import app.Reinstanciable;
+import app.TextDisplayable;
 
 /**
  * 
@@ -27,7 +29,7 @@ import app.App;
  * view.Load est de type StackPane
  * car le choix de design implique qu'il soit composé de plusieurs Layouts
  */
-public class Load extends StackPane {
+public class Load extends StackPane implements Reinstanciable, TextDisplayable {
 	
 	//########################### ATTRIBUTS #####################################
 	 
@@ -44,7 +46,7 @@ public class Load extends StackPane {
 	//######################### EVENT-ACTION ####################################
 	
 	/**
-	 * ActionEvent pour changer l'indice de selection ( vers la gauche )
+	 * change l'indice de selection vers la gauche
 	 * déclencheur -> this
 	 */
 	private EventHandler<ActionEvent> click_prev = new EventHandler<ActionEvent>() {
@@ -52,13 +54,12 @@ public class Load extends StackPane {
 			if ( currentIndex > 0) {
 				savesList.scrollTo(--currentIndex);
 				savesList.getSelectionModel().select(currentIndex);
-				//savesList.requestFocus();
 			}
 		}
 	};
 	
 	/**
-	 * ActionEvent pour changer l'indice de selection ( vers la droite )
+	 * change l'indice de selection vers la droite
 	 * déclencheur -> this
 	 */
 	private EventHandler<ActionEvent> click_next = new EventHandler<ActionEvent>() {
@@ -66,24 +67,25 @@ public class Load extends StackPane {
 			if ( currentIndex < savesList.getItems().size()-1) {
 				savesList.scrollTo(++currentIndex);
 				savesList.getSelectionModel().select(currentIndex);
-				//savesList.requestFocus();
 			}
 		}
 	};
 	
 	/**
-	 * MouseEvent pour changer l'indice courant de selection à celle chosie par le clique
+	 * change l'indice courant de selection à celle chosie par le clique
 	 * déclencheur -> this
 	 */
 	private EventHandler<MouseEvent> click_elem = new EventHandler<MouseEvent>() {
 		public void handle(MouseEvent e) {
-			//savesList.scrollTo(savesList.getSelectionModel().getSelectedIndex());
 			currentIndex=savesList.getSelectionModel().getSelectedIndex();
 		}
 	};
 	
 	//############################ METHODES #####################################
 	
+	/**
+	 * constructeur
+	 */
 	public Load() {
 		//instanciation
 		savesList = new ListView<String>();
@@ -123,20 +125,31 @@ public class Load extends StackPane {
 		}));
 		System.out.println("number of saves: " + savesObsList.size());
 	}
-	
+		
 	/**
-	 * Met à jour le texte de tous les élements
+	 * définit l'action pour le bouton annuler chargement
+	 * @param e EventHandler qui gère l'action
 	 */
-	public void updateText() {
-		butLeft.setText(App.getString("button-prev"));
-		butRight.setText(App.getString("button-next"));
-		butValidate.setText(App.getString("button-validate"));
-		butCancel.setText(App.getString("button-cancel"));
+	public void setActionButtonCancel(EventHandler<ActionEvent> e) {
+		butCancel.setOnAction(e);
 	}
 	
 	/**
-	 * Met à jour le style de tous les éléments
+	 * définit l'action pour le bouton valider chargement
+	 * @param e EventHandler qui gère l'action
 	 */
+	public void setActionButtonValidate(EventHandler<ActionEvent> e) {
+		butValidate.setOnAction(e);
+	}
+
+	/**
+	 * obtient le nom du fichier selectionné
+	 * @return le nom du fichier
+	 */
+	public String getChoosenSave() {
+		return savesList.getSelectionModel().getSelectedItem();
+	}
+	
 	public void updateStyle() {
 		//this.setBackground(new Background(new BackgroundFill( Color.BLUE, null, null) ) );
 		savesList.setOrientation(Orientation.HORIZONTAL);
@@ -151,45 +164,15 @@ public class Load extends StackPane {
 		butRight.setMinSize(100, BASELINE_OFFSET_SAME_AS_HEIGHT);
 	}
 	
-	/**
-	 * Utile pour v.Menu pour cacher la vue
-	 * @param e ActionEvent qui doit être déclencher par la bouton quitter
-	 */
-	public void setActionButtonCancel(EventHandler<ActionEvent> e) {
-		butCancel.setOnAction(e);
+	@Override
+	public void updateText() {
+		butLeft.setText(App.getString("button-prev"));
+		butRight.setText(App.getString("button-next"));
+		butValidate.setText(App.getString("button-validate"));
+		butCancel.setText(App.getString("button-cancel"));
 	}
 	
-	/**
-	 * Utilisé par c.Main car réinitialise le jeu complet
-	 * @param e ActionEvent qui doit être déclencher par le bouton charger/valider
-	 */
-	public void setActionButtonValidate(EventHandler<ActionEvent> e) {
-		butValidate.setOnAction(e);
-	}
-
-	/**
-	 * Utilisé par c.Main pour connaitre le nom du fichier à charger
-	 * @return le nom du fichier
-	 */
-	public String getChoosenSave() {
-		
-		return savesList.getSelectionModel().getSelectedItem();
-		
-		/*if (loadAsNew) {
-			return "new";
-		}
-		else if ( output != null ) {
-			return output;
-		}
-		else {
-			return savesList.getItems().get(0);
-		}*/
-	}
-	
-	public Button getChildValidateButton() {
-		return butValidate;
-	}
-	
+	@Override
 	public void exit() {
 		savesObsList.clear();
 		savesObsList = null;

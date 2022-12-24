@@ -5,7 +5,8 @@ package app.model;
  * @author ben
  * Un état représenter par une JAUGE et un NOM
  */
-public class Stat {
+public class State {
+	
 	public static final Double changeValue=0.01;
 	
 	private String keyName;
@@ -13,7 +14,7 @@ public class Stat {
 	private Double malusFactor;
 	private Double bonusFactor;
 	 
-	public Stat(String keyName) {
+	public State(String keyName) {
 		this.keyName = keyName;
 		value = 0.5;
 		malusFactor = 1.0;
@@ -60,6 +61,7 @@ public class Stat {
 		return value+=changeValue*bonusFactor;
 	}
 	
+	@Override
 	public String toString() {
 		return keyName + " : " + value;
 	}

@@ -1,34 +1,36 @@
 package app.model;
- 
+
+import app.Reinstanciable;
+
 /**
  * 
  * @author ben
  * Le compagnon à prendre soin
  */
-public abstract class Pet {
+public abstract class Pet implements Reinstanciable  {
 	
 	protected String type;
 	
 	// ATTENTION: References partagées avec c.Stat
-	protected Stat hunger;
-	protected Stat thirst;
-	protected Stat weight;
-	protected Stat hygiene;
-	protected Stat moral;
+	protected State hunger;
+	protected State thirst;
+	protected State weight;
+	protected State hygiene;
+	protected State moral;
 	
-	public void setHunger(Stat hunger) {
+	public void setHunger(State hunger) {
 		this.hunger = hunger;
 	}
-	public void setThirst(Stat thirst) {
+	public void setThirst(State thirst) {
 		this.thirst = thirst;
 	}
-	public void setWeight(Stat weight) {
+	public void setWeight(State weight) {
 		this.weight = weight;
 	}
-	public void setHygiene(Stat hygiene) {
+	public void setHygiene(State hygiene) {
 		this.hygiene = hygiene;
 	}
-	public void setMoral(Stat moral) {
+	public void setMoral(State moral) {
 		this.moral = moral;
 	}
 	
@@ -36,22 +38,27 @@ public abstract class Pet {
 		return type;
 	}
 	
-	public Stat getHunger() {
+	public State getHunger() {
 		return hunger;
 	}
-	public Stat getThirst() {
+	public State getThirst() {
 		return thirst;
 	}
-	public Stat getWeight() {
+	public State getWeight() {
 		return weight;
 	}
-	public Stat getHygiene() {
+	public State getHygiene() {
 		return hygiene;
 	}
-	public Stat getMoral() {
+	public State getMoral() {
 		return moral;
 	}
 	
+	public int getStatsNumber() {
+		return 5;
+	}
+	
+	@Override
 	public String toString() {
 		String output = getType() + System.lineSeparator() 
 					  +	getStatsNumber() + System.lineSeparator()
@@ -63,8 +70,12 @@ public abstract class Pet {
 		return output;
 	}
 	
-	public int getStatsNumber() {
-		return 5;
+	@Override
+	public void exit() {
+		hunger = null;
+		thirst = null;
+		weight = null;
+		hygiene = null;
+		moral = null;
 	}
-	
 }

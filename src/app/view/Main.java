@@ -1,25 +1,28 @@
 package app.view;
- 
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.StackPane;
 
+import app.Reinstanciable;
+import app.TextDisplayable;
+
 /**
  * 
  * @author ben
- * view.Main permet d'interchanger les vues Game et Menu 
+ * permet d'interchanger les vues Game, Menu et CustomPet 
  */
-public class Main extends StackPane {
+public class Main extends StackPane implements Reinstanciable, TextDisplayable {
 
 	//########################### ATTRIBUTS #####################################
 
-	//ATTENTION: reference partagé avec controller.Game
-	private Game game;
-	 
-	//ATTENTION: reference partagé avec controller.Menu
-	private Menu menu;
+	// la vue du jeu
+	private Game game; //NOTE: reference partagé avec controller.Game
 	
-	// La vue pour customiser le pet
+	// la vue du menu
+	private Menu menu; //NOTE: reference partagé avec controller.Menu
+	
+	// La vue de customisation du pet
 	private CustomPet customPet;
 	
 	//######################### EVENT-ACTION ####################################
@@ -46,55 +49,109 @@ public class Main extends StackPane {
 	
 	//############################ METHODES #####################################
 	
+	/**
+	 * constructeur charger/continuer partie
+	 * @param game_instance l'instance du jeu
+	 * @param menu_instance l'instance du menu
+	 */
 	public Main(Game game_instance, Menu menu_instance) {
-		initNoCustomPet(game_instance, menu_instance);
+		init(game_instance, menu_instance);
 	}
 	
-	public Main() {
+	/**
+	 * constructeur nouvelle partie
+	 * @param menu_instance l'instance du menu
+	 */
+	public Main(Menu menu_instance) {
+		
 		customPet = new CustomPet();
-		this.getChildren().add(customPet);
+		
+		menu = menu_instance;
+		
+		getChildren().add(customPet);
 	}
 	
-	private void initNoCustomPet(Game game_instance, Menu menu_instance) {
-		this.game = game_instance;
-		this.menu = menu_instance;
+	/**
+	 * initialisation
+	 * @param game_instance l'instance du jeu
+	 * @param menu_instance l'instance du menu
+	 */
+	private void init(Game game_instance, Menu menu_instance) {
+
+		game = game_instance;
+		menu = menu_instance;
 		
 		menu.setActionButtonQuit(click_quit_menu);
 		game.getChildHud().getChildAction().setActionButtonMenu(click_open_menu);
 		
-		this.getChildren().add(menu);
-		this.getChildren().add(game);
+		getChildren().add(menu);
+		getChildren().add(game);
 	}
 	
-	public void initWithCustomPet(Game game_instance, Menu menu_instance) {
-		this.getChildren().remove(customPet);
-		initNoCustomPet(game_instance, menu_instance);
+	/**
+	 * initialisation en enlevant la vue de customisation
+	 * @param game_instance l'instance du jeu
+	 */
+	public void init(Game game_instance) {
+		
+		init(game_instance, menu);
+
+		getChildren().remove(customPet);
+		customPet.exit();
+		customPet = null;
 	}
 	
-	public CustomPet getCustomPet() {
+	/**
+	 * obtient la vue de customisation
+	 * @return customPet, la vue
+	 */
+	public CustomPet getChildCustomPet() {
 		return customPet;
 	}
 	
+    /**
+     * affiche la vue de customisation
+     */
 	public void showCustom() {
 		game.setDisable(true);
 		menu.setDisable(true);
+		customPet.setDisable(false);
 		customPet.toFront();
 	}
+	
+    /**
+     * masque la vue de customisation
+     */
 	public void hideCustom() {
 		game.setDisable(false);
 		menu.setDisable(false);
+		customPet.setDisable(true);
 		customPet.toBack();
 	}
 	
+    /**
+     * affiche la vue du menu
+     */
 	public void showMenu() {
 		game.setDisable(true);
 		menu.toFront();
 	}
+	
+    /**
+     * masque la vue du menu
+     */
 	public void hideMenu() {
 		game.setDisable(false);
 		menu.toBack();
 	}
 	
+	@Override
+	public void updateText() {
+		game.updateText();
+		menu.updateText();
+	}
+	
+	@Override
 	public void exit() {
 		menu.exit();
 		game.exit();

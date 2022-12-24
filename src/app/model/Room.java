@@ -20,6 +20,7 @@ public class Room {
 		this.id_name=id_name;
 	}
 	
+	@Override
 	public String toString() {
 		return id_name;
 	}

@@ -1,11 +1,13 @@
 package app.model;
 
+import app.Reinstanciable;
+
 /**
  * 
  * @author ben
  * Encapsule tous les élements du jeu
  */
-public class Game {
+public class Game implements Reinstanciable {
 	 
 	// ATTENTION: référence partagé avec controller.Pet
 	private Pet pet;
@@ -29,7 +31,14 @@ public class Game {
 		room = new_room;
 	}
 	
+	@Override
 	public String toString() {
 		return room.toString() + System.lineSeparator() + pet.toString();
+	}
+	
+	@Override
+	public void exit() {
+		pet = null;
+		room = null;
 	}
 }

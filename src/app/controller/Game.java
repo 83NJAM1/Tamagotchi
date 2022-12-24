@@ -6,31 +6,35 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
  
+import app.Reinstanciable;
+import app.TextDisplayable;
+
 /**
  * 
  * @author ben
  * permet de faire intéragire l'ensemble du jeu avec les actions à associer
  */
-public class Game {
+public class Game implements Reinstanciable, TextDisplayable {
 	
 	//########################### ATTRIBUTS #####################################
-
+	
+	// données du jeu
 	private app.model.Game gameModel;
 	
-	//ATTENTION: reference partagé avec gameView.Main
-	private app.view.Game gameView;
+	// interface utilisateur du jeu
+	private app.view.Game gameView; //NOTE: reference partagé avec view.Main
 	
-	// le controller du petController à manipuler
+	// le controller du pet à manipuler
 	private Pet petController;
 	
 	// le controller de la pièce active
 	private Room roomController;
 	
-	// gestion des données
+	// données permanante du jeu
 	private app.model.Save saveModel;
 	 
-	// lié à c.Main
-	public BooleanProperty gameover;
+	// déclencheur d'évenement lors d'un gomeover
+	public BooleanProperty gameover; //NOTE: lié à app.controller.Main 
 	
 	//######################### EVENT-ACTION ####################################
 
@@ -124,11 +128,11 @@ public class Game {
 		gameView = new app.view.Game( petController.getView(), roomController.getView() );
 		gameover = new SimpleBooleanProperty(this, "gameover", false);
 		
-		petController.getHunger().setValue(saveModel.getStat("hunger"));
-		petController.getThirst().setValue(saveModel.getStat("thirst"));
-		petController.getWeight().setValue(saveModel.getStat("weight"));
-		petController.getHygiene().setValue(saveModel.getStat("hygiene"));
-		petController.getMoral().setValue(saveModel.getStat("moral"));
+		petController.getChildHunger().setValue(saveModel.getStat("hunger"));
+		petController.getChildThirst().setValue(saveModel.getStat("thirst"));
+		petController.getChildWeight().setValue(saveModel.getStat("weight"));
+		petController.getChildHygiene().setValue(saveModel.getStat("hygiene"));
+		petController.getChildMoral().setValue(saveModel.getStat("moral"));
 		
 		init();
 	}
@@ -148,27 +152,42 @@ public class Game {
 		actionLoop.start();
 	}
 	
+	/**
+	 * sauvegarde les données du jeu via le model Save
+	 */
 	public void save() {
 		saveModel.save();
 	}
 	
-	public void setPet(Pet new_petController) {
-		petController = new_petController;
+	/**
+	 * change le pet courant
+	 * @param newPetController le nouveau pet pour le jeu
+	 */
+	public void setPet(Pet newPetController) {
+		petController = newPetController;
 	}
-	public void setRoom(Room new_roomController) {
-		roomController = new_roomController;
+	
+	/**
+	 * change la pièce courante
+	 * @param newRoomController la nouvelle pièce pour le jeu
+	 */
+	public void setRoom(Room newRoomController) {
+		roomController = newRoomController;
 		gameModel.setChildRoom(roomController.getModel());
 		gameView.setChildRoom(roomController.getView());
 	}
 	
+	/**
+	 * met a jour les données du jeu
+	 */
 	public void updateGame() {
 		
-		petController.statsDecreaseOvertime();
+		petController.descreaseStatesValue();
 		
-		if ( petController.getHygiene().getModel().getValue() < 0.48 )
-			petController.getHygiene().applyBonus(3.0, 10, "shower");
-		if ( petController.getHygiene().getModel().getValue() < 0.48 )
-			petController.getHygiene().applyBonus(2.0, 5, "brushing teeth");
+		if ( petController.getChildHygiene().getModel().getValue() < 0.48 )
+			petController.getChildHygiene().applyBonus(3.0, 10, "shower");
+		if ( petController.getChildHygiene().getModel().getValue() < 0.48 )
+			petController.getChildHygiene().applyBonus(2.0, 5, "brushing teeth");
 		
 		if ( isGameover() ) {
 			gameView.startDrawingGameOver();
@@ -176,12 +195,16 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * vérifie si la partie est perdu ou non
+	 * @return vrai si partie perdu
+	 */
 	public boolean isGameover() {
 		
-		if ( petController.getHunger().getModel().getValue() < 0.0 
-		  || petController.getThirst().getModel().getValue() < 0.0
-		  || petController.getWeight().getModel().getValue() < 0.0
-		  || petController.getMoral().getModel().getValue()  < 0.0 ) 
+		if ( petController.getChildHunger().getModel().getValue() < 0.0 
+		  || petController.getChildThirst().getModel().getValue() < 0.0
+		  || petController.getChildWeight().getModel().getValue() < 0.0
+		  || petController.getChildMoral().getModel().getValue()  < 0.0 ) 
 		{
 			gameover.setValue(true);
 			petController.setDead();
@@ -191,6 +214,9 @@ public class Game {
 		return false;
 	}
 	
+	/**
+	 * définit les action authorisé dans chaque pièce
+	 */
 	public void checkRoomAllowedAction() {
 		switch (roomController.getModel().toString()) {
 			case "kitchen":
@@ -210,28 +236,53 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * obtient le controller enfant pet
+	 * @return Pet, le controller
+	 */
 	public Pet getChildPet() {
 		return petController;
 	}
 	
+	/**
+	 * obtient la vue du jeu
+	 * @return Game la vue
+	 */
 	public app.view.Game getView() {
 		return gameView;
 	}
 	
-	public app.model.Game getgameModel() {
+	/**
+	 * obtient le model du jeu
+	 * @return Game le model
+	 */
+	public app.model.Game getModel() {
 		return gameModel;
 	}
 	
-	public void exit() {
-		actionLoop.stop();
-		petController.exit();
-		roomController.exit();
-		saveModel = null;
-		gameView = null;
-		gameModel = null;
-		petController = null;
-		roomController = null;
-		actionLoop = null;
+	@Override
+	public void updateText() {
+		petController.updateText();
+		gameView.updateText();
 	}
 	
+	@Override
+	public void exit() {
+		actionLoop.stop();
+		actionLoop = null;
+		
+		petController.exit();
+		petController = null;
+		
+		roomController.exit();
+		roomController = null;
+		
+		gameView.exit();
+		gameView = null;
+		
+		gameModel.exit();
+		gameModel = null;
+		
+		saveModel = null;
+	}	
 }
