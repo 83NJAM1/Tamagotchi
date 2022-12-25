@@ -1,6 +1,6 @@
 package app.view;
 
-import app.Reinstanciable;
+import app.Componable;
 
 /**
  * 
@@ -10,7 +10,7 @@ import app.Reinstanciable;
  *      Ca me semble mieux de faire une classe Sprite et que view.Pet
  *      hérite de Sprite
  */
-public class Pet extends AnimatedSprite implements Reinstanciable {
+public class Pet extends AnimatedSprite implements Componable {
 
 	//########################### ATTRIBUTS #####################################
 	

@@ -21,7 +21,7 @@ class TestState {
 	@DisplayName("decrement stat")
 	void testDecrementStat() {
 		double oldValue = state.getValue();
-		state.dec();
+		state.applyBonus("c");
 		assertTrue(oldValue > state.getValue());
 	}
 	
@@ -29,7 +29,7 @@ class TestState {
 	@DisplayName("increment stat")
 	void testIncrementStat() {
 		double oldValue = state.getValue();
-		state.inc();
+		state.applyMalus("c");
 		assertTrue(oldValue < state.getValue());
 	}
 

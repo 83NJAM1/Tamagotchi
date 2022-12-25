@@ -2,7 +2,7 @@ package app.view;
 
 import javafx.scene.image.Image;
 
-import app.Reinstanciable;
+import app.Componable;
 
 /**
  * 
@@ -12,7 +12,7 @@ import app.Reinstanciable;
  * pour le moment car si zone cliquable alors le type Image
  * ne sera pas suffisant
  */
-public class Room extends Image implements Reinstanciable {
+public class Room extends Image implements Componable {
 
 	//########################### ATTRIBUTS #####################################
 	 

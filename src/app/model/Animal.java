@@ -8,7 +8,7 @@ package app.model;
 public class Animal extends Pet {
 	
 	public Animal(String type) {
-		super.type = type;
+		super(type);
 	}
 	
 }

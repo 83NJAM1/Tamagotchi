@@ -1,13 +1,13 @@
 package app.model;
 
-import app.Reinstanciable;
+import app.Componable;
 
 /**
  * 
  * @author ben
  * Le compagnon à prendre soin
  */
-public abstract class Pet implements Reinstanciable  {
+public abstract class Pet implements Componable  {
 	
 	protected String type;
 	
@@ -17,6 +17,45 @@ public abstract class Pet implements Reinstanciable  {
 	protected State weight;
 	protected State hygiene;
 	protected State moral;
+	
+	protected boolean takingShower;
+	protected boolean eating;
+	protected boolean drinking;
+	protected boolean playing;
+	
+	public Pet(String type) {
+		this.type = type;
+		takingShower = false;
+		eating = false;
+		drinking = false;
+		playing = false;
+	}
+	
+	public void toogleTakingShower() {
+		takingShower = !takingShower;
+	}
+	public void toogleEating() {
+		eating = !eating;
+	}
+	public void toogleDrinking() {
+		drinking = !drinking;
+	}
+	public void tooglePlaying() {
+		playing = !playing;
+	}
+	
+	public boolean isTakingShower() {
+		return takingShower;
+	}
+	public boolean isEating() {
+		return eating;
+	}
+	public boolean isDrinking() {
+		return drinking;
+	}
+	public boolean isPlaying() {
+		return playing;
+	}
 	
 	public void setHunger(State hunger) {
 		this.hunger = hunger;
@@ -52,6 +91,43 @@ public abstract class Pet implements Reinstanciable  {
 	}
 	public State getMoral() {
 		return moral;
+	}
+	
+	public void setMalusForAllStates(String key, Double factor) {
+		hunger.setMalus(key, factor);
+		hygiene.setMalus(key, factor);
+		moral.setMalus(key, factor);
+		thirst.setMalus(key, factor);
+		weight.setMalus(key, factor);
+	}
+	
+	public void setBonusForAllStates(String key, Double factor) {
+		hunger.setBonus(key, factor);
+		hygiene.setBonus(key, factor);
+		moral.setBonus(key, factor);
+		thirst.setBonus(key, factor);
+		weight.setBonus(key, factor);
+	}
+	
+	public void applyBonus(String key){
+		hunger.applyBonus(key);
+		hygiene.applyBonus(key);
+		moral.applyBonus(key);
+		thirst.applyBonus(key);
+		weight.applyBonus(key);
+	}
+	
+	public void applyMalus(String key){
+		hunger.applyMalus(key);
+		hygiene.applyMalus(key);
+		moral.applyMalus(key);
+		thirst.applyMalus(key);
+		weight.applyMalus(key);
+	}
+	
+	public void applyEffect(String key) {
+		applyBonus(key);
+		applyMalus(key);
 	}
 	
 	public int getStatsNumber() {

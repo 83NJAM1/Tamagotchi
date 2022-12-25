@@ -72,18 +72,18 @@ public class App extends Application{
 	 */
 	private EventHandler<ActionEvent> choose_definition = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			if ( mainController.getChildMenu().getView().getChildOption().getChoosenDefinitionIndex() == 0) {
+			if ( mainController.getControllerMenu().getView().getChildOption().getChoosenDefinitionIndex() == 0) {
 				stage.setWidth(640+stageWidthDiff);
 				stage.setHeight(360+stageHeightDiff);
-				mainController.getChildMenu().getModelOption().setWindowWidth(640);
-				mainController.getChildMenu().getModelOption().setWindowHeight(360);
+				mainController.getControllerMenu().getModelOption().setWindowWidth(640);
+				mainController.getControllerMenu().getModelOption().setWindowHeight(360);
 				mainController.changeGameDefinition(0);
 			}
 			else {
 				stage.setWidth(1280+stageWidthDiff);
 				stage.setHeight(720+stageHeightDiff);
-				mainController.getChildMenu().getModelOption().setWindowWidth(1280);
-				mainController.getChildMenu().getModelOption().setWindowHeight(720);
+				mainController.getControllerMenu().getModelOption().setWindowWidth(1280);
+				mainController.getControllerMenu().getModelOption().setWindowHeight(720);
 				mainController.changeGameDefinition(1);
 			}
 
@@ -131,12 +131,12 @@ public class App extends Application{
 		public void handle(ActionEvent e) {
 			
 			//sauvegarde les données
-			String saveName = mainController.getChildMenu().getView().getChildLoad().getChoosenSave();
+			String saveName = mainController.getControllerMenu().getView().getChildLoad().getChoosenSave();
 			mainController.saveGame();
 			
 			//detruit tout
 			stage.close();
-			mainController.getChildMenu().getView().closeLoad();
+			mainController.getControllerMenu().getView().closeLoad();
 			mainController.exit();
 			stage.setScene(null);
 			mainController=null;
@@ -159,7 +159,7 @@ public class App extends Application{
 			
 			//detruit tout
 			stage.close();
-			mainController.getChildMenu().getView().closeLoad();
+			mainController.getControllerMenu().getView().closeLoad();
 			mainController.exit();
 			stage.setScene(null);
 			mainController=null;
@@ -192,8 +192,8 @@ public class App extends Application{
 		initMain(null);
 		
 		// donnée traité ultérieurement
-        stageWidthDiff = stage.getWidth() - mainController.getChildMenu().getModelOption().getWindowWidth();
-        stageHeightDiff = stage.getHeight() - mainController.getChildMenu().getModelOption().getWindowHeight();
+        stageWidthDiff = stage.getWidth() - mainController.getControllerMenu().getModelOption().getWindowWidth();
+        stageHeightDiff = stage.getHeight() - mainController.getControllerMenu().getModelOption().getWindowHeight();
 		x_window = stage.getX();
 		y_window = stage.getY();
 		
@@ -209,17 +209,24 @@ public class App extends Application{
 		
 		// initialise la vue principale incluant la vue du jeu
 		mainController = new Main(saveName);
-		mainController.getChildMenu().getView().getChildOption().setActionChoiceBoxDefinition(choose_definition);
-		mainController.getChildMenu().getView().getChildLoad().setActionButtonValidate(load_game);
-		mainController.getChildMenu().getView().setActionButtonNew(new_game);
+		mainController.getControllerMenu().getView().getChildOption().setActionChoiceBoxDefinition(choose_definition);
+		mainController.getControllerMenu().getView().getChildLoad().setActionButtonValidate(load_game);
+		mainController.getControllerMenu().getView().setActionButtonNew(new_game);
 		
 		// initialise la scene utilisé pour affocher la vue principale
 		Scene scene = new Scene( mainController.getView(), 
-								 mainController.getChildMenu().getModelOption().getWindowWidth()  , 
-								 mainController.getChildMenu().getModelOption().getWindowHeight() );
+								 mainController.getControllerMenu().getModelOption().getWindowWidth()  , 
+								 mainController.getControllerMenu().getModelOption().getWindowHeight() );
 		
 		// la scene a utilisé pour l'application
 		stage.setScene(scene);
+		
+		if ( x_window != null )
+			stage.setX(x_window);
+		
+		if ( y_window != null )
+			stage.setY(y_window);
+		
         stage.show();
 	}
 	

@@ -6,15 +6,15 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import app.App;
-import app.Reinstanciable;
-import app.TextDisplayable;
+import app.Componable;
+import app.Localisable;
 
 /**
  * 
  * @author ben
  * permet l'affichage d'un état représenter par une JAUGE et un NOM
  */
-public class State extends VBox implements Reinstanciable, TextDisplayable {
+public class State extends VBox implements Componable, Localisable {
 	
 	Label name;
 	Label valueTxt;

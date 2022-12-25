@@ -12,16 +12,35 @@ package app.model;
  * Dans le cas de zone cliquable la pièce se composera
  * d'un nom et de zones
  */
-public class Room {
-	 
-	String id_name;
+public abstract class Room {
+		
+	private String id_name;
+	private boolean initialized;
 	
 	public Room(String id_name) {
 		this.id_name=id_name;
+		initialized=false;
+	}
+	
+	public abstract Room getAdjacent(Room room);
+	public abstract boolean isAdjacent(Room room);
+	
+	public boolean equals(Room room) {
+		return id_name.equals(room.id_name);
+	}
+	
+	public boolean isInitialized() {
+		return initialized;
+	}
+	public void initializationDone() {
+		initialized=true;
+	}
+	public String getIdName() {
+		return id_name;
 	}
 	
 	@Override
 	public String toString() {
-		return id_name;
+		return getIdName();
 	}
 }

@@ -6,15 +6,15 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
  
-import app.Reinstanciable;
-import app.TextDisplayable;
+import app.Componable;
+import app.Localisable;
 
 /**
  * 
  * @author ben
  * permet de faire intéragire l'ensemble du jeu avec les actions à associer
  */
-public class Game implements Reinstanciable, TextDisplayable {
+public class Game implements Componable, Localisable {
 	
 	//########################### ATTRIBUTS #####################################
 	
@@ -30,70 +30,149 @@ public class Game implements Reinstanciable, TextDisplayable {
 	// le controller de la pièce active
 	private Room roomController;
 	
+	// le controller du mini jeu
+	private MiniGame miniGameController;
+	
 	// données permanante du jeu
 	private app.model.Save saveModel;
 	 
-	// déclencheur d'évenement lors d'un gomeover
+	// déclencheur d'évenement lors d'un gameover
 	public BooleanProperty gameover; //NOTE: lié à app.controller.Main 
 	
 	//######################### EVENT-ACTION ####################################
 
 	/**
-	 * ActionLoop effectué toute les 1 second (1e+9 ns)
+	 * gameLoop répété tout les x temps, avec x le tickrate
 	 * déclendeur -> this
 	 */ 
-	private AnimationTimer actionLoop = new AnimationTimer() {
+	private AnimationTimer gameLoop = new AnimationTimer() {
+		
 		long old_time=0;
+		long tickrate=1_000_000_000;
+		
         public void handle(long new_time) {
 			if (new_time > old_time ) {
-				old_time = new_time+1_000_000_000;
-				
+				old_time = new_time+tickrate;
 				updateGame();
 			}
         }
     };
     
 	/**
-	 * ActionLoop effectué pour aller dans la pièce A ( kitchen )
+	 * effectué pour aller dans la cuisine( kitchen )
 	 * déclendeur -> v.Action
 	 */ 
 	private EventHandler<ActionEvent> gotoKitchen = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			setRoom(new Room("kitchen"));
-			checkRoomAllowedAction();
+			setControllerRoom(new Room("kitchen"));
 		}
 	};
 	
 	/**
-	 * ActionLoop effectué pour aller dans la pièce A ( kitchen )
+	 * effectué pour aller dans le jardin ( garden )
 	 * déclendeur -> v.Action
 	 */ 
 	private EventHandler<ActionEvent> gotoGarden = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			setRoom(new Room("garden"));
-			checkRoomAllowedAction();
+			setControllerRoom(new Room("garden"));
 		}
 	};
 	
 	/**
-	 * ActionLoop effectué pour aller dans la pièce B ( livingroomController )
+	 * effectué pour aller dans la salle de bain ( bathroom )
 	 * déclendeur -> v.Action
 	 */ 
-	private EventHandler<ActionEvent> gotoBathroomController = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> gotoBathroom = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			setRoom(new Room("bathroomController"));
-			checkRoomAllowedAction();
+			setControllerRoom(new Room("bathroom"));
 		}
 	};
 	
 	/**
-	 * ActionLoop effectué pour aller dans la pièce C ( test )
+	 * effectué pour aller dans le salon ( livingroom )
 	 * déclendeur -> v.Action
 	 */ 
-	private EventHandler<ActionEvent> gotoLivingroomController = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> gotoLivingroom = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			setRoom(new Room("test"));
-			checkRoomAllowedAction();
+			setControllerRoom(new Room("livingroom"));
+		}
+	};
+	
+	/**
+	 * effectué pour aller dans la chambre ( bedroom )
+	 * déclendeur -> v.Action
+	 */ 
+	private EventHandler<ActionEvent> gotoBedroom = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			setControllerRoom(new Room("bedroom"));
+		}
+	};
+	
+	/**
+	 * effectué pour faire boire le pet
+	 * déclendeur -> v.Action
+	 */ 
+	private EventHandler<ActionEvent> makePetDrinking = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			petController.getModel().toogleDrinking();
+		}
+	};
+	
+	/**
+	 * effectué pour faire manger le pet
+	 * déclendeur -> v.Action
+	 */ 
+	private EventHandler<ActionEvent> makePetEating = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			petController.getModel().toogleEating();
+		}
+	};
+	
+	/**
+	 * effectué pour faire prendre une douche au pet
+	 * déclendeur -> v.Action
+	 */ 
+	private EventHandler<ActionEvent> makePetTakingShower = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			petController.getModel().toogleTakingShower();
+		}
+	};
+	
+	/**
+	 * effectué pour faire jouer le pet
+	 * déclendeur -> v.Action
+	 */ 
+	private EventHandler<ActionEvent> makePetPlaying = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			miniGameController = new MiniGame("throw-stick", petController);
+			gameModel.setMiniGame(miniGameController.getModel());
+			gameView.getChildHud().setActionBarMiniGame(miniGameController.getView());
+			petController.getModel().tooglePlaying();
+			
+			miniGameController.getView().setActionButtonThrow(clickThrow);
+			miniGameController.getView().setActionButtonStop(clickStop);
+		}
+	};
+	
+	/**
+	 * effectué pour faire boire le pet
+	 * déclendeur -> v.Action
+	 */ 
+	private EventHandler<ActionEvent> clickThrow = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			miniGameController.actionThrow();
+		}
+	};
+	
+	/**
+	 * effectué pour faire manger le pet
+	 * déclendeur -> v.Action
+	 */ 
+	private EventHandler<ActionEvent> clickStop = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			gameModel.setMiniGame(null);
+			gameView.getChildHud().removeActionBarMiniGame();
+			petController.getModel().tooglePlaying();
 		}
 	};
 	
@@ -102,12 +181,12 @@ public class Game implements Reinstanciable, TextDisplayable {
 	/*
 	 * Constructeur nouvelle partie
 	 */
-	public Game(String petControllerType, String roomControllerName, String saveName) {
+	public Game(String petType, String roomName, String saveName) {
 		
 		saveModel = new app.model.Save("res/"+saveName);
 		
-		petController = new Pet(petControllerType);
-		roomController = new Room(roomControllerName);
+		petController = new Pet(petType);
+		roomController = new Room(roomName);
 		gameModel = new app.model.Game( petController.getModel(), roomController.getModel() );
 		gameView = new app.view.Game( petController.getView(), roomController.getView() );
 		gameover = new SimpleBooleanProperty(this, "gameover", false);
@@ -128,11 +207,11 @@ public class Game implements Reinstanciable, TextDisplayable {
 		gameView = new app.view.Game( petController.getView(), roomController.getView() );
 		gameover = new SimpleBooleanProperty(this, "gameover", false);
 		
-		petController.getChildHunger().setValue(saveModel.getStat("hunger"));
-		petController.getChildThirst().setValue(saveModel.getStat("thirst"));
-		petController.getChildWeight().setValue(saveModel.getStat("weight"));
-		petController.getChildHygiene().setValue(saveModel.getStat("hygiene"));
-		petController.getChildMoral().setValue(saveModel.getStat("moral"));
+		petController.getControllerHunger().setValue(saveModel.getState("hunger"));
+		petController.getControllerThirst().setValue(saveModel.getState("thirst"));
+		petController.getControllerWeight().setValue(saveModel.getState("weight"));
+		petController.getControllerHygiene().setValue(saveModel.getState("hygiene"));
+		petController.getControllerMoral().setValue(saveModel.getState("moral"));
 		
 		init();
 	}
@@ -144,12 +223,18 @@ public class Game implements Reinstanciable, TextDisplayable {
 		saveModel.setGameInstance(gameModel);
 		
 		gameView.getChildHud().getChildAction().setActionButtonKitchen(gotoKitchen);
-		gameView.getChildHud().getChildAction().setActionButtonBathroom(gotoBathroomController);
-		gameView.getChildHud().getChildAction().setActionButtonLivingroom(gotoLivingroomController);
+		gameView.getChildHud().getChildAction().setActionButtonBathroom(gotoBathroom);
+		gameView.getChildHud().getChildAction().setActionButtonLivingroom(gotoLivingroom);
+		gameView.getChildHud().getChildAction().setActionButtonBedroom(gotoBedroom);
 		gameView.getChildHud().getChildAction().setActionButtonGarden(gotoGarden);
 		
-		checkRoomAllowedAction();
-		actionLoop.start();
+		gameView.getChildHud().getChildAction().setActionButtonDrink(makePetDrinking);
+		gameView.getChildHud().getChildAction().setActionButtonEat(makePetEating);
+		gameView.getChildHud().getChildAction().setActionButtonTakeShower(makePetTakingShower);
+		gameView.getChildHud().getChildAction().setActionButtonPlay(makePetPlaying);
+		
+		updateViewAllowedRoomDestination();
+		gameLoop.start();
 	}
 	
 	/**
@@ -163,7 +248,7 @@ public class Game implements Reinstanciable, TextDisplayable {
 	 * change le pet courant
 	 * @param newPetController le nouveau pet pour le jeu
 	 */
-	public void setPet(Pet newPetController) {
+	public void setControllerPet(Pet newPetController) {
 		petController = newPetController;
 	}
 	
@@ -171,76 +256,49 @@ public class Game implements Reinstanciable, TextDisplayable {
 	 * change la pièce courante
 	 * @param newRoomController la nouvelle pièce pour le jeu
 	 */
-	public void setRoom(Room newRoomController) {
-		roomController = newRoomController;
-		gameModel.setChildRoom(roomController.getModel());
-		gameView.setChildRoom(roomController.getView());
+	public void setControllerRoom(Room newRoomController) {
+		
+		if ( gameModel.setCurrentModelRoom( newRoomController.getModel() ) ) {
+			roomController = newRoomController;
+			gameView.setChildRoom( roomController.getView() );
+		}
+		
+		updateViewAllowedRoomDestination();
 	}
 	
 	/**
-	 * met a jour les données du jeu
+	 * met a jour les données et la vue du jeu
 	 */
 	public void updateGame() {
 		
-		petController.descreaseStatesValue();
-		
-		if ( petController.getChildHygiene().getModel().getValue() < 0.48 )
-			petController.getChildHygiene().applyBonus(3.0, 10, "shower");
-		if ( petController.getChildHygiene().getModel().getValue() < 0.48 )
-			petController.getChildHygiene().applyBonus(2.0, 5, "brushing teeth");
-		
-		if ( isGameover() ) {
-			gameView.startDrawingGameOver();
-			actionLoop.stop();
+		if ( gameModel.nextStep() ) {
+			petController.updateView();	
 		}
-	}
-	
-	/**
-	 * vérifie si la partie est perdu ou non
-	 * @return vrai si partie perdu
-	 */
-	public boolean isGameover() {
-		
-		if ( petController.getChildHunger().getModel().getValue() < 0.0 
-		  || petController.getChildThirst().getModel().getValue() < 0.0
-		  || petController.getChildWeight().getModel().getValue() < 0.0
-		  || petController.getChildMoral().getModel().getValue()  < 0.0 ) 
-		{
+		else {
 			gameover.setValue(true);
+			gameView.startDrawingGameOver();
+			gameLoop.stop();
 			petController.setDead();
-			return true;
 		}
-		
-		return false;
 	}
-	
+		
 	/**
-	 * définit les action authorisé dans chaque pièce
+	 * met a jour la vue des actions des pièces authorisées
 	 */
-	public void checkRoomAllowedAction() {
-		switch (roomController.getModel().toString()) {
-			case "kitchen":
-				gameView.getChildHud().getChildAction().setAllowedButtons(true, true, false, false, true, true);
-				break;
-			case "livingroomController":
-				gameView.getChildHud().getChildAction().setAllowedButtons(true, true, false, false, true, true);
-				break;
-			case "garden":
-				gameView.getChildHud().getChildAction().setAllowedButtons(true, true, false, false, true, true);
-				break;
-			case "test":
-				gameView.getChildHud().getChildAction().setAllowedButtons(true, true, true, true, false, true);
-				break;
-			default:
-				break;
-		}
+	public void updateViewAllowedRoomDestination() {
+		
+		gameView.getChildHud().getChildAction().setAllowedRoom(roomController.getModel().isAdjacent(app.model.Kitchen.getInstance()),
+															   roomController.getModel().isAdjacent(app.model.Garden.getInstance()),
+															   roomController.getModel().isAdjacent(app.model.Bathroom.getInstance()),
+															   roomController.getModel().isAdjacent(app.model.Livingroom.getInstance()),
+															   roomController.getModel().isAdjacent(app.model.Bedroom.getInstance()) );
 	}
 	
 	/**
 	 * obtient le controller enfant pet
 	 * @return Pet, le controller
 	 */
-	public Pet getChildPet() {
+	public Pet getControllerPet() {
 		return petController;
 	}
 	
@@ -268,8 +326,8 @@ public class Game implements Reinstanciable, TextDisplayable {
 	
 	@Override
 	public void exit() {
-		actionLoop.stop();
-		actionLoop = null;
+		gameLoop.stop();
+		gameLoop = null;
 		
 		petController.exit();
 		petController = null;

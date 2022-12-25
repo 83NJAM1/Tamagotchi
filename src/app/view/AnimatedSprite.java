@@ -5,9 +5,9 @@ import java.util.HashMap;
 import javafx.animation.AnimationTimer;
 import javafx.scene.shape.Rectangle;
 
-import app.Reinstanciable;
+import app.Componable;
 
-public class AnimatedSprite extends Sprite implements Reinstanciable {
+public class AnimatedSprite extends Sprite implements Componable {
 
 	//########################### ATTRIBUTS #####################################
 

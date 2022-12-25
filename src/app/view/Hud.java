@@ -6,21 +6,24 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 
-import app.Reinstanciable;
-import app.TextDisplayable;
+import app.Componable;
+import app.Localisable;
 
 /**
  * 
  * @author ben
  * affiche les stats ainsi que les actions
  */
-public class Hud extends AnchorPane implements Reinstanciable, TextDisplayable {
+public class Hud extends AnchorPane implements Componable, Localisable {
 	
 	//########################### ATTRIBUTS #####################################
  
 	// barre des actions
 	private ActionBar actionBar;
+	private HBox actionBarMiniGame;
+	
 	// encart des états
 	private VBox statsBox;
 	// liste des états
@@ -60,6 +63,19 @@ public class Hud extends AnchorPane implements Reinstanciable, TextDisplayable {
 		
 		this.getChildren().addAll(actionBar, statsBox);
 		updateStyle();
+	}
+	
+	public void setActionBarMiniGame(HBox actionBarMiniGame) {
+		this.actionBarMiniGame = actionBarMiniGame;
+		this.getChildren().remove(actionBar);
+		this.getChildren().add(actionBarMiniGame);
+		AnchorPane.setBottomAnchor(actionBarMiniGame, 10.);
+		AnchorPane.setLeftAnchor(actionBarMiniGame, 10.);
+	}
+	
+	public void removeActionBarMiniGame() {
+		this.getChildren().remove(actionBarMiniGame);
+		this.getChildren().add(actionBar);
 	}
 	
 	/**

@@ -4,15 +4,15 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.StackPane;
 
-import app.Reinstanciable;
-import app.TextDisplayable;
+import app.Componable;
+import app.Localisable;
 
 /**
  * 
  * @author ben
  * permet d'interchanger les vues Game, Menu et CustomPet 
  */
-public class Main extends StackPane implements Reinstanciable, TextDisplayable {
+public class Main extends StackPane implements Componable, Localisable {
 
 	//########################### ATTRIBUTS #####################################
 
@@ -154,7 +154,9 @@ public class Main extends StackPane implements Reinstanciable, TextDisplayable {
 	@Override
 	public void exit() {
 		menu.exit();
-		game.exit();
+		if ( game != null ) {
+			game.exit();
+		}
 		if ( customPet != null ) {
 			customPet.exit();
 		}

@@ -13,8 +13,8 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
-import app.Reinstanciable;
-import app.TextDisplayable;
+import app.Componable;
+import app.Localisable;
 
 /**
  * 
@@ -22,7 +22,7 @@ import app.TextDisplayable;
  * view.Game est de type StakPane
  * Permet les opérations d'affichage concernant le jeu
  */
-public class Game extends StackPane implements Reinstanciable, TextDisplayable {
+public class Game extends StackPane implements Componable, Localisable {
 	 
 	//########################### ATTRIBUTS #####################################
 	
@@ -96,7 +96,7 @@ public class Game extends StackPane implements Reinstanciable, TextDisplayable {
 				
 				if(!doonce) {
 					hud.hideStats();
-					hud.getChildAction().setAllowedButtons(false, false, false, false, false, true);
+					hud.getChildAction().setAllowedMainAction(false, false, false, true);
 				}
 			}
         }

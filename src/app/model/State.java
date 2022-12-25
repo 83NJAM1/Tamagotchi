@@ -1,24 +1,28 @@
 package app.model;
- 
+
+import java.util.HashMap;
+
+import app.Componable;
+
 /**
  * 
  * @author ben
  * Un état représenter par une JAUGE et un NOM
  */
-public class State {
+public class State implements Componable {
 	
-	public static final Double changeValue=0.01;
+	public static final Double BASEFACTOR=0.001;
 	
 	private String keyName;
 	private Double value;
-	private Double malusFactor;
-	private Double bonusFactor;
+	private HashMap<String,Double> malusFactor;
+	private HashMap<String,Double> bonusFactor;
 	 
 	public State(String keyName) {
 		this.keyName = keyName;
 		value = 0.5;
-		malusFactor = 1.0;
-		bonusFactor = 1.0;
+		malusFactor = new HashMap<>();
+		bonusFactor = new HashMap<>();
 	}
 	
 	public String getKeyName() {
@@ -33,36 +37,53 @@ public class State {
 		this.value = value;
 	}
 	
-	public boolean setBonus(Double factor) {
+	public void setBonus(String key, Double factor) {
 		
 		if ( factor > 0 ) 
-			this.bonusFactor = factor;
+			bonusFactor.put(key, factor);
 		else 
-			System.err.println("Bonuses must be a positive factor");
-		
-		return factor>0;
+			System.err.println("must be a positive factor");
 	}
 	
-	public boolean setMalus(Double factor) {
+	public void setMalus(String key, Double factor) {
 		
 		if ( factor > 0 )
-			this.malusFactor = factor;
+			malusFactor.put(key, factor);
 		else
-			System.err.println("Maluses must be a positive factor");
+			System.err.println("must be a positive factor");
+	}
+	
+	public Double applyMalus(String key) {
 		
-		return factor>0;
+		if ( malusFactor.containsKey(key) )
+			return value-=BASEFACTOR*malusFactor.get(key);
+		
+		return value;
 	}
 	
-	public Double dec() {
-		return value-=changeValue*malusFactor;
-	}
-	
-	public Double inc() {
-		return value+=changeValue*bonusFactor;
+	public Double applyBonus(String key) {
+		
+		if ( bonusFactor.containsKey(key) )
+			return value+=BASEFACTOR*bonusFactor.get(key);
+		
+		return value;
 	}
 	
 	@Override
 	public String toString() {
 		return keyName + " : " + value;
+	}
+	
+	@Override
+	public void exit() {
+		
+		if ( malusFactor != null ) {
+			malusFactor.clear();
+			malusFactor = null;
+		}
+		if ( bonusFactor != null ) {
+			bonusFactor.clear();
+			bonusFactor = null;
+		}
 	}
 }

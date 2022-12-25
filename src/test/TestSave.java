@@ -21,11 +21,11 @@ class TestSave {
 	@DisplayName("loading save")
 	void testLoadingSave() {
 		save.load("./res/testsave.tmg.test");
-		assertEquals(0.3999999999999999, save.getStat("hunger"));
-		assertEquals(0.3999999999999999, save.getStat("thirst"));
-		assertEquals(0.3999999999999999, save.getStat("weight"));
-		assertEquals(0.6400000000000001, save.getStat("hygiene"));
-		assertEquals(0.3999999999999999, save.getStat("moral"));
+		assertEquals(0.3999999999999999, save.getState("hunger"));
+		assertEquals(0.3999999999999999, save.getState("thirst"));
+		assertEquals(0.3999999999999999, save.getState("weight"));
+		assertEquals(0.6400000000000001, save.getState("hygiene"));
+		assertEquals(0.3999999999999999, save.getState("moral"));
 	}
 
 

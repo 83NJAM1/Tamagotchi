@@ -8,6 +8,6 @@ package app.model;
 public class Robot extends Pet {
  
 	public Robot () {
-		super.type = "robot";
+		super("robot");
 	}
 }
