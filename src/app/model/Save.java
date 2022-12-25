@@ -22,12 +22,12 @@ public class Save {
 	private Date dateLoaded;
 	private String idRoom;
 	private String petType;
-	private int numberStats;
-	private Hashtable<String, Double> stats;
+	private int numberStates;
+	private Hashtable<String, Double> states;
 
 	public Save(String pathname) {
 
-		stats = new Hashtable<String, Double>();
+		states = new Hashtable<String, Double>();
 		
 		try {
 			file = new File(pathname);
@@ -52,8 +52,8 @@ public class Save {
 	public String getPetType() {
 		return petType;
 	}
-	public Double getStat(String key) {
-		return stats.get(key);
+	public Double getState(String key) {
+		return states.get(key);
 	}
 	
 	/**
@@ -85,13 +85,13 @@ public class Save {
 			dateLoaded = new Date(scanner.nextLong());
 			idRoom = scanner.next();
 			petType = scanner.next();
-			numberStats = scanner.nextInt();
+			numberStates = scanner.nextInt();
 			
 			String key;
-			for ( int i=0; i<numberStats; i++) {
+			for ( int i=0; i<numberStates; i++) {
 				key = scanner.next();
 					  scanner.next();
-				stats.put(key, scanner.nextDouble());
+				states.put(key, scanner.nextDouble());
 			}
 			
 			in.close();
@@ -109,10 +109,10 @@ public class Save {
 		return dateLoaded + System.lineSeparator()
 			 + idRoom + System.lineSeparator()
 			 + petType + System.lineSeparator()
-			 + "    " + stats.get("hunger") + System.lineSeparator()
-			 + "    " + stats.get("thirst") + System.lineSeparator()
-			 + "    " + stats.get("weight") + System.lineSeparator()
-			 + "    " + stats.get("hygiene") + System.lineSeparator()
-			 + "    " + stats.get("moral") + System.lineSeparator();
+			 + "    " + states.get("hunger") + System.lineSeparator()
+			 + "    " + states.get("thirst") + System.lineSeparator()
+			 + "    " + states.get("weight") + System.lineSeparator()
+			 + "    " + states.get("hygiene") + System.lineSeparator()
+			 + "    " + states.get("moral") + System.lineSeparator();
 	}
 }

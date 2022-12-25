@@ -3,15 +3,15 @@ package app.controller;
 import java.util.Locale;
 
 import app.App;
-import app.Reinstanciable;
-import app.TextDisplayable;
+import app.Componable;
+import app.Localisable;
 
 /**
  * 
  * @author ben
  * Permet de mettre a jour la vue avec le optionModel
  */
-public class Menu implements Reinstanciable, TextDisplayable {
+public class Menu implements Componable, Localisable {
 	 
 	//########################### ATTRIBUTS #####################################
 	

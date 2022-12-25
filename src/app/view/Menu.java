@@ -12,8 +12,8 @@ import javafx.geometry.Pos;
 import javafx.event.ActionEvent;
 
 import app.App;
-import app.Reinstanciable;
-import app.TextDisplayable;
+import app.Componable;
+import app.Localisable;
 
 /**
  * 
@@ -21,7 +21,7 @@ import app.TextDisplayable;
  * view.Menu de type StackPane car c'est le conteneur de tout les sous menus
  * il est composé de plusieurs vues qui se superposeront
  */
-public class Menu extends StackPane implements Reinstanciable, TextDisplayable {
+public class Menu extends StackPane implements Componable, Localisable {
 
 	//########################### ATTRIBUTS #####################################
 	

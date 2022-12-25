@@ -2,15 +2,15 @@ package app.controller;
 
 import javafx.scene.shape.Rectangle;
 
-import app.Reinstanciable;
-import app.TextDisplayable;
+import app.Componable;
+import app.Localisable;
 
 /**
  * 
  * @author ben
  * Permet de mettre a jour la vue avec le model
  */
-public class Pet implements Reinstanciable, TextDisplayable {
+public class Pet implements Componable, Localisable {
 	
 	//########################### ATTRIBUTS #####################################
 	 
@@ -87,16 +87,7 @@ public class Pet implements Reinstanciable, TextDisplayable {
 		petView.setChildMoral(moralController.getView());
 	}
 	
-	/**
-	 * decremente la valeur des états
-	 */
-	public void descreaseStatesValue() {
-		hungerController.decreaseValue();
-		thirstController.decreaseValue();
-		weightController.decreaseValue();
-		hygieneController.decreaseValue();
-		moralController.decreaseValue();
-	}
+
 	
 	/**
 	 * met le pet dans en état de mort
@@ -109,7 +100,7 @@ public class Pet implements Reinstanciable, TextDisplayable {
 	 * obtient le controller enfant hunger
 	 * @return hunger, un State controller
 	 */
-	public State getChildHunger() {
+	public State getControllerHunger() {
 		return hungerController;
 	}
 	
@@ -117,7 +108,7 @@ public class Pet implements Reinstanciable, TextDisplayable {
 	 * obtient le controller enfant thirst
 	 * @return thirst, un State controller
 	 */
-	public State getChildThirst() {
+	public State getControllerThirst() {
 		return thirstController;
 	}
 	
@@ -125,7 +116,7 @@ public class Pet implements Reinstanciable, TextDisplayable {
 	 * obtient le controller enfant weight
 	 * @return weight, un State controller
 	 */
-	public State getChildWeight() {
+	public State getControllerWeight() {
 		return weightController;
 	}
 	
@@ -133,7 +124,7 @@ public class Pet implements Reinstanciable, TextDisplayable {
 	 * obtient le controller enfant hygienne
 	 * @return hygienne, un State controller
 	 */
-	public State getChildHygiene() {
+	public State getControllerHygiene() {
 		return hygieneController;
 	}
 	
@@ -141,7 +132,7 @@ public class Pet implements Reinstanciable, TextDisplayable {
 	 * obtient le controller enfant moral
 	 * @return moral, un State controller
 	 */
-	public State getChildMoral() {
+	public State getControllerMoral() {
 		return moralController;
 	}
 	
@@ -159,6 +150,14 @@ public class Pet implements Reinstanciable, TextDisplayable {
 	 */
 	public app.view.Pet getView() {
 		return petView;
+	}
+	
+	public void updateView() {
+		hungerController.updateValue();
+		thirstController.updateValue();
+		weightController.updateValue();
+		hygieneController.updateValue();
+		moralController.updateValue();
 	}
 	
 	@Override

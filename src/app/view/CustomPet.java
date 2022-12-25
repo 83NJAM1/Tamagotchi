@@ -23,8 +23,8 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 
 import app.App;
-import app.Reinstanciable;
-import app.TextDisplayable;
+import app.Componable;
+import app.Localisable;
 
 /**
  * 
@@ -32,7 +32,7 @@ import app.TextDisplayable;
  * view.CustomPet est de type AnchorPane
  * car le choix de design implique qu'il soit composé de sous vue
  */
-public class CustomPet extends StackPane implements Reinstanciable, TextDisplayable {
+public class CustomPet extends StackPane implements Componable, Localisable {
 
 	//########################### ATTRIBUTS #####################################
 	

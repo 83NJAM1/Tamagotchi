@@ -1,6 +1,11 @@
 package app;
 
-public interface Reinstanciable {
+/**
+ * 
+ * @author ben
+ * Composé par d'autres objets qui doivent être géré
+ */
+public interface Componable {
 	
 	/**
 	 * etat de fin. Stop tous les threads, met ses enfant dans le même état de fin, met tous à null.

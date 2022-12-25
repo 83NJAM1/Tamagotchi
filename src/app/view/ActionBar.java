@@ -10,15 +10,15 @@ import javafx.scene.control.CustomMenuItem;
 import javafx.scene.layout.HBox;
 
 import app.App;
-import app.Reinstanciable;
-import app.TextDisplayable;
+import app.Componable;
+import app.Localisable;
 
 /**
  * 
  * @author ben
  * permet de selectionner les actions du jeu et d'aller au menu
  */
-public class ActionBar extends HBox implements Reinstanciable, TextDisplayable {
+public class ActionBar extends HBox implements Componable, Localisable {
 	 
 	//########################### ATTRIBUTS #####################################
 	
@@ -27,22 +27,42 @@ public class ActionBar extends HBox implements Reinstanciable, TextDisplayable {
 	// bouton affiche/masque états
 	private Button butStat;
 	// bouton affiche sous menu pièces
-	private Button butRoomMenu;
+	private Button butMenuRoom;
+	// bouton affiche sous menu action du pet
+	private Button butMenuPetAction;
 	
 	// sous menu pièces
 	private ContextMenu roomContextMenu;
 	// cuisine
-	private CustomMenuItem customMenuA;
+	private CustomMenuItem customMenuRoomA;
 	private Button butKitchen;
 	// jardin
-	private CustomMenuItem customMenuB;
+	private CustomMenuItem customMenuRoomB;
 	private Button butGarden;
 	// salle de bain
-	private CustomMenuItem customMenuC;
+	private CustomMenuItem customMenuRoomC;
 	private Button butBathroom;
 	// salon
-	private CustomMenuItem customMenuD;
+	private CustomMenuItem customMenuRoomD;
 	private Button butLivingroom;
+	// salon
+	private CustomMenuItem customMenuRoomE;
+	private Button butBedroom;
+	
+	// sous menu action pet
+	private ContextMenu petActionContextMenu;
+	// boire
+	private CustomMenuItem customMenuActionDrink;
+	private Button butDrink;
+	// manger
+	private CustomMenuItem customMenuActionEat;
+	private Button butEat;
+	// doucher
+	private CustomMenuItem customMenuActionTakeShower;
+	private Button butTakeShower;
+	// jouer
+	private CustomMenuItem customMenuActionPlay;
+	private Button butPlay;
 	
 	//######################### EVENT-ACTION ####################################
 	
@@ -51,10 +71,19 @@ public class ActionBar extends HBox implements Reinstanciable, TextDisplayable {
 	 */
 	private EventHandler<ActionEvent> click_room = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			roomContextMenu.show(butRoomMenu, Side.TOP, 0, 0);
+			roomContextMenu.show(butMenuRoom, Side.TOP, 0, 0);
 		}
 	};
-		
+	
+	/**
+	 * Action qui Affiche le sous menu des pièces
+	 */
+	private EventHandler<ActionEvent> click_petaction = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			petActionContextMenu.show(butMenuPetAction, Side.TOP, 0, 0);
+		}
+	};
+	
 	//############################ METHODES #####################################
 	
 	/**
@@ -65,30 +94,47 @@ public class ActionBar extends HBox implements Reinstanciable, TextDisplayable {
 		// instancie les boutons principaux
 		butMenu = new Button();
 		butStat = new Button();
-		butRoomMenu = new Button();
+		butMenuRoom = new Button();
+		butMenuPetAction = new Button();
 		
 		// instancie le sous menu pièces
 		roomContextMenu = new ContextMenu();
 		// instancie le contenu du sous menu
 		butKitchen = new Button();
-		customMenuA = new CustomMenuItem(butKitchen);
+		customMenuRoomA = new CustomMenuItem(butKitchen);
 		butGarden = new Button();
-		customMenuB = new CustomMenuItem(butGarden);
+		customMenuRoomB = new CustomMenuItem(butGarden);
 		butBathroom = new Button();
-		customMenuC = new CustomMenuItem(butBathroom);
+		customMenuRoomC = new CustomMenuItem(butBathroom);
 		butLivingroom = new Button();
-		customMenuD = new CustomMenuItem(butLivingroom);
+		customMenuRoomD = new CustomMenuItem(butLivingroom);
+		butBedroom = new Button();
+		customMenuRoomE = new CustomMenuItem(butBedroom);
+		
+		// instancie le sous menu pièces
+		petActionContextMenu = new ContextMenu();
+		// instancie le contenu du sous menu
+		butDrink = new Button();
+		customMenuActionDrink = new CustomMenuItem(butDrink);
+		butEat = new Button();
+		customMenuActionEat = new CustomMenuItem(butEat);
+		butTakeShower = new Button();
+		customMenuActionTakeShower = new CustomMenuItem(butTakeShower);
+		butPlay = new Button();
+		customMenuActionPlay = new CustomMenuItem(butPlay);
 		
 		//assignation action
-		butRoomMenu.setOnAction(click_room); 
+		butMenuRoom.setOnAction(click_room); 
+		butMenuPetAction.setOnAction(click_petaction);
 		
 		//initalisations
 		updateStyle();
 		updateText();
 		
 		//constructions de la vue
-		roomContextMenu.getItems().addAll(customMenuA, customMenuB, customMenuC, customMenuD);
-		this.getChildren().addAll(butStat, butRoomMenu, butMenu);
+		roomContextMenu.getItems().addAll(customMenuRoomA, customMenuRoomB, customMenuRoomC, customMenuRoomD, customMenuRoomE);
+		petActionContextMenu.getItems().addAll(customMenuActionDrink, customMenuActionEat, customMenuActionTakeShower, customMenuActionPlay);
+		this.getChildren().addAll(butStat, butMenuRoom, butMenuPetAction, butMenu);
 	}
 	
 	/**
@@ -96,7 +142,7 @@ public class ActionBar extends HBox implements Reinstanciable, TextDisplayable {
 	 */
 	public void updateStyle() {
 		//this.setPrefHeight(92);
-		butRoomMenu.setAlignment(Pos.CENTER);
+		butMenuRoom.setAlignment(Pos.CENTER);
 		butMenu.setAlignment(Pos.CENTER_RIGHT);
 	}
 	
@@ -149,65 +195,95 @@ public class ActionBar extends HBox implements Reinstanciable, TextDisplayable {
 	}
 	
 	/**
-	 * Autorise de cliquer sur les boutons suivants
-	 * @param stats true si autorisé false sinon
-	 * @param rooms true si autorisé false sinon
-	 * @param kitchen true si autorisé false sinon
-	 * @param garden true si autorisé false sinon
-	 * @param bathroom true si autorisé false sinon
-	 * @param menu true si autorisé false sinon
+	 * utilisé par c.Game
+	 * @param e ce qui doit être déclencher par le bouton butBedroom
 	 */
-	public void setAllowedButtons(boolean stats, boolean rooms, boolean kitchen, boolean garden, boolean bathroom, boolean menu) {
-		butStat.setDisable(!stats);
-		butRoomMenu.setDisable(!rooms);
-		butKitchen.setDisable(!kitchen);
-		butGarden.setDisable(!garden);
-		butBathroom.setDisable(!bathroom);
-		butMenu.setDisable(!menu);
+	public void setActionButtonBedroom(EventHandler<ActionEvent> e) {
+		butBedroom.setOnAction(e);
 	}
-
+	
 	/**
-	 * Autorise de cliquer sur les boutons
-	 * @param list liste de booleen dans le même ordre que l'affichage des boutons
+	 * définit l'action pour le bouton boire
+	 * @param e ce qui doit être déclencher par le bouton butDrink
 	 */
-	public void setAllowedButtons(boolean ... list) {
+	public void setActionButtonDrink(EventHandler<ActionEvent> e) {
+		butDrink.setOnAction(e);
+	}
+	/**
+	 * définit l'action pour le bouton manger
+	 * @param e ce qui doit être déclencher par le bouton butEat
+	 */
+	public void setActionButtonEat(EventHandler<ActionEvent> e) {
+		butEat.setOnAction(e);
+	}
+	/**
+	 * définit l'action pour le bouton prendre une douche
+	 * @param e ce qui doit être déclencher par le bouton butTakeShower
+	 */
+	public void setActionButtonTakeShower(EventHandler<ActionEvent> e) {
+		butTakeShower.setOnAction(e);
+	}
+	/**
+	 * définit l'action pour le bouton jouer avec pet
+	 * @param e ce qui doit être déclencher par le bouton butPlay
+	 */
+	public void setActionButtonPlay(EventHandler<ActionEvent> e) {
+		butPlay.setOnAction(e);
+	}
+	
+	public void setAllowedMainAction(boolean canToogleStates, boolean canChangeRoom, boolean canPetInterection, boolean canShowMenu) {
 		
-		Button butlist[] = {butStat, butRoomMenu, butKitchen, butGarden, butBathroom, butMenu, butLivingroom};
+		butStat.setDisable(!canToogleStates);
+		butMenuRoom.setDisable(!canChangeRoom);
+		if ( !canChangeRoom )
+			roomContextMenu.hide();
+		butMenuPetAction.setDisable(!canPetInterection);
+		if (!canPetInterection )
+			petActionContextMenu.hide();
+		butMenu.setDisable(!canShowMenu);
+	}
+	
+	public void setAllowedRoom(boolean canGotoKitchen,  boolean canGotoGarden, boolean canGotoBthroom, 
+							   boolean canGotoLivingroom, boolean canGotoBedroom) {
 		
-		try {
-			for ( int i = 0; i < list.length; i++) {
-				butlist[i].setDisable(!list[i]);
-			}
-		}
-		catch (Exception e) {
-			System.err.println(e);
-		}
+		butKitchen.setDisable(!canGotoKitchen);
+		butGarden.setDisable(!canGotoGarden);
+		butBathroom.setDisable(!canGotoBthroom);
+		butLivingroom.setDisable(!canGotoLivingroom);
+		butBedroom.setDisable(!canGotoBedroom);
 	}
 	
 	@Override
 	public void updateText() {
 		butMenu.setText(App.getString("button-menu"));
 		butStat.setText(App.getString("button-stats"));
-		butRoomMenu.setText(App.getString("button-rooms"));
+		butMenuRoom.setText(App.getString("button-rooms"));
 		butKitchen.setText(App.getString("button-kitchen"));
 		butGarden.setText(App.getString("button-garden"));
 		butBathroom.setText(App.getString("button-bathroom"));
 		butLivingroom.setText(App.getString("button-livingroom"));
+		butBedroom.setText(App.getString("button-bedroom"));
+		butMenuPetAction.setText(App.getString("button-petaction"));
+		butDrink.setText(App.getString("button-drink"));
+		butTakeShower.setText(App.getString("button-takeshower"));
+		butEat.setText(App.getString("button-eat"));
+		butPlay.setText(App.getString("button-play"));
 	}
 	
 	@Override
 	public void exit() {
 		butMenu = null;
 		butStat = null;
-		butRoomMenu = null;
-		customMenuA = null;
-		customMenuB = null;
-		customMenuC = null;
-		customMenuD = null;
+		butMenuRoom = null;
+		customMenuRoomA = null;
+		customMenuRoomB = null;
+		customMenuRoomC = null;
+		customMenuRoomD = null;
 		butKitchen = null;
 		butGarden = null;
 		butBathroom = null;
 		butLivingroom = null;
+		butBedroom = null;
 		roomContextMenu = null;
 	}
 }

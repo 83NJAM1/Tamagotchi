@@ -15,8 +15,8 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Slider;
 
 import app.App;
-import app.Reinstanciable;
-import app.TextDisplayable;
+import app.Componable;
+import app.Localisable;
 
 /**
  * 
@@ -24,7 +24,7 @@ import app.TextDisplayable;
  * view.Option est de type HBox car l'affichage d'option
  * est souvant représenté sous forme de liste
  */
-public class Option extends VBox implements Reinstanciable, TextDisplayable {
+public class Option extends VBox implements Componable, Localisable {
 	
 	//########################### ATTRIBUTS #####################################
  

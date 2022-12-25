@@ -20,8 +20,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import app.App;
-import app.Reinstanciable;
-import app.TextDisplayable;
+import app.Componable;
+import app.Localisable;
 
 /**
  * 
@@ -29,7 +29,7 @@ import app.TextDisplayable;
  * view.Load est de type StackPane
  * car le choix de design implique qu'il soit composé de plusieurs Layouts
  */
-public class Load extends StackPane implements Reinstanciable, TextDisplayable {
+public class Load extends StackPane implements Componable, Localisable {
 	
 	//########################### ATTRIBUTS #####################################
 	 

@@ -13,8 +13,8 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 import app.App;
-import app.Reinstanciable;
-import app.TextDisplayable;
+import app.Componable;
+import app.Localisable;
 
 /**
  * 
@@ -22,7 +22,7 @@ import app.TextDisplayable;
  * Controller principale encapsulant tout
  * il fait le lien avec le thread javafx
  */
-public class Main implements Reinstanciable, TextDisplayable {
+public class Main implements Componable, Localisable {
 	 
 	//########################### ATTRIBUTS #####################################
 	
@@ -126,9 +126,8 @@ public class Main implements Reinstanciable, TextDisplayable {
 		// nom de la dernière sauvegarde enregistré
 		String lastSaveName = menuController.getModelOption().getLastSave();
 		
-		// afficher : 
-		// -------- le jeu => charge/continue une partie  
-		// creation de pet => nouvelle partie
+		// afficher le jeu si charge/continue une partie
+		// sinon afficher creation de pet lors d'une nouvelle partie
 		initView(lastSaveName, saveName);
 		
 		// charger les fichier de musique en mémoire
@@ -293,7 +292,7 @@ public class Main implements Reinstanciable, TextDisplayable {
 	 * obtient le controller enfant Menu
 	 * @return Menu, le controller
 	 */
-	public Menu getChildMenu() {
+	public Menu getControllerMenu() {
 		return menuController;
 	}
 	
@@ -301,7 +300,7 @@ public class Main implements Reinstanciable, TextDisplayable {
 	 * obtient le controller enfant Game
 	 * @return Game, le controller
 	 */
-	public Game getChildGame() {
+	public Game getControllerGame() {
 		return gameController;
 	}
 	

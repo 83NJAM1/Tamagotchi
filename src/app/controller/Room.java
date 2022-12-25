@@ -1,13 +1,13 @@
 package app.controller;
 
-import app.Reinstanciable;
+import app.Componable;
 
 /**
  * 
  * @author ben
  * Permet de mettre a jour la vue avec le roomModel
  */
-public class Room implements Reinstanciable {
+public class Room implements Componable {
 	
 	//########################### ATTRIBUTS #####################################
  
@@ -25,28 +25,28 @@ public class Room implements Reinstanciable {
 	 */
 	public Room(String roomName) {
 		switch(roomName) {
-			case "test":
-				roomModel = new app.model.Room("test");
-				roomView = new app.view.Room("./res/test_room.png");
-				break;
 			case "livingroom":
-				roomModel = new app.model.Room("livingroom");
+				roomModel = app.model.Livingroom.getInstance();
 				roomView = new app.view.Room("./res/no_image.png");
 				break;
 			case "kitchen":
-				roomModel = new app.model.Room("kitchen");
+				roomModel = app.model.Kitchen.getInstance();
 				roomView = new app.view.Room("./res/no_image.png");
 				break;
 			case "bathroom":
-				roomModel = new app.model.Room("bathroom");
+				roomModel = app.model.Bathroom.getInstance();
 				roomView = new app.view.Room("./res/no_image.png");
 				break;
 			case "garden":
-				roomModel = new app.model.Room("garden");
+				roomModel = app.model.Garden.getInstance();
+				roomView = new app.view.Room("./res/no_image.png");
+				break;
+			case "bedroom":
+				roomModel = app.model.Bedroom.getInstance();
 				roomView = new app.view.Room("./res/no_image.png");
 				break;
 			default:
-				roomModel = new app.model.Room("undefined");
+				roomModel = app.model.Livingroom.getInstance();
 				roomView = new app.view.Room("./res/no_image.png");
 				break;
 		}
