@@ -253,6 +253,14 @@ public class ActionBar extends HBox implements Componable, Localisable {
 		butBedroom.setDisable(!canGotoBedroom);
 	}
 	
+	public void setAllowedInteraction( boolean canDrink,  boolean canEat, boolean canTakeShower, boolean canPlay ) {
+
+		butDrink.setDisable(!canDrink);
+		butEat.setDisable(!canEat);
+		butTakeShower.setDisable(!canTakeShower);
+		butPlay.setDisable(!canPlay);
+	}
+	
 	@Override
 	public void updateText() {
 		butMenu.setText(App.getString("button-menu"));

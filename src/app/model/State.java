@@ -11,7 +11,7 @@ import app.Componable;
  */
 public class State implements Componable {
 	
-	public static final Double BASEFACTOR=0.001;
+	public static final Double BASEFACTOR=0.1;
 	
 	private String keyName;
 	private Double value;
@@ -56,7 +56,10 @@ public class State implements Componable {
 	public Double applyMalus(String key) {
 		
 		if ( malusFactor.containsKey(key) )
-			return value-=BASEFACTOR*malusFactor.get(key);
+			value-=BASEFACTOR*malusFactor.get(key);
+		
+		if ( value < 0.0 )
+			value = 0.0;
 		
 		return value;
 	}
@@ -64,7 +67,10 @@ public class State implements Componable {
 	public Double applyBonus(String key) {
 		
 		if ( bonusFactor.containsKey(key) )
-			return value+=BASEFACTOR*bonusFactor.get(key);
+			value+=BASEFACTOR*bonusFactor.get(key);
+		
+		if ( value > 1.0 )
+			value = 1.0;
 		
 		return value;
 	}

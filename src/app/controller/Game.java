@@ -144,12 +144,17 @@ public class Game implements Componable, Localisable {
 	 */ 
 	private EventHandler<ActionEvent> makePetPlaying = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
+			
+			// instancie le jeu
 			miniGameController = new MiniGame("throw-stick", petController);
+			
+			// initialise le jeu
 			gameModel.setMiniGame(miniGameController.getModel());
 			gameView.getChildHud().setActionBarMiniGame(miniGameController.getView());
 			petController.getModel().tooglePlaying();
 			
-			miniGameController.getView().setActionButtonThrow(clickThrow);
+			// associe les actions pour le jeu
+			miniGameController.setActionThrow(clickThrow);
 			miniGameController.getView().setActionButtonStop(clickStop);
 		}
 	};
@@ -233,7 +238,7 @@ public class Game implements Componable, Localisable {
 		gameView.getChildHud().getChildAction().setActionButtonTakeShower(makePetTakingShower);
 		gameView.getChildHud().getChildAction().setActionButtonPlay(makePetPlaying);
 		
-		updateViewAllowedRoomDestination();
+		updateViewAllowedAction();
 		gameLoop.start();
 	}
 	
@@ -263,7 +268,7 @@ public class Game implements Componable, Localisable {
 			gameView.setChildRoom( roomController.getView() );
 		}
 		
-		updateViewAllowedRoomDestination();
+		updateViewAllowedAction();
 	}
 	
 	/**
@@ -278,20 +283,33 @@ public class Game implements Componable, Localisable {
 			gameover.setValue(true);
 			gameView.startDrawingGameOver();
 			gameLoop.stop();
-			petController.setDead();
+			petController.updateView();
 		}
 	}
 		
 	/**
 	 * met a jour la vue des actions des pièces authorisées
 	 */
-	public void updateViewAllowedRoomDestination() {
+	public void updateViewAllowedAction() {
 		
-		gameView.getChildHud().getChildAction().setAllowedRoom(roomController.getModel().isAdjacent(app.model.Kitchen.getInstance()),
-															   roomController.getModel().isAdjacent(app.model.Garden.getInstance()),
-															   roomController.getModel().isAdjacent(app.model.Bathroom.getInstance()),
-															   roomController.getModel().isAdjacent(app.model.Livingroom.getInstance()),
-															   roomController.getModel().isAdjacent(app.model.Bedroom.getInstance()) );
+		gameView.getChildHud().getChildAction().setAllowedRoom (
+				
+			roomController.getModel().isAdjacent(app.model.Kitchen.getInstance()),
+			roomController.getModel().isAdjacent(app.model.Garden.getInstance()),
+			roomController.getModel().isAdjacent(app.model.Bathroom.getInstance()),
+			roomController.getModel().isAdjacent(app.model.Livingroom.getInstance()),
+			roomController.getModel().isAdjacent(app.model.Bedroom.getInstance())
+		);
+		
+		gameView.getChildHud().getChildAction().setAllowedInteraction (
+				
+		    roomController.getModel().equals(app.model.Kitchen.getInstance()) ||
+			roomController.getModel().equals(app.model.Bathroom.getInstance()),
+		    roomController.getModel().equals(app.model.Kitchen.getInstance()), 
+		    roomController.getModel().equals(app.model.Bathroom.getInstance()), 
+		    roomController.getModel().equals(app.model.Garden.getInstance())
+		);
+
 	}
 	
 	/**

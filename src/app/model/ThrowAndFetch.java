@@ -2,7 +2,7 @@ package app.model;
 
 import java.util.Random; 
 
-public class ThrowStick extends MiniGame {
+public class ThrowAndFetch extends MiniGame {
 
 	public final static Double MAXDISTANCE = 100.0;
 	
@@ -12,8 +12,8 @@ public class ThrowStick extends MiniGame {
 	Random generateDistance;
 	String info;
 	
-	public ThrowStick(Pet pet) {
-		super("thorw-stick");
+	public ThrowAndFetch(Pet pet) {
+		super("throw-and-fetch");
 		this.pet = pet;
 		generateDistance = new Random();
 		stickDistance = 0.0;
@@ -21,11 +21,9 @@ public class ThrowStick extends MiniGame {
 	
 	private boolean petWantContinue() {
 		
-		if ( pet.getHunger().getValue() < 0.2 ||
-			 pet.getThirst().getValue() < 0.3 ||
-			 pet.getWeight().getValue() < 0.1 ) {
+		if ( !(pet.isHungry() && pet.isThirsty()) ) {
 			
-			info = "the pet want to stop";
+			info = "the " + pet.getType() + " want to stop";
 			pet.tooglePlaying();
 			return false;
 		}
@@ -38,7 +36,9 @@ public class ThrowStick extends MiniGame {
 	}
 	
 	public void throwStick() {
+		
 		if ( stickDistance <= 0 ) {
+			
 			stickDistance = generateDistance.nextDouble(0.0, MAXDISTANCE);
 			info = "you throw the stick to " + stickDistance; 
 		}
@@ -47,16 +47,25 @@ public class ThrowStick extends MiniGame {
 	@Override
 	public boolean nextStep() {
 		
-		if ( stickDistance > 0 ) {
-			stickDistance -= 5.0;
-			info = "the pet is fetching you the stick";
-			return petWantContinue();
-		}
-		else {
-			info = "you can throw the stick";
+		if ( !pet.getType().equals("dog") ) {
+			
+			info = "the " + pet.getType() + " don't undestand";
 			return false;
 		}
-		
+		else {
+			
+			if ( petWantContinue() && stickDistance > 0 ) {
+				
+				stickDistance -= 5.0;
+				info = "the " + pet.getType() + " is fetching you the stick";
+			}
+			else {
+				
+				info = "you can throw the stick";
+			}
+			
+			return petWantContinue();
+		}
 	}
 	
 	@Override
