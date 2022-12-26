@@ -15,6 +15,8 @@ public class Menu implements Componable, Localisable {
 	 
 	//########################### ATTRIBUTS #####################################
 	
+	public static final String CONFIGPATH = "res/"; 
+	
 	// données de configuration
 	private app.model.Option optionModel;
 	
@@ -28,7 +30,7 @@ public class Menu implements Componable, Localisable {
 	 * constructeur
 	 */
 	public Menu() {
-		optionModel = new app.model.Option("res/config.txt");
+		optionModel = new app.model.Option(CONFIGPATH+"config.txt");
 		menuView = new app.view.Menu();
 	}
 	

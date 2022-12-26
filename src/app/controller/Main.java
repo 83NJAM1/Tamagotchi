@@ -26,6 +26,8 @@ public class Main implements Componable, Localisable {
 	 
 	//########################### ATTRIBUTS #####################################
 	
+	public static final String GAMEMUSICPATH = "res/game/musics/"; 
+	
 	// l'ensemble des interfaces
 	private app.view.Main mainView;
 	
@@ -131,8 +133,8 @@ public class Main implements Componable, Localisable {
 		initView(lastSaveName, saveName);
 		
 		// charger les fichier de musique en mémoire
-		musicBackground = loadMediaFile("bin/res/musiques/DogsAndCats", "mp3");
-		musicGameover = loadMediaFile("bin/res/musiques/LowBattery", "mp3");
+		musicBackground = loadMediaFile("DogsAndCats", "mp3");
+		musicGameover = loadMediaFile("LowBattery", "mp3");
 		
 		// jouer le muisque d'arrière plan
 		playBackgroundMusic();
@@ -195,24 +197,24 @@ public class Main implements Componable, Localisable {
 	/**
 	 * charge un media sous un format supporté par le système.
 	 * si erreur, recharge via appel récursife jusqu'à plus de possibilité.
-	 * @param relativeNameFileNOEXT le nom relatif du fichier sans son extension
+	 * @param musicNameNoExt le nom relatif du fichier sans son extension
 	 * @param ext l'extension prioritaire
 	 * @return le media si aucune erreur
 	 */
-	public Media loadMediaFile(String relativeNameFileNOEXT, String ext) {
+	public Media loadMediaFile(String musicNameNoExt, String ext) {
 
 		Media result = null;
 		
 		try {
 			if (ext.equals("mp3"))
-				result = new Media(Paths.get(relativeNameFileNOEXT+".mp3").toUri().toString());
+				result = new Media(Paths.get(GAMEMUSICPATH+musicNameNoExt+".mp3").toUri().toString());
 			else if (ext.equals("wav"))
-				result = new Media(Paths.get(relativeNameFileNOEXT+".wav").toUri().toString());
+				result = new Media(Paths.get(GAMEMUSICPATH+musicNameNoExt+".wav").toUri().toString());
 			
 		} catch(MediaException e) {
 			if (ext.equals("mp3")) {
 				System.err.println(e + "\nRetry with .wav");
-				result = loadMediaFile(relativeNameFileNOEXT, "wav");
+				result = loadMediaFile(GAMEMUSICPATH+musicNameNoExt, "wav");
 			}
 			else if (ext.equals("wav")) {
 				// si autre format faire un autre appel

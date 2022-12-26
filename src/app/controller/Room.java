@@ -27,27 +27,27 @@ public class Room implements Componable {
 		switch(roomName) {
 			case "livingroom":
 				roomModel = app.model.Livingroom.getInstance();
-				roomView = new app.view.Room("./res/no_image.png");
+				roomView = new app.view.Room(Game.GAMEIMAGEPATH+"error/no_image.png");
 				break;
 			case "kitchen":
 				roomModel = app.model.Kitchen.getInstance();
-				roomView = new app.view.Room("./res/no_image.png");
+				roomView = new app.view.Room(Game.GAMEIMAGEPATH+"error/no_image.png");
 				break;
 			case "bathroom":
 				roomModel = app.model.Bathroom.getInstance();
-				roomView = new app.view.Room("./res/no_image.png");
+				roomView = new app.view.Room(Game.GAMEIMAGEPATH+"rooms/Salle_de_bain.png");
 				break;
 			case "garden":
 				roomModel = app.model.Garden.getInstance();
-				roomView = new app.view.Room("./res/no_image.png");
+				roomView = new app.view.Room(Game.GAMEIMAGEPATH+"error/no_image.png");
 				break;
 			case "bedroom":
 				roomModel = app.model.Bedroom.getInstance();
-				roomView = new app.view.Room("./res/no_image.png");
+				roomView = new app.view.Room(Game.GAMEIMAGEPATH+"error/no_image.png");
 				break;
 			default:
 				roomModel = app.model.Livingroom.getInstance();
-				roomView = new app.view.Room("./res/no_image.png");
+				roomView = new app.view.Room(Game.GAMEIMAGEPATH+"error/no_image.png");
 				break;
 		}
 	}
