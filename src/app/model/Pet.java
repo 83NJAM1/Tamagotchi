@@ -11,24 +11,45 @@ public abstract class Pet implements Componable  {
 	
 	protected String type;
 	
-	// ATTENTION: References partagées avec c.Stat
-	protected State hunger;
-	protected State thirst;
-	protected State weight;
-	protected State hygiene;
-	protected State moral;
+	protected State hunger; // \
+	protected State thirst; //  |
+	protected State weight; //  |--> NOTE: Reference partagé avec c.State
+	protected State hygiene;//  |
+	protected State moral;  // /
+	
+	protected State health;
 	
 	protected boolean takingShower;
 	protected boolean eating;
 	protected boolean drinking;
 	protected boolean playing;
+	protected boolean sleeping;
+	protected boolean dying;
 	
 	public Pet(String type) {
+		
 		this.type = type;
+		
+		health = new State("health");
+		health.setValue(1.0);
+		health.setMalus("dying", 1.5);
+		health.setBonus("living", 1.5);
+		
 		takingShower = false;
 		eating = false;
 		drinking = false;
 		playing = false;
+	}
+	
+	public void init(State hunger, State thirst, State weight, State hygiene, State moral) {
+		
+		this.hunger = hunger;
+		this.thirst = thirst;
+		this.weight = weight;
+		this.hygiene = hygiene;
+		this.moral = moral;
+		
+		setMalusForAllStates("overtime", 0.1);
 	}
 	
 	public void toogleTakingShower() {
@@ -56,21 +77,37 @@ public abstract class Pet implements Componable  {
 	public boolean isPlaying() {
 		return playing;
 	}
+	public boolean isDying() {
+		return dying;
+	}
 	
-	public void setHunger(State hunger) {
-		this.hunger = hunger;
+	public boolean isStinking() {
+		return hygiene.getValue() < 0.25;
 	}
-	public void setThirst(State thirst) {
-		this.thirst = thirst;
+	public boolean isHungry() {
+		return hunger.getValue() < 0.25;
 	}
-	public void setWeight(State weight) {
-		this.weight = weight;
+	public boolean isThirsty() {
+		return hunger.getValue() < 0.25;
 	}
-	public void setHygiene(State hygiene) {
-		this.hygiene = hygiene;
-	}
-	public void setMoral(State moral) {
-		this.moral = moral;
+	
+	public boolean isDead() {
+		
+		applyMalus("overtime");
+		
+		if ( getWeight().getValue() <= 0 &&
+			 getThirst().getValue() <= 0 &&
+			 getHunger().getValue() <= 0    ) {
+			
+			dying = true;
+			health.applyMalus("dying");
+		}
+		else {
+			dying = false;
+			health.applyBonus("living");
+		}
+		
+		return health.getValue() <= 0.0;
 	}
 	
 	public String getType() {
@@ -91,6 +128,9 @@ public abstract class Pet implements Componable  {
 	}
 	public State getMoral() {
 		return moral;
+	}
+	public State getHealth() {
+		return health;
 	}
 	
 	public void setMalusForAllStates(String key, Double factor) {

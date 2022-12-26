@@ -74,26 +74,17 @@ public class Pet implements Componable, Localisable {
 				break;
 		}
 		
-		petModel.setHunger(hungerController.getModel());
-		petModel.setThirst(thirstController.getModel());
-		petModel.setWeight(weightController.getModel());
-		petModel.setHygiene(hygieneController.getModel());
-		petModel.setMoral(moralController.getModel());
+		petModel.init(hungerController.getModel(),
+					  thirstController.getModel(),
+			 		  weightController.getModel(),
+			 		  hygieneController.getModel(),
+			 		  moralController.getModel());
 		
 		petView.setChildHunger(hungerController.getView());
 		petView.setChildThirst(thirstController.getView());
 		petView.setChildWeight(weightController.getView());
 		petView.setChildHygiene(hygieneController.getView());
 		petView.setChildMoral(moralController.getView());
-	}
-	
-
-	
-	/**
-	 * met le pet dans en état de mort
-	 */
-	public void setDead() {
-		petView.setAnime("mort");
 	}
 	
 	/**
@@ -153,11 +144,16 @@ public class Pet implements Componable, Localisable {
 	}
 	
 	public void updateView() {
+		
 		hungerController.updateValue();
 		thirstController.updateValue();
 		weightController.updateValue();
 		hygieneController.updateValue();
 		moralController.updateValue();
+		
+		if ( petModel.isDead() ) {
+			petView.setAnime("mort");
+		}
 	}
 	
 	@Override

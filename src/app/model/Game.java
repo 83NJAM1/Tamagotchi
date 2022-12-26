@@ -9,32 +9,29 @@ import app.Componable;
  */
 public class Game implements Componable {
 	 
-	private Pet pet; //NOTE: référence partagé avec controller.Pet
-	private Room current_room; //NOTE: référence partagé avec controller.Room
-	private MiniGame current_minigame;
+	private Pet pet; //NOTE: référence partagé avec c.Pet
+	private Room current_room; //NOTE: référence partagé avec c.Room
+	private MiniGame current_minigame; //NOTE: référence partagé avec c.MiniGame
 	
 	public Game(Pet pet_instance, Room room_instance) {
 		
 		pet = pet_instance;
 		current_room = room_instance;
-		
-		// le pet doit mourire ou bout d'un certain temps
-		pet.setMalusForAllStates("decrease-overtime", 0.1);
-		
+			
 		// le pet prend une douche
-		pet.getHygiene().setBonus("shower", 0.5);
+		pet.getHygiene().setBonus("shower", 10.0);
 		
 		// le pet mange
 		pet.getWeight().setMalus("eat", 0.5);
-		pet.getHunger().setBonus("eat", 0.5);
+		pet.getHunger().setBonus("eat", 2.5);
 		
 		// le pet boie
-		pet.getThirst().setBonus("drink", 0.5);
+		pet.getThirst().setBonus("drink", 2.5);
 		
 		// le pet fait un mini-jeu
 		pet.getWeight().setBonus("play", 0.5);
-		pet.getThirst().setMalus("play", 0.5);
-		pet.getHunger().setMalus("play", 0.5);
+		pet.getThirst().setMalus("play", 0.05);
+		pet.getHunger().setMalus("play", 0.05);
 		pet.getMoral().setBonus("play", 0.5);
 		
 		/**
@@ -75,7 +72,7 @@ public class Game implements Componable {
 			return false;
 		}
 		else if ( current_room.isAdjacent(room) ) {
-			System.out.println("go to " + room + " from " + current_room);
+			System.out.println("Go to " + room + " from " + current_room);
 			current_room = current_room.getAdjacent(room);
 			return true;
 		}
@@ -89,31 +86,17 @@ public class Game implements Componable {
 		current_minigame = minigame;
 	}
 	
-	public boolean isPetAlive() {
-		
-		if ( pet.getWeight().getValue() <= 0 &&
-			 pet.getThirst().getValue() <= 0 &&
-			 pet.getHunger().getValue() <= 0 &&
-			 pet.getMoral().getValue()  <= 0   )
-		{
-			return false;
-		}
-		
-		return true;
-	}
-	
 	/**
 	 * applique les règles.
 	 * determine l'état suivant du jeu depuis son état actuel.
 	 */
 	public boolean nextStep() {
 		
-		pet.applyMalus("decrease-overtime");
-		
 		// états
 		if ( pet.isTakingShower() ) {
 			if ( current_room.equals(Bathroom.getInstance()) ) {
 				pet.applyEffect("shower");
+				pet.toogleTakingShower();
 			}
 			else {
 				pet.toogleTakingShower();
@@ -123,6 +106,7 @@ public class Game implements Componable {
 		if ( pet.isEating() ) {
 			if ( current_room.equals(Kitchen.getInstance()) ) {
 				pet.applyEffect("eat");
+				pet.toogleEating();
 			}
 			else {
 				pet.toogleEating();
@@ -131,6 +115,7 @@ public class Game implements Componable {
 		}
 		if ( pet.isDrinking() ) {
 			pet.applyEffect("drink");
+			pet.toogleDrinking();
 		}
 		
 		// Mini jeu
@@ -138,13 +123,12 @@ public class Game implements Componable {
 			if ( current_room.equals(Garden.getInstance()) ) {
 				
 				if ( current_minigame != null ) {
+					
 					if ( current_minigame.nextStep() ) {
 						pet.applyEffect("play");
-						System.out.println(current_minigame.getInfo());
 					}
-					else {
-						System.out.println(current_minigame.getInfo());
-					}
+					
+					System.out.println(current_minigame.getInfo());
 				}
 				
 			}
@@ -154,7 +138,7 @@ public class Game implements Componable {
 			}
 		}
 		
-		return isPetAlive();
+		return !pet.isDead();
 	}
 	
 	@Override
