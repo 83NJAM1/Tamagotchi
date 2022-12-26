@@ -30,9 +30,12 @@ public class Game implements Componable, Localisable {
 	// le controller de la pièce active
 	private Room roomController;
 	
+	// le controller du mini jeu cuisiner
+	private Cook cookControler;
+		
 	// le controller du mini jeu
 	private MiniGame miniGameController;
-	
+		
 	// données permanante du jeu
 	private app.model.Save saveModel;
 	 
@@ -139,6 +142,16 @@ public class Game implements Componable, Localisable {
 	};
 	
 	/**
+	 * effectué pour cuisiner
+	 * déclendeur -> v.Action
+	 */ 
+	private EventHandler<ActionEvent> makePetCook = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			cookControler.start();
+		}
+	};
+	
+	/**
 	 * effectué pour faire jouer le pet
 	 * déclendeur -> v.Action
 	 */ 
@@ -195,7 +208,8 @@ public class Game implements Componable, Localisable {
 		gameModel = new app.model.Game( petController.getModel(), roomController.getModel() );
 		gameView = new app.view.Game( petController.getView(), roomController.getView() );
 		gameover = new SimpleBooleanProperty(this, "gameover", false);
-		
+		cookControler = new Cook(new app.model.Cook(),gameView.getCookView());
+
 		init();
 	}
 	
@@ -211,6 +225,7 @@ public class Game implements Componable, Localisable {
 		gameModel = new app.model.Game( petController.getModel(), roomController.getModel() );
 		gameView = new app.view.Game( petController.getView(), roomController.getView() );
 		gameover = new SimpleBooleanProperty(this, "gameover", false);
+		cookControler = new Cook(new app.model.Cook(),gameView.getCookView());
 		
 		petController.getControllerHunger().setValue(saveModel.getState("hunger"));
 		petController.getControllerThirst().setValue(saveModel.getState("thirst"));
@@ -236,6 +251,7 @@ public class Game implements Componable, Localisable {
 		gameView.getChildHud().getChildAction().setActionButtonDrink(makePetDrinking);
 		gameView.getChildHud().getChildAction().setActionButtonEat(makePetEating);
 		gameView.getChildHud().getChildAction().setActionButtonTakeShower(makePetTakingShower);
+		gameView.getChildHud().getChildAction().setActionButtonCook(makePetCook);
 		gameView.getChildHud().getChildAction().setActionButtonPlay(makePetPlaying);
 		
 		updateViewAllowedAction();

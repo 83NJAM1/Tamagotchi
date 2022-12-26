@@ -60,6 +60,9 @@ public class ActionBar extends HBox implements Componable, Localisable {
 	// doucher
 	private CustomMenuItem customMenuActionTakeShower;
 	private Button butTakeShower;
+	// cuisiner
+	private CustomMenuItem customMenuActionCook;
+	private Button butCook;
 	// jouer
 	private CustomMenuItem customMenuActionPlay;
 	private Button butPlay;
@@ -120,6 +123,8 @@ public class ActionBar extends HBox implements Componable, Localisable {
 		customMenuActionEat = new CustomMenuItem(butEat);
 		butTakeShower = new Button();
 		customMenuActionTakeShower = new CustomMenuItem(butTakeShower);
+		butCook = new Button();
+		customMenuActionCook = new CustomMenuItem(butCook);
 		butPlay = new Button();
 		customMenuActionPlay = new CustomMenuItem(butPlay);
 		
@@ -133,7 +138,7 @@ public class ActionBar extends HBox implements Componable, Localisable {
 		
 		//constructions de la vue
 		roomContextMenu.getItems().addAll(customMenuRoomA, customMenuRoomB, customMenuRoomC, customMenuRoomD, customMenuRoomE);
-		petActionContextMenu.getItems().addAll(customMenuActionDrink, customMenuActionEat, customMenuActionTakeShower, customMenuActionPlay);
+		petActionContextMenu.getItems().addAll(customMenuActionDrink, customMenuActionEat, customMenuActionTakeShower, customMenuActionCook, customMenuActionPlay);
 		this.getChildren().addAll(butStat, butMenuRoom, butMenuPetAction, butMenu);
 	}
 	
@@ -224,6 +229,13 @@ public class ActionBar extends HBox implements Componable, Localisable {
 		butTakeShower.setOnAction(e);
 	}
 	/**
+	 * définit l'action pour le bouton prendre une douche
+	 * @param e ce qui doit être déclencher par le bouton butTakeShower
+	 */
+	public void setActionButtonCook(EventHandler<ActionEvent> e) {
+		butCook.setOnAction(e);
+	}
+	/**
 	 * définit l'action pour le bouton jouer avec pet
 	 * @param e ce qui doit être déclencher par le bouton butPlay
 	 */
@@ -274,6 +286,7 @@ public class ActionBar extends HBox implements Componable, Localisable {
 		butMenuPetAction.setText(App.getString("button-petaction"));
 		butDrink.setText(App.getString("button-drink"));
 		butTakeShower.setText(App.getString("button-takeshower"));
+		butCook.setText(App.getString("button-cook"));
 		butEat.setText(App.getString("button-eat"));
 		butPlay.setText(App.getString("button-play"));
 	}

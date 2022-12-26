@@ -41,7 +41,10 @@ public class Game extends StackPane implements Componable, Localisable {
 	private AnchorPane drawingArea;
 	// le head-up display
 	private Hud hud;
-	
+		
+	// la view du minijeu cuisiner
+	private Cook cookView;
+		
 	// états partie
 	private boolean gameover;
 	private String gameover_msg;
@@ -113,6 +116,7 @@ public class Game extends StackPane implements Componable, Localisable {
 		pet = pet_instance;
 		room = room_instance;
 		hud = new Hud(pet.getChildHygiene(), pet.getChildHunger(), pet.getChildMoral(), pet.getChildWeight(), pet.getChildThirst());
+		cookView=new Cook();
 		drawingArea = new AnchorPane();
 		canvas = new Canvas(640, 360);
 		
@@ -123,7 +127,7 @@ public class Game extends StackPane implements Componable, Localisable {
 		updateDraw();
 		
 		drawingArea.getChildren().add(canvas);
-		this.getChildren().addAll(drawingArea, hud);
+		this.getChildren().addAll(drawingArea, hud, cookView);
 		
 		drawLoop.start();
 	}
@@ -140,6 +144,9 @@ public class Game extends StackPane implements Componable, Localisable {
 				          pet.getSrcW()                       , pet.getSrcH(),
 						  canvas.getWidth()/2-pet.getDestW()/2, pet.getDestY()+canvas.getHeight()/2-pet.getDestH()/2,
 				          pet.getDestW()                      , pet.getDestH()                                       );
+	
+		cookView.setDimension(canvas.getWidth(),canvas.getHeight());
+	
 	}
 
 	/**
@@ -223,9 +230,14 @@ public class Game extends StackPane implements Componable, Localisable {
 		//hud.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
 	}
 	
+	public Cook getCookView() {
+		return cookView;
+	}
+	
 	@Override
 	public void updateText() {
 		hud.updateText();
+		cookView.updateText();
 	}
 	
 	@Override
