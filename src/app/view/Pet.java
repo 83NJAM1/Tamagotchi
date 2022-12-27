@@ -8,9 +8,6 @@ import javafx.scene.shape.Rectangle;
  * 
  * @author ben
  * view.Pet permet l'affichage du pet dans un etat donné par model.Pet
- * TODO une classe Sprite
- *      Ca me semble mieux de faire une classe Sprite et que view.Pet
- *      hérite de Sprite
  */
 public class Pet extends AnimatedSprite implements Componable {
 
@@ -44,9 +41,8 @@ public class Pet extends AnimatedSprite implements Componable {
 	
 	public Pet(String spritesheet, String spritesheetColor) {
 		super(spritesheet, 0, 0, 512, 512);
-		setSize(0, 92, 128, 128);
 		color = new AnimatedSprite(spritesheetColor, 0, 0, 512, 512);
-		color.setSize(0, 92, 128, 128);
+		setSize(0, 92, 128, 128);
 	}
 	
 	/**
@@ -136,6 +132,13 @@ public class Pet extends AnimatedSprite implements Componable {
 	
 	public void changeTypeColor(int num) {
 		color.changeLine(num);
+	}
+	
+	@Override 
+	public void setSize( int dest_x, int dest_y, int dest_h, int dest_w ) {
+		super.setSize(dest_x, dest_y, dest_h, dest_w);
+		if ( color != null )
+			color.setSize(dest_x, dest_y, dest_h, dest_w);
 	}
 	
 	@Override

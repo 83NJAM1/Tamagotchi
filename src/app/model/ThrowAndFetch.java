@@ -21,9 +21,8 @@ public class ThrowAndFetch extends MiniGame {
 	
 	private boolean petWantContinue() {
 		
-		if ( !(pet.isHungry() && pet.isThirsty()) ) {
+		if ( pet.isHungry() || pet.isThirsty() ) {
 			
-			info = "the " + pet.getType() + " want to stop";
 			pet.tooglePlaying();
 			return false;
 		}
@@ -58,13 +57,19 @@ public class ThrowAndFetch extends MiniGame {
 				
 				stickDistance -= 5.0;
 				info = "the " + pet.getType() + " is fetching you the stick";
+				return true;
+			}
+			else if (stickDistance <= 0) {
+				
+				info = "you can throw the stick";
+				return false;
 			}
 			else {
 				
-				info = "you can throw the stick";
+				info = "the " + pet.getType() + " want to stop";
+				return false;
 			}
 			
-			return petWantContinue();
 		}
 	}
 	

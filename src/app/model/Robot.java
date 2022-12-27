@@ -1,5 +1,5 @@
 package app.model;
- 
+
 /**
  * 
  * @author ben

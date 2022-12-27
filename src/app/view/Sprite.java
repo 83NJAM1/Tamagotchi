@@ -34,7 +34,7 @@ public class Sprite extends Image {
 		this.src_y = src_y;
 		this.src_h = src_h;
 		this.src_w = src_w;
-		setSize(src_x, src_y, src_h, src_w);
+		this.setSize(src_x, src_y, src_h, src_w);
 	}
 	
 	/**
