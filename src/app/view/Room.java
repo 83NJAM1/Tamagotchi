@@ -28,6 +28,32 @@ public class Room extends Image implements Componable {
 		h = getHeight();
 	}
 	
+	/**
+	 * obtient l'origine x en pourcentage
+	 * @return son origine x compris en 0.0 et 1.0
+	 */
+	public double getXOriginRatio() {
+		// salle de bain
+		if ( this.getUrl().contains("bain") )
+			return 5267/getWidth();
+		// autre
+		else
+			return 0.5;
+	}
+	
+	/**
+	 * obtient l'origine y en pourcentage
+	 * @return son origine y compris en 0.0 et 1.0
+	 */
+	public double getYOriginRatio() {
+		// salle de bain
+		if ( this.getUrl().contains("bain") )
+			return 3496/getHeight();
+		// autre
+		else
+			return 0.5;
+	}
+	
 	public double getX() {
 		return x;
 	}

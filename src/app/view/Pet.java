@@ -1,8 +1,11 @@
 package app.view;
 
-import app.Componable;
 import javafx.animation.AnimationTimer;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.shape.Rectangle;
+
+import app.Componable;
 
 /**
  * 
@@ -19,6 +22,9 @@ public class Pet extends AnimatedSprite implements Componable {
 	private State weight; // |--> NOTE: references partagées avec c.Stat et v.Hud
 	private State hygiene;// |
 	private State moral;  // /
+	
+	public IntegerProperty x;
+	public IntegerProperty y;
 	
 	/**
 	 * animationloop effectué toute les 1 second
@@ -42,7 +48,10 @@ public class Pet extends AnimatedSprite implements Componable {
 	public Pet(String spritesheet, String spritesheetColor) {
 		super(spritesheet, 0, 0, 512, 512);
 		color = new AnimatedSprite(spritesheetColor, 0, 0, 512, 512);
-		setSize(0, 92, 128, 128);
+		setSize(0, 0, 128, 128);
+		
+		x = new SimpleIntegerProperty(0);
+		y = new SimpleIntegerProperty(0);
 	}
 	
 	/**
@@ -109,7 +118,6 @@ public class Pet extends AnimatedSprite implements Componable {
 		
 		Rectangle[] colorSprites = new Rectangle[numColorSprite.length];
 		
-
 		for(int i=0 ; i < numColorSprite.length ; i++) {
 			
 			int x = -1;
@@ -136,10 +144,27 @@ public class Pet extends AnimatedSprite implements Componable {
 	}
 	
 	@Override 
+	public void setPos(int dest_x, int dest_y) {
+		super.setPos(dest_x, dest_y);
+		if ( color != null )
+			color.setPos(dest_x, dest_y);
+		
+		if ( x != null )
+			x.setValue(dest_x);
+		if ( y != null )
+			y.setValue(dest_y);
+	}
+	
+	@Override 
 	public void setSize( int dest_x, int dest_y, int dest_h, int dest_w ) {
 		super.setSize(dest_x, dest_y, dest_h, dest_w);
 		if ( color != null )
 			color.setSize(dest_x, dest_y, dest_h, dest_w);
+		
+		if ( x != null )
+			x.setValue(dest_x);
+		if ( y != null )
+			y.setValue(dest_y);
 	}
 	
 	@Override

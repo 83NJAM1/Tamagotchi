@@ -38,6 +38,18 @@ public class Sprite extends Image {
 	}
 	
 	/**
+	 * copie
+	 */
+	public Sprite(Sprite copie) {
+		super(copie.getUrl());
+		this.src_x = copie.src_x;
+		this.src_y = copie.src_y;
+		this.src_h = copie.src_h;
+		this.src_w = copie.src_w;
+		this.setSize((int)src_x, (int)src_y, (int)src_h, (int)src_w);
+	}
+	
+	/**
 	 * définit la position et la taille du sprite
 	 * @param dest_x sa position x dans le canvas
 	 * @param dest_y sa position y dans le canvas
@@ -49,6 +61,16 @@ public class Sprite extends Image {
 		this.dest_y = dest_y;
 		this.dest_h = dest_h;
 		this.dest_w = dest_w;
+	}
+	
+	/**
+	 * définit la position
+	 * @param dest_x sa position x dans le canvas
+	 * @param dest_y sa position y dans le canvas
+	 */
+	public void setPos( int dest_x, int dest_y) {
+		this.dest_x = dest_x;
+		this.dest_y = dest_y;
 	}
 	
 	/**

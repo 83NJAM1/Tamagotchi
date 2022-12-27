@@ -1,8 +1,14 @@
 package app.view;
 
 import javafx.animation.AnimationTimer;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.BoxBlur;
+import javafx.scene.effect.Effect;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -48,8 +54,31 @@ public class Game extends StackPane implements Componable, Localisable {
 	// états partie
 	private boolean gameover;
 	private String gameover_msg;
+	private double petOpacity;
+	private double gameOpacity;
 	
 	//######################### EVENT-ACTION ####################################
+	
+	/**
+	 * Action effectué quand le pet se déplace
+	 * déclencher -> c.Game
+	 */
+	ChangeListener<Number> petXMove = new ChangeListener<Number>() {
+		public void changed(ObservableValue<? extends Number> obs, Number vold, Number vnew) {
+			petOpacity = 0.0;
+			System.out.println("pet has move to x:" + vnew + " from x:" + vold);
+		}
+	};
+	/**
+	 * Action effectué quand le pet se déplace
+	 * déclencher -> c.Game
+	 */
+	ChangeListener<Number> petYMove = new ChangeListener<Number>() {
+		public void changed(ObservableValue<? extends Number> obs, Number vold, Number vnew) {
+			petOpacity = 0.0;
+			System.out.println("pet has move to y:" + vnew + " from y:" + vold);
+		}
+	};
 	
 	/**
 	 * effectué tout les 1/3 secondes.
@@ -100,6 +129,7 @@ public class Game extends StackPane implements Componable, Localisable {
 				if(!doonce) {
 					hud.hideStats();
 					hud.getChildAction().setAllowedMainAction(false, false, false, true);
+					hud.getChildAction().enableCooking(false);
 				}
 			}
         }
@@ -131,6 +161,11 @@ public class Game extends StackPane implements Componable, Localisable {
 		
 		drawLoop.start();
 		pet.changeTypeColor(2); //NOTE : a modifier 
+		
+		petOpacity=0.0;
+		gameOpacity = 0.0;
+		pet.x.addListener(petXMove);
+		pet.y.addListener(petYMove);
 	}
 	
 	/**
@@ -138,40 +173,85 @@ public class Game extends StackPane implements Componable, Localisable {
 	 */
 	public void updateDraw() {
 		
+		// netoie
+		gc.setFill(Color.rgb(255, 255, 255));
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		
+		// fondu transition
+		if ( gameOpacity < 1.0 )
+			gameOpacity += 0.05;
+		
+		gc.setGlobalAlpha(gameOpacity);
+		
+		//room
 		gc.drawImage(room, 0, 0, canvas.getWidth(), canvas.getHeight());
-		gc.drawImage(pet.getColorSprite(), pet.getColorSprite().getSrcX()      , pet.getColorSprite().getSrcY(), 
-				          pet.getColorSprite().getSrcW()                       , pet.getColorSprite().getSrcH(),
-						  canvas.getWidth()/2-pet.getColorSprite().getDestW()/2, pet.getDestY()+canvas.getHeight()/2-pet.getColorSprite().getDestH()/2,
-				          pet.getColorSprite().getDestW()                      , pet.getColorSprite().getDestH()                                       );
-		gc.drawImage(pet, pet.getSrcX()                       , pet.getSrcY(), 
-				          pet.getSrcW()                       , pet.getSrcH(),
-						  canvas.getWidth()/2-pet.getDestW()/2, pet.getDestY()+canvas.getHeight()/2-pet.getDestH()/2,
-				          pet.getDestW()                      , pet.getDestH()                                       );
-	
+		
+		//pet
+		drawPet();
+		
+		// NOTE: la vue cook n'utlise pas le canvas, pas sur que l'appel ici soit util 
 		cookView.setDimension(canvas.getWidth(),canvas.getHeight());
-	
+		
+		// fin fondu transition
+		if ( gameOpacity > 1.0 ) {
+			gc.setGlobalAlpha(1.0);
+			gameOpacity = 1.0;
+		}
 	}
 
+	public void drawPet() {
+		
+		// fondu transition
+		if ( gameOpacity <= 1.0 )
+			petOpacity = gameOpacity;
+		else if ( petOpacity < 1.0 ) {
+			petOpacity += 0.05;
+		}
+		
+		gc.setGlobalAlpha(petOpacity);
+		
+		// la couleur du pet
+		gc.drawImage(pet.getColorSprite(), 
+				     pet.getColorSprite().getSrcX()  , pet.getColorSprite().getSrcY(), 
+			         pet.getColorSprite().getSrcW()  , pet.getColorSprite().getSrcH(),
+			         canvas.getWidth()*room.getXOriginRatio()-pet.getColorSprite().getDestW()*0.5+pet.getDestX() , 
+			         canvas.getHeight()*room.getYOriginRatio()-pet.getColorSprite().getDestH()*0.9+pet.getDestY(),
+			         pet.getColorSprite().getDestW() , pet.getColorSprite().getDestH()                           );
+		
+		// la ligne de dessin
+		gc.drawImage(pet, 
+				     pet.getSrcX()                   , pet.getSrcY(), 
+			         pet.getSrcW()                   , pet.getSrcH(),
+			         canvas.getWidth()*room.getXOriginRatio()-pet.getDestW()*0.5+pet.getDestX() , 
+			         canvas.getHeight()*room.getYOriginRatio()-pet.getDestH()*0.9+pet.getDestY(),
+			         pet.getDestW()                  , pet.getDestH()                           );
+		
+		// un carré délimitantle pet NOTE debug
+		gc.setStroke(Color.RED);
+		gc.strokeRect(canvas.getWidth()*room.getXOriginRatio()-pet.getDestW()*0.5+pet.getDestX() , 
+					  canvas.getHeight()*room.getYOriginRatio()-pet.getDestH()*0.9+pet.getDestY(),
+			          pet.getDestW()                 , pet.getDestH()                            );
+		
+		// fin fondu transition
+		if ( petOpacity > 1.0 ) {
+			gc.setGlobalAlpha(1.0);
+			petOpacity = 1.0;
+		}
+	}
+	
 	/**
 	 * dessine le gameover
 	 */
 	private void drawGameOver(double fade, String text) {
-		//gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+	
+		updateDraw();
 		
-		gc.setFill(Color.rgb(255, 192, 128, fade));
-		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-		
+		gc.setFill(Color.rgb(0, 0, 0, fade*0.8));
+		gc.fillRect(0, 0, canvas.getWidth(),canvas.getHeight());
 		gc.setFont(font);
-		gc.setFill(Color.rgb(255, 255, 255, fade));
+		gc.setFill(Color.rgb( (int)(Color.ORANGERED.getRed()*255), (int)(Color.ORANGERED.getGreen()*255), (int)(Color.ORANGERED.getBlue()*255), fade));
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.fillText(text, canvas.getWidth()/2, canvas.getHeight()/2);
-		
-		gc.drawImage(pet, pet.getSrcX()                       , pet.getSrcY(), 
-		             	  pet.getSrcW()                       , pet.getSrcH(),
-		             	  canvas.getWidth()/2-pet.getDestW()/2, pet.getDestY()+canvas.getHeight()/2-pet.getDestH()/2,
-		             	  pet.getDestW()                      , pet.getDestH()                                       );
 	}
 	
 	/**
@@ -193,13 +273,13 @@ public class Game extends StackPane implements Componable, Localisable {
 				//canvas.resize(640.,  360.);
 				canvas.setWidth(640);
 				canvas.setHeight(360);
-				pet.setSize(0, 92, 128, 128);
+				pet.setSize(0, 0, 128, 128);
 				break;
 			case 1:
 				//canvas.resize(1280., 720.);
 				canvas.setWidth(1280);
 				canvas.setHeight(720);
-				pet.setSize(0, 184, 256, 256);
+				pet.setSize(0, 0, 256, 256);
 				break;
 		}
 		
@@ -214,6 +294,7 @@ public class Game extends StackPane implements Componable, Localisable {
 	 * @param new_room la nouvelle pièce
 	 */
 	public void setChildRoom(Room new_room) {
+		gameOpacity = 0.0;
 		room = new_room;
 		updateDraw();
 	}
@@ -232,7 +313,6 @@ public class Game extends StackPane implements Componable, Localisable {
 		AnchorPane.setTopAnchor(canvas, 0.);
 		this.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
 		drawingArea.setBackground(new Background(new BackgroundFill(Color.rgb(255, 255, 0, 0.5), null, null)));
-		//hud.setBackground(new Background(new BackgroundFill(Color.RED, null, null)));
 	}
 	
 	public Cook getCookView() {
