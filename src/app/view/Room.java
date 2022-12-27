@@ -8,9 +8,6 @@ import app.Componable;
  * 
  * @author ben
  * view.Room est de type Image
- * 
- * pour le moment car si zone cliquable alors le type Image
- * ne sera pas suffisant
  */
 public class Room extends Image implements Componable {
 
