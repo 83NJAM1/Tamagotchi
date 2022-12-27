@@ -137,7 +137,7 @@ public class ActionBar extends HBox implements Componable, Localisable {
 		//constructions de la vue
 		roomContextMenu.getItems().addAll(customMenuRoomA, customMenuRoomB, customMenuRoomC, customMenuRoomD, customMenuRoomE);
 		petActionContextMenu.getItems().addAll(customMenuActionDrink, customMenuActionEat, customMenuActionTakeShower, customMenuActionPlay);
-		this.getChildren().addAll(butStat, butMenuRoom, butMenuPetAction, butMenu,butCook);
+		this.getChildren().addAll(butMenu, butStat, butMenuRoom, butMenuPetAction, butCook);
 	}
 	
 	/**

@@ -5,7 +5,9 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
- 
+
+import java.util.Random;
+
 import app.Componable;
 import app.Localisable;
 

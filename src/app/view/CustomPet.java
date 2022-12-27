@@ -328,10 +328,7 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 	 * constructeur
 	 */
 	public CustomPet() {
-		
-		//preview = new ImageView(new Image("res/test_dog.png"));
-		//preview.setPreserveRatio(true);
-		//preview.setFitWidth(256);
+	
 		preview = new Canvas(256, 256);
 		colorpicker = new ColorPicker();
 		
