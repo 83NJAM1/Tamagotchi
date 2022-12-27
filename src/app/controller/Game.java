@@ -325,6 +325,8 @@ public class Game implements Componable, Localisable {
 		    roomController.getModel().equals(app.model.Bathroom.getInstance()), 
 		    roomController.getModel().equals(app.model.Garden.getInstance())
 		);
+		
+		gameView.getChildHud().getChildAction().enableCooking(roomController.getModel().equals(app.model.Kitchen.getInstance()));
 
 	}
 	

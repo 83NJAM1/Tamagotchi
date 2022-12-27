@@ -28,56 +28,56 @@ public class Cook {
 	
 	private EventHandler<MouseEvent> toogleIngredient0 = new EventHandler<MouseEvent>() {
 		public void handle(MouseEvent e) {
-			model.setIngredient0(!model.getIngredient0());
+			model.toogleIngredient0();
 			draw();
 		}
 	};
 	
 	private EventHandler<MouseEvent> toogleIngredient1 = new EventHandler<MouseEvent>() {
 		public void handle(MouseEvent e) {
-			model.setIngredient1(!model.getIngredient1());
+			model.toogleIngredient1();
 			draw();
 			}
 	};
 	
 	private EventHandler<MouseEvent> toogleIngredient2 = new EventHandler<MouseEvent>() {
 		public void handle(MouseEvent e) {
-			model.setIngredient2(!model.getIngredient2());
+			model.toogleIngredient2();
 			draw();
 			}
 	};
 	
 	private EventHandler<MouseEvent> toogleIngredient3 = new EventHandler<MouseEvent>() {
 		public void handle(MouseEvent e) {
-			model.setIngredient3(!model.getIngredient3());
+			model.toogleIngredient3();
 			draw();
 			}
 	};
 	
 	private EventHandler<MouseEvent> toogleIngredient4 = new EventHandler<MouseEvent>() {
 		public void handle(MouseEvent e) {
-			model.setIngredient4(!model.getIngredient4());
+			model.toogleIngredient4();
 			draw();
 			}
 	};
 	
 	private EventHandler<MouseEvent> toogleIngredient5 = new EventHandler<MouseEvent>() {
 		public void handle(MouseEvent e) {
-			model.setIngredient5(!model.getIngredient5());
+			model.toogleIngredient5();
 			draw();
 			}
 	};
 	
 	private EventHandler<MouseEvent> toogleIngredient6 = new EventHandler<MouseEvent>() {
 		public void handle(MouseEvent e) {
-			model.setIngredient6(!model.getIngredient6());
+			model.toogleIngredient6();
 			draw();
 			}
 	};
 	
 	private EventHandler<MouseEvent> toogleIngredient7 = new EventHandler<MouseEvent>() {
 		public void handle(MouseEvent e) {
-			model.setIngredient7(!model.getIngredient7());
+			model.toogleIngredient7();
 			draw();
 			}
 	};
@@ -110,6 +110,7 @@ public class Cook {
 	public void start() {
 		done=false;
 		model.reset();
+		view.updateText();
 		draw();
 		view.start();
 	}

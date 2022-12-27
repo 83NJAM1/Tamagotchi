@@ -49,44 +49,44 @@ public class Cook {
 		ingredient7=false;
 	}
 	
-	public void setIngredient0(boolean b) {
-		if(!b || getIngredientNumber()<MAX_INGREDIENT_NUMBER)
-			ingredient0=b;
+	public void toogleIngredient0() {
+		if(ingredient0 || getIngredientNumber()<MAX_INGREDIENT_NUMBER)
+			ingredient0=!ingredient0;
 	}
 	
-	public void setIngredient1(boolean b) {
-		if(!b || getIngredientNumber()<MAX_INGREDIENT_NUMBER)
-			ingredient1=b;
+	public void toogleIngredient1() {
+		if(ingredient1 || getIngredientNumber()<MAX_INGREDIENT_NUMBER)
+			ingredient1=!ingredient1;
 	}
 	
-	public void setIngredient2(boolean b) {
-		if(!b || getIngredientNumber()<MAX_INGREDIENT_NUMBER)
-			ingredient2=b;
+	public void toogleIngredient2() {
+		if(ingredient2 || getIngredientNumber()<MAX_INGREDIENT_NUMBER)
+			ingredient2=!ingredient2;
 	}
 	
-	public void setIngredient3(boolean b) {
-		if(!b || getIngredientNumber()<MAX_INGREDIENT_NUMBER)
-			ingredient3=b;
+	public void toogleIngredient3() {
+		if(ingredient3 || getIngredientNumber()<MAX_INGREDIENT_NUMBER)
+			ingredient3=!ingredient3;
 	}
 	
-	public void setIngredient4(boolean b) {
-		if(!b || getIngredientNumber()<MAX_INGREDIENT_NUMBER)
-			ingredient4=b;
+	public void toogleIngredient4() {
+		if(ingredient4 || getIngredientNumber()<MAX_INGREDIENT_NUMBER)
+			ingredient4=!ingredient4;
 	}
 	
-	public void setIngredient5(boolean b) {
-		if(!b || getIngredientNumber()<MAX_INGREDIENT_NUMBER)
-			ingredient5=b;
+	public void toogleIngredient5() {
+		if(ingredient5 || getIngredientNumber()<MAX_INGREDIENT_NUMBER)
+			ingredient5=!ingredient5;
 	}
 	
-	public void setIngredient6(boolean b) {
-		if(!b || getIngredientNumber()<MAX_INGREDIENT_NUMBER)
-			ingredient6=b;
+	public void toogleIngredient6() {
+		if(ingredient6 || getIngredientNumber()<MAX_INGREDIENT_NUMBER)
+			ingredient6=!ingredient6;
 	}
 	
-	public void setIngredient7(boolean b) {
-		if(!b || getIngredientNumber()<MAX_INGREDIENT_NUMBER)
-			ingredient7=b;
+	public void toogleIngredient7() {
+		if(ingredient7 || getIngredientNumber()<MAX_INGREDIENT_NUMBER)
+			ingredient7=!ingredient7;
 	}
 	
 	public boolean getIngredient0() {

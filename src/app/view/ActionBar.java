@@ -30,7 +30,9 @@ public class ActionBar extends HBox implements Componable, Localisable {
 	private Button butMenuRoom;
 	// bouton affiche sous menu action du pet
 	private Button butMenuPetAction;
-	
+	// bouton cuisiner
+	private Button butCook;
+		
 	// sous menu pièces
 	private ContextMenu roomContextMenu;
 	// cuisine
@@ -60,9 +62,6 @@ public class ActionBar extends HBox implements Componable, Localisable {
 	// doucher
 	private CustomMenuItem customMenuActionTakeShower;
 	private Button butTakeShower;
-	// cuisiner
-	private CustomMenuItem customMenuActionCook;
-	private Button butCook;
 	// jouer
 	private CustomMenuItem customMenuActionPlay;
 	private Button butPlay;
@@ -99,6 +98,7 @@ public class ActionBar extends HBox implements Componable, Localisable {
 		butStat = new Button();
 		butMenuRoom = new Button();
 		butMenuPetAction = new Button();
+		butCook = new Button();
 		
 		// instancie le sous menu pièces
 		roomContextMenu = new ContextMenu();
@@ -123,8 +123,6 @@ public class ActionBar extends HBox implements Componable, Localisable {
 		customMenuActionEat = new CustomMenuItem(butEat);
 		butTakeShower = new Button();
 		customMenuActionTakeShower = new CustomMenuItem(butTakeShower);
-		butCook = new Button();
-		customMenuActionCook = new CustomMenuItem(butCook);
 		butPlay = new Button();
 		customMenuActionPlay = new CustomMenuItem(butPlay);
 		
@@ -138,8 +136,8 @@ public class ActionBar extends HBox implements Componable, Localisable {
 		
 		//constructions de la vue
 		roomContextMenu.getItems().addAll(customMenuRoomA, customMenuRoomB, customMenuRoomC, customMenuRoomD, customMenuRoomE);
-		petActionContextMenu.getItems().addAll(customMenuActionDrink, customMenuActionEat, customMenuActionTakeShower, customMenuActionCook, customMenuActionPlay);
-		this.getChildren().addAll(butStat, butMenuRoom, butMenuPetAction, butMenu);
+		petActionContextMenu.getItems().addAll(customMenuActionDrink, customMenuActionEat, customMenuActionTakeShower, customMenuActionPlay);
+		this.getChildren().addAll(butStat, butMenuRoom, butMenuPetAction, butMenu,butCook);
 	}
 	
 	/**
@@ -148,7 +146,7 @@ public class ActionBar extends HBox implements Componable, Localisable {
 	public void updateStyle() {
 		//this.setPrefHeight(92);
 		butMenuRoom.setAlignment(Pos.CENTER);
-		butMenu.setAlignment(Pos.CENTER_RIGHT);
+		butMenu.setAlignment(Pos.CENTER_RIGHT);		
 	}
 	
 	/**
@@ -241,6 +239,10 @@ public class ActionBar extends HBox implements Componable, Localisable {
 	 */
 	public void setActionButtonPlay(EventHandler<ActionEvent> e) {
 		butPlay.setOnAction(e);
+	}
+	
+	public void enableCooking(boolean canCook) {
+		butCook.setDisable(!canCook);
 	}
 	
 	public void setAllowedMainAction(boolean canToogleStates, boolean canChangeRoom, boolean canPetInterection, boolean canShowMenu) {

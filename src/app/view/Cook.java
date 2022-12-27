@@ -167,7 +167,7 @@ public class Cook extends StackPane {
 		double centerY=height/2.;
 		
 		placement(zone,100,centerX,centerY);
-		zone.setStyle("-fx-opacity: 0.7");
+		zone.setStyle("-fx-opacity: 0.8");
 		placement(recipe,12,centerX,centerY);
 		
 
@@ -261,7 +261,7 @@ public class Cook extends StackPane {
 	}
 	
 	public void updateText() {
-		//System.out.println("loooooooooooool");
+		System.out.println("loooooooooooool");
 		butShare.setText(App.getString("button-share"));
 		butEat.setText(App.getString("button-eat"));
 	}
