@@ -1,6 +1,6 @@
 package app.model;
+
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Cook {
@@ -19,9 +19,9 @@ public class Cook {
 	public Cook() {
 		reset();
 	}
-	
-	public String getDish(String dish) {
-		String s="./res/Cook/Recettes/"+dish+
+		
+	public String getDish(String dish) {       	  
+		String s=dish+  
 				(ingredient0?"0":"")+
 				(ingredient1?"1":"")+
 				(ingredient2?"2":"")+
@@ -29,13 +29,12 @@ public class Cook {
 				(ingredient4?"4":"")+
 				(ingredient5?"5":"")+
 				(ingredient6?"6":"")+
-				(ingredient7?"7":"")+
-				".jpg";
+				(ingredient7?"7":"");
 		
         if(Files.exists(Paths.get(s)))
         	return s;
         else 
-        	return "./res/Cook/Recettes/"+dish+".jpg";
+        	return dish;
 	}
 	
 	public void reset() {
@@ -129,9 +128,7 @@ public class Cook {
 				+(ingredient4?1:0)
 				+(ingredient5?1:0)
 				+(ingredient6?1:0)
-				+(ingredient7?1:0);
-				
-					
+				+(ingredient7?1:0);		
 	}
 	
 }

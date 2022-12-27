@@ -11,5 +11,6 @@ mkdir bin
 cp -r ./res ./bin/res
 cp ./res/language.properties ./bin/language.properties
 cp ./res/language_en.properties ./bin/language_en.properties
+cp ./res/language_fr.properties ./bin/language_fr.properties
 
 javac -d $objpath --module-path $jfxpath --add-modules javafx.controls,javafx.graphics,javafx.media,javafx.swing -cp $srcpath $srcpath/app/App.java

@@ -104,7 +104,7 @@ public class Cook {
 	};
 	
 	public void makeDish(String s) {
-		view.changeResult(s);
+		view.changeResult(Game.GAMEIMAGEPATH+"recettes/"+s+".jpg");
 	}
 	
 	public void start() {
