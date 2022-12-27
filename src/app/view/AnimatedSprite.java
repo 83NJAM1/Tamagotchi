@@ -36,7 +36,7 @@ public class AnimatedSprite extends Sprite implements Componable {
         public void handle(long new_time) {
 			if (new_time > old_time ) {
 				old_time = new_time+1_000_000_000;
-				
+				System.out.println("AnimatedSprite");
 				nextFrame();
 			}
         }
@@ -74,6 +74,19 @@ public class AnimatedSprite extends Sprite implements Componable {
 	public void setAnime(String name) {
 		current_anime = name;
 		current_limit = anime_map.get(current_anime).length;
+	}
+	
+	public void changeLine(int num) {
+		System.out.println("changeLine: " + anime_map.keySet());
+		
+		for (String keys : anime_map.keySet()) {
+			System.out.println(keys);
+			for (Rectangle frame : anime_map.get(keys)) {
+				
+				frame.setY(num*512);
+				System.out.println(frame);
+			}
+		}
 	}
 	
 	/**

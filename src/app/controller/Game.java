@@ -18,6 +18,9 @@ public class Game implements Componable, Localisable {
 	
 	//########################### ATTRIBUTS #####################################
 	
+	public static final String SAVEPATH = "res/saves/"; 
+	public static final String GAMEIMAGEPATH = "res/game/images/"; 
+	
 	// données du jeu
 	private app.model.Game gameModel;
 	
@@ -201,7 +204,7 @@ public class Game implements Componable, Localisable {
 	 */
 	public Game(String petType, String roomName, String saveName) {
 		
-		saveModel = new app.model.Save("res/"+saveName);
+		saveModel = new app.model.Save(SAVEPATH+saveName);
 		
 		petController = new Pet(petType);
 		roomController = new Room(roomName);
@@ -218,8 +221,8 @@ public class Game implements Componable, Localisable {
 	 */
 	public Game(String saveName) {
 		
-		saveModel = new app.model.Save("res/"+saveName);
-		saveModel.load("res/"+saveName);
+		saveModel = new app.model.Save(SAVEPATH+saveName);
+		saveModel.load(SAVEPATH+saveName);
 		petController = new Pet(saveModel.getPetType());
 		roomController = new Room(saveModel.getRoomId());
 		gameModel = new app.model.Game( petController.getModel(), roomController.getModel() );
@@ -304,7 +307,7 @@ public class Game implements Componable, Localisable {
 	}
 		
 	/**
-	 * met a jour la vue des actions des pièces authorisées
+	 * met a jour la vue des actions authorisées
 	 */
 	public void updateViewAllowedAction() {
 		
