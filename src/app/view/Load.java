@@ -27,7 +27,6 @@ import app.Localisable;
  * 
  * @author ben
  * view.Load est de type StackPane
- * car le choix de design implique qu'il soit composé de plusieurs Layouts
  */
 public class Load extends StackPane implements Componable, Localisable {
 	

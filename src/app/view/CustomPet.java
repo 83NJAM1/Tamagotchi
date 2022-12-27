@@ -3,6 +3,11 @@ package app.view;
 import java.io.File;
 
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,9 +15,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
-import javafx.scene.effect.ImageInput;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -45,7 +48,7 @@ import app.Localisable;
 public class CustomPet extends StackPane implements Componable, Localisable {
 
 	//########################### ATTRIBUTS #####################################
-	
+
 	// popup
 	private ColorPicker colorpicker;
 	private Popup popup;
@@ -94,6 +97,68 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 	private Button currentButton;
 	// le type de pet choisie
 	private String currentPetType;
+	
+	private BooleanProperty terminated = new SimpleBooleanProperty(true);
+	
+	/**
+	 * Action effectué quand le thread est finie
+	 * déclencher -> c.Game
+	 */
+	ChangeListener<Boolean> terminatedAction = new ChangeListener<Boolean>() {
+		public void changed(ObservableValue<? extends Boolean> obs, Boolean vold, Boolean vnew) {
+			if ( vnew ) {
+				generatePet();
+				updateDraw();
+			}
+		}
+	};
+	
+	private Thread thread = new Thread(){
+		@Override
+		public void run() {
+			
+			for( int y=0; y < (int)maskPetColor.getHeight(); y++ ) {
+				for ( int x=0; x < (int)maskPetColor.getWidth(); x++ ) {
+					
+					Color maskColor = maskPetColor.getPixelReader().getColor(x, y);
+					//petColor.getPixelWriter().setColor(x, y, maskColor);
+					
+					if ( maskColor.getOpacity() > 0 ) {
+						
+						// A
+						if( maskColor.getBlue() == 1.0 && maskColor.getRed() == 1.0 && maskColor.getGreen() == 1.0) {
+							petColor.getPixelWriter().setColor(x, y, new Color(colorA.getRed(), colorA.getGreen(), colorA.getBlue(), maskColor.getOpacity()));
+						}
+						// B
+						else if( maskColor.getBlue() == 0 && maskColor.getRed() == 0 && maskColor.getGreen() == 0) {
+							petColor.getPixelWriter().setColor(x, y, new Color(colorB.getRed(), colorB.getGreen(), colorB.getBlue(), maskColor.getOpacity()));
+						}
+						// C
+						else if( maskColor.getBlue() >= 0.9 && maskColor.getRed() <= 0.1 && maskColor.getGreen() <= 0.1 ) { 
+							petColor.getPixelWriter().setColor(x, y, new Color(colorC.getRed(), colorC.getGreen(), colorC.getBlue(), maskColor.getOpacity()));
+						}
+						// D
+						else if( maskColor.getBlue() <= 0.1 && maskColor.getRed() >= 0.9 && maskColor.getGreen() <= 0.1 ) {
+							petColor.getPixelWriter().setColor(x, y, new Color(colorD.getRed(), colorD.getGreen(), colorD.getBlue(), maskColor.getOpacity()));
+						}
+						// E
+						else if( maskColor.getBlue() <= 0.1 && maskColor.getRed() <= 0.1 && maskColor.getGreen() >= 0.9 ) {
+							petColor.getPixelWriter().setColor(x, y, new Color(colorE.getRed(), colorE.getGreen(), colorE.getBlue(), maskColor.getOpacity()));
+						}
+						
+					}
+				}
+			}
+
+			try {
+				ImageIO.write(SwingFXUtils.fromFXImage(petColor, null), "png", new File("bin/"+Main.GAMEIMAGEPATH+currentPetType+"/colorPet.png"));
+			} catch(Exception e) {
+				System.err.println(e);
+			}
+			
+			terminated.setValue(true);
+		}
+	};
 	
 	//######################### EVENT-ACTION ####################################
 	
@@ -327,12 +392,19 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 		this.getChildren().addAll(TopCenterBottom);
 		colorpicker.hide();
 		
+		colorA = Color.WHITE;
+		colorB = Color.WHEAT;
+		colorC = Color.BEIGE;
+		colorD = Color.DARKORANGE;
+		colorE = Color.CHOCOLATE;
+		
 		updateStype();
 		currentPetType="dog";
 		maskPetColor = new Image(Main.GAMEIMAGEPATH+"dog/Coloriage_Chien_Normal.png");
 		petColor = new WritableImage((int)maskPetColor.getWidth(), (int)maskPetColor.getHeight());
 		generatePet();
 		drawLoop.start();
+		terminated.addListener(terminatedAction);
 	}
 	
 	/**
@@ -376,72 +448,40 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 	
 	public void updateColorImage() {
 		
-		for( int y=0; y < (int)maskPetColor.getHeight(); y++ ) {
-			for ( int x=0; x < (int)maskPetColor.getWidth(); x++ ) {
-				
-				Color maskColor = maskPetColor.getPixelReader().getColor(x, y);
-				//petColor.getPixelWriter().setColor(x, y, maskColor);
-				
-				if ( maskColor.getOpacity() > 0 ) {
-					
-					// A
-					if( colorA != null && maskColor.getBlue() == 1.0 && maskColor.getRed() == 1.0 && maskColor.getGreen() == 1.0) {
-						petColor.getPixelWriter().setColor(x, y, new Color(colorA.getRed(), colorA.getGreen(), colorA.getBlue(), maskColor.getOpacity()));
-					}
-					// B
-					else if( colorB != null && maskColor.getBlue() == 0 && maskColor.getRed() == 0 && maskColor.getGreen() == 0) {
-						petColor.getPixelWriter().setColor(x, y, new Color(colorB.getRed(), colorB.getGreen(), colorB.getBlue(), maskColor.getOpacity()));
-					}
-					// C
-					else if( colorC != null && maskColor.getBlue() >= 0.9 && maskColor.getRed() <= 0.1 && maskColor.getGreen() <= 0.1 ) { 
-						petColor.getPixelWriter().setColor(x, y, new Color(colorC.getRed(), colorC.getGreen(), colorC.getBlue(), maskColor.getOpacity()));
-					}
-					// D
-					else if( colorD != null && maskColor.getBlue() <= 0.1 && maskColor.getRed() >= 0.9 && maskColor.getGreen() <= 0.1 ) {
-						petColor.getPixelWriter().setColor(x, y, new Color(colorD.getRed(), colorD.getGreen(), colorD.getBlue(), maskColor.getOpacity()));
-					}
-					// E
-					else if( colorE != null && maskColor.getBlue() <= 0.1 && maskColor.getRed() <= 0.1 && maskColor.getGreen() >= 0.9 ) {
-						petColor.getPixelWriter().setColor(x, y, new Color(colorE.getRed(), colorE.getGreen(), colorE.getBlue(), maskColor.getOpacity()));
-					}
-				}
-			}
+		if ( terminated.getValue() ) {
+			terminated.setValue(false);
+			Platform.runLater(thread);
 		}
-		
-		try {
-			ImageIO.write(SwingFXUtils.fromFXImage(petColor, null), "png", new File("bin/"+Main.GAMEIMAGEPATH+currentPetType+"/colorPet.png"));
-		} catch(Exception e) {
-			System.err.println(e);
-		}
-		
 	}
 	
 	public void generatePet() {
 		
-		if ( previewPet != null )
+		if ( previewPet != null ) {
 			previewPet.exit();
+			System.gc();
+		}
 		
 		switch(currentPetType) {
-		case "cat":
-			previewPet = new Pet(Main.GAMEIMAGEPATH+currentPetType+"/Animation_Chat_Normal.png", 
-								 Main.GAMEIMAGEPATH+currentPetType+"/colorPet.png");
-			previewPet.addAnime("heureux", new int[]{0, 1, 2}, new int[]{0, 1, 2});
-			previewPet.addAnime("mort", new int[]{0}, new int[]{14});
-			break;
-		case "dog":
-			previewPet = new Pet(Main.GAMEIMAGEPATH+currentPetType+"/Animation_Chien_Normal.png", 
-					 			 Main.GAMEIMAGEPATH+currentPetType+"/colorPet.png");
-			previewPet.addAnime("heureux", new int[]{0, 1, 2, 3}, new int[]{0, 1, 2, 3});
-			previewPet.addAnime("mort", new int[]{0}, new int[]{23});
-			break;
-		case "robot":
-			previewPet = new Pet(Main.GAMEIMAGEPATH+currentPetType+"/Animation_Robot.png", 
-					 			 Main.GAMEIMAGEPATH+currentPetType+"/colorPet.png");
-			
-			previewPet.addAnime("heureux", new int[]{0, 1}, new int[]{0, 1});
-			previewPet.addAnime("mort", new int[]{4}, new int[]{7});
-
-			break;
+			case "cat":
+				previewPet = new Pet(Main.GAMEIMAGEPATH+currentPetType+"/Animation_Chat_Normal.png", 
+									 Main.GAMEIMAGEPATH+currentPetType+"/colorPet.png");
+				previewPet.addAnime("heureux", new int[]{0, 1, 2}, new int[]{0, 1, 2});
+				previewPet.addAnime("mort", new int[]{0}, new int[]{14});
+				break;
+			case "dog":
+				previewPet = new Pet(Main.GAMEIMAGEPATH+currentPetType+"/Animation_Chien_Normal.png", 
+						 			 Main.GAMEIMAGEPATH+currentPetType+"/colorPet.png");
+				previewPet.addAnime("heureux", new int[]{0, 1, 2, 3}, new int[]{0, 1, 2, 3});
+				previewPet.addAnime("mort", new int[]{0}, new int[]{23});
+				break;
+			case "robot":
+				previewPet = new Pet(Main.GAMEIMAGEPATH+currentPetType+"/Animation_Robot.png", 
+						 			 Main.GAMEIMAGEPATH+currentPetType+"/colorPet.png");
+				
+				previewPet.addAnime("heureux", new int[]{0, 1}, new int[]{0, 1});
+				previewPet.addAnime("mort", new int[]{4}, new int[]{7});
+	
+				break;
 		}
 		
 		previewPet.setAnime("heureux");
@@ -450,15 +490,13 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 	}
 	
 	public void updatePreview() {
-		
-		updateColorImage();
-		generatePet();
-		updateDraw();
 
+			updateColorImage();
+			generatePet();
+			updateDraw();
 	}
 	
 	public void updateDraw() {
-		
 		preview.getGraphicsContext2D().clearRect(0, 0, 256, 256);
 		
 		preview.getGraphicsContext2D().drawImage(previewPet.getColorSprite(),
@@ -471,6 +509,9 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 															 previewPet.getSrcW(), previewPet.getSrcH(),
 															 0, 0,
 															 256, 256);
+		if( !terminated.getValue()  ) {
+			preview.getGraphicsContext2D().strokeText("LOADING...", 90, 256);
+		}
 	}
 	
 	@Override

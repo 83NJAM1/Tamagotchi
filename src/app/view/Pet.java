@@ -48,18 +48,19 @@ public class Pet extends AnimatedSprite implements Componable {
 	/**
 	 * ajoute une animation et les couleurs
 	 * @param name l'identifiant de l'animation
+	 * @param numColorSprite la liste des numéro de case
 	 * @param rects la liste des frames
 	 */
-	public void addAnime(String name, int[] indexColor, Rectangle ... rects) {
+	public void addAnime(String name, int[] numColorSprite, Rectangle ... rects) {
 		addAnime(name, rects);
 		
-		Rectangle[] backgroundSprites = new Rectangle[indexColor.length];
+		Rectangle[] colorSprites = new Rectangle[numColorSprite.length];
 		
-		for(int i=0 ; i < indexColor.length ; i++) {
+		for(int i=0 ; i < numColorSprite.length ; i++) {
 			
 			int x = -1;
 			int y = 0;
-			int j = indexColor[i];
+			int j = numColorSprite[i];
 			
 			while ( j >= 0 ) {
 				x += 1;
@@ -70,26 +71,27 @@ public class Pet extends AnimatedSprite implements Componable {
 				j--;
 			}
 			
-			backgroundSprites[i] = new Rectangle(512*x, 512*y, 512, 512);
+			colorSprites[i] = new Rectangle(512*x, 512*y, 512, 512);
 		}
 		
-		color.addAnime(name, backgroundSprites);
+		color.addAnime(name, colorSprites);
 	}
 	
 	/**
 	 * ajoute une animation et les couleurs
 	 * @param name l'identifiant de l'animation
-	 * @param rects la liste des frames
+	 * @param numColorSprite la liste des numéro de case
+	 * @param numSprite la liste des numéro de case
 	 */
-	public void addAnime(String name, int[] indexColor, int[] indexSprite) {
+	public void addAnime(String name, int[] numColorSprite, int[] numSprite) {
 		
-		Rectangle[] sprites = new Rectangle[indexSprite.length];
+		Rectangle[] sprites = new Rectangle[numSprite.length];
 
-		for(int i=0 ; i < indexSprite.length ; i++) {
+		for(int i=0 ; i < numSprite.length ; i++) {
 			
 			int x = -1;
 			int y = 0;
-			int j = indexSprite[i];
+			int j = numSprite[i];
 			
 			while ( j >= 0 ) {
 				x += 1;
@@ -105,14 +107,14 @@ public class Pet extends AnimatedSprite implements Componable {
 		
 		addAnime(name, sprites);
 		
-		Rectangle[] backgroundSprites = new Rectangle[indexColor.length];
+		Rectangle[] colorSprites = new Rectangle[numColorSprite.length];
 		
 
-		for(int i=0 ; i < indexColor.length ; i++) {
+		for(int i=0 ; i < numColorSprite.length ; i++) {
 			
 			int x = -1;
 			int y = 0;
-			int j = indexColor[i];
+			int j = numColorSprite[i];
 			
 			while ( j >= 0 ) {
 				x += 1;
@@ -123,11 +125,10 @@ public class Pet extends AnimatedSprite implements Componable {
 				j--;
 			}
 			
-			backgroundSprites[i] = new Rectangle(512*x, 512*y, 512, 512);
-			System.out.println("add frame for: " + name + backgroundSprites[i]);
+			colorSprites[i] = new Rectangle(512*x, 512*y, 512, 512);
 		}
 		
-		color.addAnime(name, backgroundSprites);
+		color.addAnime(name, colorSprites);
 	}
 	
 	public void changeTypeColor(int num) {

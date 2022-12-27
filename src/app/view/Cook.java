@@ -1,13 +1,15 @@
 package app.view;
+
 import javafx.scene.layout.StackPane;
 import javafx.scene.input.MouseEvent;
-import app.App;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import app.App;
 
 public class Cook extends StackPane {
 	
@@ -45,29 +47,29 @@ public class Cook extends StackPane {
 	public Cook() {
 		this.toFront();
 		
-		zone=new ImageView(new Image("./res/Cook/fond.png"));
-		recipe=new ImageView(new Image("./res/Cook/boutons.png"));
+		zone=new ImageView(new Image(Main.IUIMAGEPATH+"cook/fond.png"));
+		recipe=new ImageView(new Image(Main.IUIMAGEPATH+"cook/boutons.png"));
 		
-		ingredient0=new ImageView(new Image("./res/Cook/Ingredients/0.png"));
-		ingredient1=new ImageView(new Image("./res/Cook/Ingredients/1.png"));
-		ingredient2=new ImageView(new Image("./res/Cook/Ingredients/2.png"));
-		ingredient3=new ImageView(new Image("./res/Cook/Ingredients/3.png"));
-		ingredient4=new ImageView(new Image("./res/Cook/Ingredients/4.png"));
-		ingredient5=new ImageView(new Image("./res/Cook/Ingredients/5.png"));
-		ingredient6=new ImageView(new Image("./res/Cook/Ingredients/6.png"));
-		ingredient7=new ImageView(new Image("./res/Cook/Ingredients/7.png"));
+		ingredient0=new ImageView(new Image(Main.GAMEIMAGEPATH+"ingredients/0.png"));
+		ingredient1=new ImageView(new Image(Main.GAMEIMAGEPATH+"ingredients/1.png"));
+		ingredient2=new ImageView(new Image(Main.GAMEIMAGEPATH+"ingredients/2.png"));
+		ingredient3=new ImageView(new Image(Main.GAMEIMAGEPATH+"ingredients/3.png"));
+		ingredient4=new ImageView(new Image(Main.GAMEIMAGEPATH+"ingredients/4.png"));
+		ingredient5=new ImageView(new Image(Main.GAMEIMAGEPATH+"ingredients/5.png"));
+		ingredient6=new ImageView(new Image(Main.GAMEIMAGEPATH+"ingredients/6.png"));
+		ingredient7=new ImageView(new Image(Main.GAMEIMAGEPATH+"ingredients/7.png"));
 		
-		circle0=new ImageView(new Image("./res/Cook/cercle.png"));
-		circle1=new ImageView(new Image("./res/Cook/cercle.png"));
-		circle2=new ImageView(new Image("./res/Cook/cercle.png"));
-		circle3=new ImageView(new Image("./res/Cook/cercle.png"));
-		circle4=new ImageView(new Image("./res/Cook/cercle.png"));
-		circle5=new ImageView(new Image("./res/Cook/cercle.png"));
-		circle6=new ImageView(new Image("./res/Cook/cercle.png"));
-		circle7=new ImageView(new Image("./res/Cook/cercle.png"));
+		circle0=new ImageView(new Image(Main.IUIMAGEPATH+"cook/cercle.png"));
+		circle1=new ImageView(new Image(Main.IUIMAGEPATH+"cook/cercle.png"));
+		circle2=new ImageView(new Image(Main.IUIMAGEPATH+"cook/cercle.png"));
+		circle3=new ImageView(new Image(Main.IUIMAGEPATH+"cook/cercle.png"));
+		circle4=new ImageView(new Image(Main.IUIMAGEPATH+"cook/cercle.png"));
+		circle5=new ImageView(new Image(Main.IUIMAGEPATH+"cook/cercle.png"));
+		circle6=new ImageView(new Image(Main.IUIMAGEPATH+"cook/cercle.png"));
+		circle7=new ImageView(new Image(Main.IUIMAGEPATH+"cook/cercle.png"));
 		
-		result=new ImageView(new Image("./res/Cook/Recettes/0.jpg"));
-		light=new ImageView(new Image("./res/Cook/glow.png"));
+		result=new ImageView(new Image(Main.GAMEIMAGEPATH+"recettes/0.jpg"));
+		light=new ImageView(new Image(Main.IUIMAGEPATH+"cook/glow.png"));
 		
 		butShare = new Button();
 		butEat = new Button();
