@@ -32,7 +32,9 @@ import app.Localisable;
 public class Load extends StackPane implements Componable, Localisable {
 	
 	//########################### ATTRIBUTS #####################################
-	 
+	
+	public static final String SAVEPATH = "res/saves/"; 
+	
 	private int currentIndex;
 	private ObservableList<String> savesObsList;
 	private ListView<String> savesList;
@@ -118,7 +120,7 @@ public class Load extends StackPane implements Componable, Localisable {
 	 * Met à jour la liste des fichiers de sauvegardes
 	 */	
 	public void updateFilesList() {
-		savesObsList = FXCollections.observableArrayList(new File("./res/").list( new FilenameFilter() { 
+		savesObsList = FXCollections.observableArrayList(new File(SAVEPATH).list( new FilenameFilter() { 
 			public boolean accept(File dir, String name) {
 				return name.matches(".*[.]tmg");
 			}

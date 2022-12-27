@@ -44,33 +44,33 @@ public class Pet implements Componable, Localisable {
 		switch(type) {
 			case "cat":
 				petModel = new app.model.Animal("cat");
-				petView = new app.view.Pet(Game.GAMEIMAGEPATH+"cat/Animation_Chat_Normal.png");
-				petView.addAnime("heureux", new Rectangle(0, 0, 512, 512), new Rectangle(512, 0, 512, 512), new Rectangle(1024, 0, 512, 512));
-				petView.addAnime("mort", new Rectangle(1024, 1536, 512, 512));
+				petView = new app.view.Pet(Game.GAMEIMAGEPATH+"cat/Animation_Chat_Normal.png", Game.GAMEIMAGEPATH+"cat/colorPet.png");
+				petView.addAnime("heureux", new int[]{0, 1, 2}, new Rectangle(0, 0, 512, 512), new Rectangle(512, 0, 512, 512), new Rectangle(1024, 0, 512, 512));
+				petView.addAnime("mort", new int[]{0}, new Rectangle(1024, 1536, 512, 512));
 				petView.setAnime("heureux");
 				petView.play();
 				break;
 			case "dog":
 				petModel = new app.model.Animal("dog");
-				petView = new app.view.Pet(Game.GAMEIMAGEPATH+"dog/Animation_Chien_Normal.png");
-				petView.addAnime("heureux", new Rectangle(0, 0, 512, 512), 
+				petView = new app.view.Pet(Game.GAMEIMAGEPATH+"dog/Animation_Chien_Normal.png", Game.GAMEIMAGEPATH+"dog/colorPet.png");
+				petView.addAnime("heureux", new int[]{0, 1, 2, 3, 4}, new Rectangle(0, 0, 512, 512), 
 										 new Rectangle(512, 0, 512, 512), new Rectangle(1024, 0, 512, 512),
 										 new Rectangle(1536, 0, 512, 512), new Rectangle(2048, 0, 512, 512));
-				petView.addAnime("mort", new Rectangle(4*512, 3*512, 512, 512));
+				petView.addAnime("mort", new int[]{0}, new Rectangle(4*512, 3*512, 512, 512));
 				petView.setAnime("heureux");
 				petView.play();
 				break;
 			case "robot":
 				petModel = new app.model.Robot();
-				petView = new app.view.Pet(Game.GAMEIMAGEPATH+"robot/Animation_Robot.png");
-				petView.addAnime("heureux", new Rectangle(0, 0, 512, 512), new Rectangle(512, 0, 512, 512));
-				petView.addAnime("mort", new Rectangle(3*512, 512, 512, 512));
+				petView = new app.view.Pet(Game.GAMEIMAGEPATH+"robot/Animation_Robot.png", Game.GAMEIMAGEPATH+"robot/colorPet.png");
+				petView.addAnime("heureux", new int[]{0, 1}, new Rectangle(0, 0, 512, 512), new Rectangle(512, 0, 512, 512));
+				petView.addAnime("mort", new int[]{4}, new Rectangle(3*512, 512, 512, 512));
 				petView.setAnime("heureux");
 				petView.play();
 				break;
 			default:
 				petModel = new app.model.Robot();
-				petView = new app.view.Pet(Game.GAMEIMAGEPATH+"error/no_image.png");
+				petView = new app.view.Pet(Game.GAMEIMAGEPATH+"error/no_image.png", Game.GAMEIMAGEPATH+"error/no_image.png");
 				break;
 		}
 		

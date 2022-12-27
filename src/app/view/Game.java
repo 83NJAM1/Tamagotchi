@@ -126,6 +126,7 @@ public class Game extends StackPane implements Componable, Localisable {
 		this.getChildren().addAll(drawingArea, hud);
 		
 		drawLoop.start();
+		pet.changeTypeColor(2); //NOTE : a modifier 
 	}
 	
 	/**
@@ -136,6 +137,10 @@ public class Game extends StackPane implements Componable, Localisable {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		
 		gc.drawImage(room, 0, 0, canvas.getWidth(), canvas.getHeight());
+		gc.drawImage(pet.getColorSprite(), pet.getColorSprite().getSrcX()      , pet.getColorSprite().getSrcY(), 
+				          pet.getColorSprite().getSrcW()                       , pet.getColorSprite().getSrcH(),
+						  canvas.getWidth()/2-pet.getColorSprite().getDestW()/2, pet.getDestY()+canvas.getHeight()/2-pet.getColorSprite().getDestH()/2,
+				          pet.getColorSprite().getDestW()                      , pet.getColorSprite().getDestH()                                       );
 		gc.drawImage(pet, pet.getSrcX()                       , pet.getSrcY(), 
 				          pet.getSrcW()                       , pet.getSrcH(),
 						  canvas.getWidth()/2-pet.getDestW()/2, pet.getDestY()+canvas.getHeight()/2-pet.getDestH()/2,

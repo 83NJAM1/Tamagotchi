@@ -103,7 +103,7 @@ public class Main implements Componable, Localisable {
 			if ( gameController != null ) {
 				gameController.exit();
 			}
-			gameController = new Game(mainView.getChildCustomPet().getPetType(), "test", "save.tmg");
+			gameController = new Game(mainView.getChildCustomPet().getPetType(), "test", menuController.getModelOption().getLastSave());
 			mainView.init(gameController.getView());
 			
 			//NOTE : ne pas faire de mise a jour du texte ici, cela cause un bug

@@ -15,7 +15,8 @@ import app.Localisable;
 public class Main extends StackPane implements Componable, Localisable {
 
 	//########################### ATTRIBUTS #####################################
-
+	public static final String GAMEIMAGEPATH = "res/game/images/"; 
+	
 	// la vue du jeu
 	private Game game; //NOTE: reference partagé avec controller.Game
 	

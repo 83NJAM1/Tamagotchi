@@ -291,7 +291,7 @@ public class Game implements Componable, Localisable {
 	}
 		
 	/**
-	 * met a jour la vue des actions des pièces authorisées
+	 * met a jour la vue des actions authorisées
 	 */
 	public void updateViewAllowedAction() {
 		
