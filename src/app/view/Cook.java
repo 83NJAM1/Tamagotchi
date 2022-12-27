@@ -261,7 +261,6 @@ public class Cook extends StackPane {
 	}
 	
 	public void updateText() {
-		System.out.println("loooooooooooool");
 		butShare.setText(App.getString("button-share"));
 		butEat.setText(App.getString("button-eat"));
 	}
