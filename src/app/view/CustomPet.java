@@ -101,18 +101,8 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 	private BooleanProperty terminated = new SimpleBooleanProperty(true);
 	
 	/**
-	 * Action effectué quand le thread est finie
-	 * déclencher -> c.Game
+	 * thread pour generer l'image des couleurs
 	 */
-	ChangeListener<Boolean> terminatedAction = new ChangeListener<Boolean>() {
-		public void changed(ObservableValue<? extends Boolean> obs, Boolean vold, Boolean vnew) {
-			if ( vnew ) {
-				generatePet();
-				updateDraw();
-			}
-		}
-	};
-	
 	private Thread thread = new Thread(){
 		@Override
 		public void run() {
@@ -121,7 +111,6 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 				for ( int x=0; x < (int)maskPetColor.getWidth(); x++ ) {
 					
 					Color maskColor = maskPetColor.getPixelReader().getColor(x, y);
-					//petColor.getPixelWriter().setColor(x, y, maskColor);
 					
 					if ( maskColor.getOpacity() > 0 ) {
 						
@@ -161,6 +150,19 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 	};
 	
 	//######################### EVENT-ACTION ####################################
+	
+	/**
+	 * Action effectué quand le thread est finie
+	 * déclencher -> c.Game
+	 */
+	ChangeListener<Boolean> terminatedAction = new ChangeListener<Boolean>() {
+		public void changed(ObservableValue<? extends Boolean> obs, Boolean vold, Boolean vnew) {
+			if ( vnew ) {
+				generatePet();
+				updateDraw();
+			}
+		}
+	};
 	
 	/**
 	 * effectué tout les 1/3 secondes.
@@ -210,6 +212,7 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 			updatePreview();
 		}
 	};
+	
 	/**
 	 * fait apperaître le popup choix des couleurs pour backColorA
 	 * déclencheur -> this
@@ -221,6 +224,7 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 					 				 App.getY()+butBckColorA.getLocalToSceneTransform().getTy());
 		}
 	};
+	
 	/**
 	 * fait apperaître le popup choix des couleurs pour backColorB
 	 * déclencheur -> this
@@ -232,6 +236,7 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 					 				 App.getY()+butBckColorB.getLocalToSceneTransform().getTy());
 		}
 	};
+	
 	/**
 	 * fait apperaître le popup choix des couleurs pour backColorC
 	 * déclencheur -> this
@@ -243,6 +248,7 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 									 App.getY()+butBckColorC.getLocalToSceneTransform().getTy());
 		}
 	};
+	
 	/**
 	 * fait apperaître le popup choix des couleurs pour backColorA
 	 * déclencheur -> this
@@ -254,6 +260,7 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 					 				 App.getY()+butFrtColorA.getLocalToSceneTransform().getTy());
 		}
 	};
+	
 	/**
 	 * fait apperaître le popup choix des couleurs pour backColorB
 	 * déclencheur -> this
@@ -265,6 +272,7 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 					 				 App.getY()+butFrtColorB.getLocalToSceneTransform().getTy());
 		}
 	};
+	
 	/**
 	 * fait apperaître le popup choix des couleurs pour backColorC
 	 * déclencheur -> this
@@ -276,6 +284,7 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 									 App.getY()+butFrtColorC.getLocalToSceneTransform().getTy());
 		}
 	};
+	
 	/**
 	 * fait apperaître le popup choix des couleurs pour backColorA
 	 * déclencheur -> this
@@ -291,6 +300,7 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 			updatePreview();
 		}
 	};
+	
 	/**
 	 * fait apperaître le popup choix des couleurs pour backColorB
 	 * déclencheur -> this
@@ -306,6 +316,7 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 			updatePreview();
 		}
 	};
+	
 	/**
 	 * fait apperaître le popup choix des couleurs pour backColorC
 	 * déclencheur -> this
@@ -462,22 +473,20 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 			case "cat":
 				previewPet = new Pet(Main.GAMEIMAGEPATH+currentPetType+"/Animation_Chat_Normal.png", 
 									 Main.GAMEIMAGEPATH+currentPetType+"/colorPet.png");
+				
 				previewPet.addAnime("heureux", new int[]{0, 1, 2}, new int[]{0, 1, 2});
-				previewPet.addAnime("mort", new int[]{0}, new int[]{14});
 				break;
 			case "dog":
 				previewPet = new Pet(Main.GAMEIMAGEPATH+currentPetType+"/Animation_Chien_Normal.png", 
 						 			 Main.GAMEIMAGEPATH+currentPetType+"/colorPet.png");
+				
 				previewPet.addAnime("heureux", new int[]{0, 1, 2, 3}, new int[]{0, 1, 2, 3});
-				previewPet.addAnime("mort", new int[]{0}, new int[]{23});
 				break;
 			case "robot":
 				previewPet = new Pet(Main.GAMEIMAGEPATH+currentPetType+"/Animation_Robot.png", 
 						 			 Main.GAMEIMAGEPATH+currentPetType+"/colorPet.png");
 				
-				previewPet.addAnime("heureux", new int[]{0, 1}, new int[]{0, 1});
-				previewPet.addAnime("mort", new int[]{4}, new int[]{7});
-	
+				previewPet.addAnime("heureux", new int[]{0, 1}, new int[]{0, 1});	
 				break;
 		}
 		
@@ -496,21 +505,30 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 	public void updateDraw() {
 		preview.getGraphicsContext2D().clearRect(0, 0, 256, 256);
 		
-		preview.getGraphicsContext2D().drawImage(previewPet.getColorSprite(),
+		preview.getGraphicsContext2D().drawImage(
+				
+				previewPet.getColorSprite(),
 				previewPet.getColorSprite().getSrcX(), previewPet.getColorSprite().getSrcY(),
 				previewPet.getColorSprite().getSrcW(), previewPet.getColorSprite().getSrcH(),
 				0, 0,
-				256, 256);
+				256, 256
+		);
 		
-		preview.getGraphicsContext2D().drawImage(previewPet, previewPet.getSrcX(), previewPet.getSrcY(), 
-															 previewPet.getSrcW(), previewPet.getSrcH(),
-															 0, 0,
-															 256, 256);
+		preview.getGraphicsContext2D().drawImage(
+				
+				previewPet, 
+				previewPet.getSrcX(), previewPet.getSrcY(), 
+			    previewPet.getSrcW(), previewPet.getSrcH(),
+			    0, 0,
+			    256, 256
+		);
+		
 		if( !terminated.getValue()  ) {
 			preview.getGraphicsContext2D().strokeText("LOADING...", 90, 256);
 		}
 	}
 	
+	//TODO
 	@Override
 	public void updateText() {
 	}
