@@ -29,10 +29,10 @@ public class Game implements Componable {
 		pet.getThirst().setBonus("drink", 2.5);
 		
 		// le pet fait un mini-jeu
-		pet.getWeight().setBonus("play", 0.5);
+		pet.getWeight().setBonus("play", 1.5);
 		pet.getThirst().setMalus("play", 0.05);
 		pet.getHunger().setMalus("play", 0.05);
-		pet.getMoral().setBonus("play", 0.5);
+		pet.getMoral().setBonus("play", 1.5);
 		
 		/**
 		 * construit la maison en initialisant les pièces

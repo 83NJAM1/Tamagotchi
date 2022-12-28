@@ -60,14 +60,44 @@ public class AnimatedSprite extends Sprite implements Componable {
 	/**
 	 * ajoute une animation
 	 * @param name l'identifiant de l'animation
-	 * @param rects la liste des frames
+	 * @param frames la liste des frames
 	 */
-	public void addAnime(String name, Rectangle ... rects) {
-		anime_map.put(name, rects);
+	public void addAnime(String name, Rectangle ... frames) {
+		anime_map.put(name, frames);
 	}
 	
 	/**
-	 * définit l'animation à jouer
+	 * ajoute une animation
+	 * @param name l'identifiant de l'animation
+	 * @param nums la liste des numéro de case de chanque frames
+	 */
+	public void addAnime(String name, int ... nums) {
+		
+		Rectangle[] frames = new Rectangle[nums.length];
+		
+		for(int i=0 ; i < nums.length ; i++) {
+			
+			int x = -1;
+			int y = 0;
+			int j = nums[i];
+			
+			while ( j >= 0 && y*getSrcH() < getHeight()) {
+				if ( x*getSrcW() >= getWidth() ) {
+					x = 0;
+					y++;
+				}
+				x++;
+				j--;
+			}
+			
+			frames[i] = new Rectangle(getSrcW()*x, getSrcH()*y, getSrcW(), getSrcH());
+		}
+		
+		anime_map.put(name, frames);
+	}
+	
+	/**
+	 * définit l'animation actuel du pet
 	 * @param name l'identifiant de l'animation
 	 */
 	public void setAnime(String name) {
@@ -75,13 +105,19 @@ public class AnimatedSprite extends Sprite implements Componable {
 		current_limit = anime_map.get(current_anime).length;
 	}
 	
+	/**
+	 * change la ligne des frames, relatif à leur ligne actuelle
+	 * @param num le numéro de la ligne du spritesheet
+	 */
 	public void changeLine(int num) {
 	
-		for (String keys : anime_map.keySet()) {
-			for (Rectangle frame : anime_map.get(keys)) {
-				frame.setY(num*src_h);
+			for (String keys : anime_map.keySet()) {
+				for (Rectangle frame : anime_map.get(keys)) {
+					
+					if ( frame.getY()+num*src_h < getHeight() && frame.getY()+num*src_h > 0)
+						frame.setY(frame.getY()+num*src_h);
+				}
 			}
-		}
 	}
 	
 	/**

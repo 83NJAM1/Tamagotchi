@@ -61,29 +61,8 @@ public class Pet extends AnimatedSprite implements Componable {
 	 * @param rects la liste des frames
 	 */
 	public void addAnime(String name, int[] numColorSprite, Rectangle ... rects) {
-		addAnime(name, rects);
-		
-		Rectangle[] colorSprites = new Rectangle[numColorSprite.length];
-		
-		for(int i=0 ; i < numColorSprite.length ; i++) {
-			
-			int x = -1;
-			int y = 0;
-			int j = numColorSprite[i];
-			
-			while ( j >= 0 ) {
-				x += 1;
-				if ( x*512 >= color.getWidth() ) {
-					x = 0;
-					y += 1;
-				}
-				j--;
-			}
-			
-			colorSprites[i] = new Rectangle(512*x, 512*y, 512, 512);
-		}
-		
-		color.addAnime(name, colorSprites);
+		addAnime(name, rects);	
+		color.addAnime(name, numColorSprite);
 	}
 	
 	/**
@@ -92,51 +71,9 @@ public class Pet extends AnimatedSprite implements Componable {
 	 * @param numColorSprite la liste des numéro de case
 	 * @param numSprite la liste des numéro de case
 	 */
-	public void addAnime(String name, int[] numColorSprite, int[] numSprite) {
-		
-		Rectangle[] sprites = new Rectangle[numSprite.length];
-
-		for(int i=0 ; i < numSprite.length ; i++) {
-			
-			int x = -1;
-			int y = 0;
-			int j = numSprite[i];
-			
-			while ( j >= 0 ) {
-				x += 1;
-				if ( x*512 >= this.getWidth() ) {
-					x = 0;
-					y += 1;
-				}
-				j--;
-			}
-			
-			sprites[i] = new Rectangle(512*x, 512*y, 512, 512);
-		}
-		
-		addAnime(name, sprites);
-		
-		Rectangle[] colorSprites = new Rectangle[numColorSprite.length];
-		
-		for(int i=0 ; i < numColorSprite.length ; i++) {
-			
-			int x = -1;
-			int y = 0;
-			int j = numColorSprite[i];
-			
-			while ( j >= 0 ) {
-				x += 1;
-				if ( x*512 >= color.getWidth() ) {
-					x = 0;
-					y += 1;
-				}
-				j--;
-			}
-			
-			colorSprites[i] = new Rectangle(512*x, 512*y, 512, 512);
-		}
-		
-		color.addAnime(name, colorSprites);
+	public void addAnime(String name, int[] numColorSprite, int[] numSprite) {	
+		addAnime(name, numSprite);
+		color.addAnime(name, numColorSprite);
 	}
 	
 	public void changeTypeColor(int num) {

@@ -39,8 +39,7 @@ public class State implements Componable, Localisable {
 	}
 	
 	/**
-	 * met a jour la valeur de l'état
-	 * @param value la valeur souhaité
+	 * met a jour la vue via le model
 	 */
 	public void updateValue() {
 		stateView.changeValue(stateModel.getValue());

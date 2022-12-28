@@ -143,6 +143,9 @@ public class Pet implements Componable, Localisable {
 		return petView;
 	}
 	
+	/**
+	 * met a jour les states
+	 */
 	public void updateView() {
 		
 		hungerController.updateValue();

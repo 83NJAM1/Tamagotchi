@@ -298,9 +298,13 @@ public class Game implements Componable, Localisable {
 	public void updateGame() {
 		
 		if ( gameModel.nextStep() ) {
-			petController.updateView();	
+			
+			// met a jour toutes les vues dont les models sont modifiés sans action
+			petController.updateView();
 		}
 		else {
+			
+			// le jeu est perdu
 			gameover.setValue(true);
 			gameView.startDrawingGameOver();
 			gameLoop.stop();
