@@ -46,7 +46,7 @@ public class Pet implements Componable, Localisable {
 				petModel = new app.model.Animal("cat");
 				petView = new app.view.Pet(Game.GAMEIMAGEPATH+"cat/Animation_Chat_Normal.png", Game.GAMEIMAGEPATH+"cat/colorPet.png");
 				petView.addAnime("heureux", new int[]{0, 1, 2}, new Rectangle(0, 0, 512, 512), new Rectangle(512, 0, 512, 512), new Rectangle(1024, 0, 512, 512));
-				petView.addAnime("mort", new int[]{0}, new Rectangle(1024, 1536, 512, 512));
+				petView.addAnime("mort", new int[]{1}, new Rectangle(1024, 1536, 512, 512));
 				petView.setAnime("heureux");
 				petView.play();
 				break;

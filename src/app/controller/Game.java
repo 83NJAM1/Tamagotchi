@@ -50,7 +50,7 @@ public class Game implements Componable, Localisable {
 	//######################### EVENT-ACTION ####################################
 
 	/**
-	 * gameLoop répété tout les x temps, avec x le tickrate
+	 * répété tout les x temps, avec x le tickrate
 	 * déclendeur -> this
 	 */ 
 	private AnimationTimer gameLoop = new AnimationTimer() {
@@ -62,6 +62,27 @@ public class Game implements Componable, Localisable {
 			if (new_time > old_time ) {
 				old_time = new_time+tickrate;
 				updateGame();
+			}
+        }
+    };
+    
+	/**
+	 * répété tout les x temps, avec x la durée météo
+	 * déclendeur -> this
+	 */ 
+	private AnimationTimer weatherLoop = new AnimationTimer() {
+		
+		long old_time=0;
+		final long DELAY_MIN = 1_000_000_000;
+		final long DELAY_MAX = DELAY_MIN*60; // NOTE 1 minute maximum
+		final Random DELAY_SEED = new Random();
+		
+        public void handle(long new_time) {
+			if (new_time > old_time ) {
+				old_time = new_time+DELAY_SEED.nextLong(DELAY_MIN, DELAY_MAX);
+				gameModel.nextWeather();
+				gameView.setWeather( gameModel.getWeather() );
+				System.out.println("the weather is " + gameModel.getWeather() + " for " + (old_time-new_time)/1_000_000_000 + " seconds");
 			}
         }
     };
@@ -259,8 +280,10 @@ public class Game implements Componable, Localisable {
 		gameView.getChildHud().getChildAction().setActionButtonCook(makePetCook);
 		gameView.getChildHud().getChildAction().setActionButtonPlay(makePetPlaying);
 		
+		updateViewWeather();
 		updateViewAllowedAction();
 		gameLoop.start();
+		weatherLoop.start();
 	}
 	
 	/**
@@ -289,16 +312,28 @@ public class Game implements Componable, Localisable {
 			gameView.setChildRoom( roomController.getView() );
 		}
 		
+		updateViewWeather();
 		updateViewAllowedAction();
 	}
 	
+	public void updateViewWeather() {
+		
+		if ( roomController.getModel().equals(app.model.Garden.getInstance())) {
+			gameView.setWeatherTo(true);
+		}
+		else {
+			gameView.setWeatherTo(false);
+		}
+	}
 	/**
 	 * met a jour les données et la vue du jeu
 	 */
 	public void updateGame() {
 		
-		if ( gameModel.nextStep() ) {
-			
+		boolean DEBUG=true; //NOTE DEGUG MODE
+		
+		if ( gameModel.nextStep() || DEBUG ) {
+
 			// met a jour toutes les vues dont les models sont modifiés sans action
 			petController.updateView();
 		}
@@ -371,6 +406,9 @@ public class Game implements Componable, Localisable {
 	
 	@Override
 	public void exit() {
+		weatherLoop.stop();
+		weatherLoop = null;
+		
 		gameLoop.stop();
 		gameLoop = null;
 		

@@ -1,5 +1,7 @@
 package app.model;
 
+import java.util.Random;
+
 import app.Componable;
 
 /**
@@ -12,6 +14,9 @@ public class Game implements Componable {
 	private Pet pet; //NOTE: référence partagé avec c.Pet
 	private Room current_room; //NOTE: référence partagé avec c.Room
 	private MiniGame current_minigame; //NOTE: référence partagé avec c.MiniGame
+	private int current_indexWeather;
+	private String[] weathers;
+	private Random weatherSeed;
 	
 	public Game(Pet pet_instance, Room room_instance) {
 		
@@ -34,6 +39,26 @@ public class Game implements Componable {
 		pet.getHunger().setMalus("play", 0.05);
 		pet.getMoral().setBonus("play", 1.5);
 		
+		// effet météo
+		current_indexWeather = 0;
+		// galcial
+		pet.getMoral().setMalus("icy", 0.05);
+		pet.getHunger().setMalus("icy", 0.05);
+		// caniculaire
+		pet.getMoral().setMalus("scorchy", 0.05);
+		pet.getThirst().setMalus("scorchy", 0.05);
+		// pluivieu
+		pet.getMoral().setMalus("rainy", 0.05);
+		pet.getHygiene().setMalus("rainy", 0.05);
+		// ensoleillé
+		pet.getMoral().setBonus("suny", 0.05);
+		// nuageu
+		// rien de particulier
+		// orageu
+		// pet fait des cauchemards
+		
+		weathers = new String[] {"rainy", "cloudy", "suny", "stormy", "scorchy", "icy"};
+		weatherSeed = new Random();
 		/**
 		 * construit la maison en initialisant les pièces
 		 * 
@@ -118,6 +143,12 @@ public class Game implements Componable {
 			pet.toogleDrinking();
 		}
 		
+		// apllique les effets météo seulement en extérieure
+		if ( current_room.equals(Garden.getInstance()) ) {
+			
+			pet.applyEffect( weathers[current_indexWeather] );
+		}
+		
 		// Mini jeu
 		if ( pet.isPlaying() ) {
 			if ( current_room.equals(Garden.getInstance()) ) {
@@ -139,6 +170,17 @@ public class Game implements Componable {
 		}
 		
 		return !pet.isDead();
+	}
+	
+	public void nextWeather() {
+		current_indexWeather = weatherSeed.nextInt(0, weathers.length);
+	}
+	
+	public String getWeather() {
+		return weathers[current_indexWeather];
+	}
+	public int getWeatherIndex() {
+		return current_indexWeather;
 	}
 	
 	@Override
