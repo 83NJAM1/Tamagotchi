@@ -231,12 +231,14 @@ public class Game extends StackPane implements Componable, Localisable {
 		
 		content.setStyle("-fx-background-color: black;");
 		debug.getChildren().addAll(debugLabel, content);
-		debug.setMaxWidth(canvas.getWidth()/2);
-		debug.setMaxHeight(canvas.getHeight()/2);
+
 		debug.setAlignment(Pos.CENTER);
 		content.setAlignment(Pos.BOTTOM_LEFT);
 		
 		debugLabel.setPadding(new Insets(15, 15, 15, 15));
+		
+		debug.setMaxWidth(canvas.getWidth()/2);
+		debug.setMaxHeight(canvas.getHeight()/2);
 		setMargin(debug, new Insets(0, 0, canvas.getHeight()*1.5, canvas.getWidth()*1.5));
 		//debug.setMaxWidth(fallingOffset)
 		
@@ -244,7 +246,7 @@ public class Game extends StackPane implements Componable, Localisable {
 		this.getChildren().addAll(drawingArea, hud, cookView, debug);
 		
 		drawLoop.start();
-		pet.changeTypeColor(2); //NOTE : a modifier 
+		pet.changeTypeColor(2); //TODO : a modifier 
 		
 		petOpacity=0.0;
 		gameOpacity = 0.0;
@@ -404,7 +406,7 @@ public class Game extends StackPane implements Componable, Localisable {
 		
 		for ( int j=0; j<fallingMap.length; j++ ) {
 			
-			//gc.setGlobalAlpha((1-((double)(j+1)/(fallingMap.length+1)))*0.5);
+			//gc.setGlobalAlpha((1-((double)(j+1)/(fallingMap.length)))*0.5);
 			
 			for ( int i=0; i<fallingMap[j].length; i++ ) {
 				
@@ -463,6 +465,11 @@ public class Game extends StackPane implements Componable, Localisable {
 				pet.setSize((int)pet.getDestX(), (int)pet.getDestY(), 256, 256);
 				break;
 		}
+		
+		// NOTE DEBUG
+		((VBox)getChildren().get(3)).setMaxWidth(canvas.getWidth()/5); //canvas.getWidth()/4
+		((VBox)getChildren().get(3)).setMaxHeight(canvas.getHeight()/5); //
+		setMargin(((VBox)getChildren().get(3)), new Insets(0, 0, canvas.getHeight()*0.65, canvas.getWidth()*0.79));
 		
 		initFallingMap();
 		updateDraw();
