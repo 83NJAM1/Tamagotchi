@@ -344,22 +344,23 @@ public class Game extends StackPane implements Componable, Localisable {
 	}
 	
 	public void initFallingMap() {
-		fallingMap = new boolean[(int)(canvas.getHeight()/weatherEffect.getWidth())+2][(int)(canvas.getWidth()/weatherEffect.getWidth())];
+		
+		fallingMap = new boolean[(int)(canvas.getHeight()/weatherEffect.getWidth())+3][(int)(canvas.getWidth()/weatherEffect.getWidth())];
 		rowOrderFallingMap = new int[fallingMap.length];
 		generateFallingMap();
 		printFallingMap();
+		
 		System.out.println("Falling map initialisation done");
 	}
 	
 	public void generateFallingMap() {
-		for ( int j=0; j<fallingMap.length-1; j++ ) {
+
+		for ( int j=0; j<fallingMap.length; j++ ) {
 			for ( int i=0; i<fallingMap[j].length; i++ ) {
 				fallingMap[j][i] = activeGenerator.nextBoolean();
 			}
 			rowOrderFallingMap[j] = j;
 		}
-		
-		fallingMap[fallingMap.length-1] = fallingMap[0];
 		rowOrderFallingMap[fallingMap.length-1] = fallingMap.length-1;
 	}
 	
@@ -409,11 +410,11 @@ public class Game extends StackPane implements Componable, Localisable {
 				
 				if ( fallingMap[ rowOrderFallingMap[j] ][i] ) {
 					gc.setFill(Color.GREEN);
-					gc.fillRect( i*weatherEffect.getWidth(),  (j-2 + 0.25)*weatherEffect.getHeight()+fallingOffset, weatherEffect.getWidth(), weatherEffect.getHeight() );
+					gc.fillRect( i*weatherEffect.getWidth(),  (j-2)*weatherEffect.getHeight()+fallingOffset, weatherEffect.getWidth(), weatherEffect.getHeight() );
 				}
 				else {
 					gc.setFill(Color.YELLOW);
-					gc.fillRect( i*weatherEffect.getWidth(),  (j-2 + 0.25)*weatherEffect.getHeight()+fallingOffset, weatherEffect.getWidth(), weatherEffect.getHeight() );
+					gc.fillRect( i*weatherEffect.getWidth(),  (j-2)*weatherEffect.getHeight()+fallingOffset, weatherEffect.getWidth(), weatherEffect.getHeight() );
 				}
 			}
 		}
