@@ -2,6 +2,8 @@ package app.view;
 
 import javafx.scene.image.Image;
 
+import java.util.ArrayList;
+
 import app.Componable;
 
 /**
@@ -18,6 +20,8 @@ public class Room extends Image implements Componable {
 	private double w;
 	private double h;
 	
+	private ArrayList<Sprite> elements;
+	
 	//############################ METHODES #####################################
 	
 	public Room(String imagepath) {
@@ -26,6 +30,7 @@ public class Room extends Image implements Componable {
 		y = 0;
 		w = getWidth();
 		h = getHeight();
+		elements = new ArrayList<>();
 	}
 	
 	/**
@@ -52,6 +57,14 @@ public class Room extends Image implements Componable {
 		// autre
 		else
 			return 0.5;
+	}
+	
+	public void addElement(Sprite e) {
+		elements.add(e);
+	}
+	
+	public Sprite getElement(int i) {
+		return elements.get(i);
 	}
 	
 	public double getX() {

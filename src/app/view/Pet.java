@@ -23,9 +23,6 @@ public class Pet extends AnimatedSprite implements Componable {
 	private State hygiene;// |
 	private State moral;  // /
 	
-	public IntegerProperty x;
-	public IntegerProperty y;
-	
 	/**
 	 * animationloop effectué toute les 1 second
 	 * déclendeur -> this
@@ -49,9 +46,6 @@ public class Pet extends AnimatedSprite implements Componable {
 		super(spritesheet, 0, 0, 512, 512);
 		color = new AnimatedSprite(spritesheetColor, 0, 0, 512, 512);
 		setSize(0, 0, 128, 128);
-		
-		x = new SimpleIntegerProperty(0);
-		y = new SimpleIntegerProperty(0);
 	}
 	
 	/**
@@ -81,27 +75,17 @@ public class Pet extends AnimatedSprite implements Componable {
 	}
 	
 	@Override 
-	public void setPos(int dest_x, int dest_y) {
+	public void setPos(double dest_x, double dest_y) {
 		super.setPos(dest_x, dest_y);
 		if ( color != null )
 			color.setPos(dest_x, dest_y);
-		
-		if ( x != null )
-			x.setValue(dest_x);
-		if ( y != null )
-			y.setValue(dest_y);
 	}
 	
 	@Override 
-	public void setSize( int dest_x, int dest_y, int dest_h, int dest_w ) {
+	public void setSize( double dest_x, double dest_y, double dest_h, double dest_w ) {
 		super.setSize(dest_x, dest_y, dest_h, dest_w);
 		if ( color != null )
 			color.setSize(dest_x, dest_y, dest_h, dest_w);
-		
-		if ( x != null )
-			x.setValue(dest_x);
-		if ( y != null )
-			y.setValue(dest_y);
 	}
 	
 	@Override

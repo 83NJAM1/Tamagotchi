@@ -80,9 +80,10 @@ public class Game implements Componable, Localisable {
         public void handle(long new_time) {
 			if (new_time > old_time ) {
 				old_time = new_time+DELAY_SEED.nextLong(DELAY_MIN, DELAY_MAX);
-				gameModel.nextWeather();
-				gameView.setWeather( gameModel.getWeather() );
-				System.out.println("the weather is " + gameModel.getWeather() + " for " + (old_time-new_time)/1_000_000_000 + " seconds");
+				applyWeather(gameModel.getWeather(), (old_time-new_time)/1_000_000_000);
+				
+				// affiche prochain climat
+				//System.out.println("the weather is " + gameModel.getWeather() + " for " + (old_time-new_time)/1_000_000_000 + " seconds");
 			}
         }
     };
@@ -189,7 +190,7 @@ public class Game implements Componable, Localisable {
 			
 			// initialise le jeu
 			gameModel.setMiniGame(miniGameController.getModel());
-			gameView.getChildHud().setActionBarMiniGame(miniGameController.getView());
+			gameView.getViewHud().setActionBarMiniGame(miniGameController.getView());
 			petController.getModel().tooglePlaying();
 			
 			// associe les actions pour le jeu
@@ -215,7 +216,7 @@ public class Game implements Componable, Localisable {
 	private EventHandler<ActionEvent> clickStop = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			gameModel.setMiniGame(null);
-			gameView.getChildHud().removeActionBarMiniGame();
+			gameView.getViewHud().removeActionBarMiniGame();
 			petController.getModel().tooglePlaying();
 		}
 	};
@@ -231,12 +232,9 @@ public class Game implements Componable, Localisable {
 		
 		petController = new Pet(petType);
 		roomController = new Room(roomName);
-		gameModel = new app.model.Game( petController.getModel(), roomController.getModel() );
-		gameView = new app.view.Game( petController.getView(), roomController.getView() );
-		gameover = new SimpleBooleanProperty(this, "gameover", false);
-		cookControler = new Cook(new app.model.Cook(),gameView.getCookView());
-
-		init();
+		
+		startInit();
+		endInit();
 	}
 	
 	/*
@@ -245,13 +243,12 @@ public class Game implements Componable, Localisable {
 	public Game(String saveName) {
 		
 		saveModel = new app.model.Save(SAVEPATH+saveName);
+		
 		saveModel.load(SAVEPATH+saveName);
 		petController = new Pet(saveModel.getPetType());
 		roomController = new Room(saveModel.getRoomId());
-		gameModel = new app.model.Game( petController.getModel(), roomController.getModel() );
-		gameView = new app.view.Game( petController.getView(), roomController.getView() );
-		gameover = new SimpleBooleanProperty(this, "gameover", false);
-		cookControler = new Cook(new app.model.Cook(),gameView.getCookView());
+		
+		startInit();
 		
 		petController.getControllerHunger().setValue(saveModel.getState("hunger"));
 		petController.getControllerThirst().setValue(saveModel.getState("thirst"));
@@ -259,33 +256,45 @@ public class Game implements Componable, Localisable {
 		petController.getControllerHygiene().setValue(saveModel.getState("hygiene"));
 		petController.getControllerMoral().setValue(saveModel.getState("moral"));
 		
-		init();
+		endInit();
 	}
 	
 	/*
 	 * Initialisation commune entre constructeurs
 	 */
-	private void init() {
-		saveModel.setGameInstance(gameModel);
-		
-		gameView.getChildHud().getChildAction().setActionButtonKitchen(gotoKitchen);
-		gameView.getChildHud().getChildAction().setActionButtonBathroom(gotoBathroom);
-		gameView.getChildHud().getChildAction().setActionButtonLivingroom(gotoLivingroom);
-		gameView.getChildHud().getChildAction().setActionButtonBedroom(gotoBedroom);
-		gameView.getChildHud().getChildAction().setActionButtonGarden(gotoGarden);
-		
-		gameView.getChildHud().getChildAction().setActionButtonDrink(makePetDrinking);
-		gameView.getChildHud().getChildAction().setActionButtonEat(makePetEating);
-		gameView.getChildHud().getChildAction().setActionButtonTakeShower(makePetTakingShower);
-		gameView.getChildHud().getChildAction().setActionButtonCook(makePetCook);
-		gameView.getChildHud().getChildAction().setActionButtonPlay(makePetPlaying);
-		
-		updateViewWeather();
-		updateViewAllowedAction();
-		gameLoop.start();
-		weatherLoop.start();
+	private void startInit() {
+		gameModel = new app.model.Game( petController.getModel(), roomController.getModel() );
+		gameView = new app.view.Game( petController.getView(), roomController.getView() );
+		gameover = new SimpleBooleanProperty(this, "gameover", false);
+		cookControler = new Cook(new app.model.Cook(),gameView.getViewCook());
 	}
 	
+	/*
+	 * Initialisation commune entre constructeurs
+	 */
+	private void endInit() {
+		
+		saveModel.setGameInstance(gameModel);
+		
+		gameView.getViewHud().getChildAction().setActionButtonKitchen(gotoKitchen);
+		gameView.getViewHud().getChildAction().setActionButtonBathroom(gotoBathroom);
+		gameView.getViewHud().getChildAction().setActionButtonLivingroom(gotoLivingroom);
+		gameView.getViewHud().getChildAction().setActionButtonBedroom(gotoBedroom);
+		gameView.getViewHud().getChildAction().setActionButtonGarden(gotoGarden);
+		
+		gameView.getViewHud().getChildAction().setActionButtonDrink(makePetDrinking);
+		gameView.getViewHud().getChildAction().setActionButtonEat(makePetEating);
+		gameView.getViewHud().getChildAction().setActionButtonTakeShower(makePetTakingShower);
+		gameView.getViewHud().getChildAction().setActionButtonCook(makePetCook);
+		gameView.getViewHud().getChildAction().setActionButtonPlay(makePetPlaying);
+
+		gameLoop.start();
+		weatherLoop.start();
+		
+		//applyWeather("rainy");
+		updateViewWeather();
+		updateViewAllowedAction();
+	}
 	/**
 	 * sauvegarde les données du jeu via le model Save
 	 */
@@ -309,12 +318,18 @@ public class Game implements Componable, Localisable {
 		
 		if ( gameModel.setCurrentModelRoom( newRoomController.getModel() ) ) {
 			roomController = newRoomController;
-			gameView.setChildRoom( roomController.getView() );
+			gameView.setViewRoom( roomController.getView() );
 		}
 		
 		updateViewWeather();
 		updateViewAllowedAction();
 	}
+	
+    public void applyWeather(String name, long time) {
+		gameView.setWeather( gameModel.getWeather() );
+		gameModel.nextWeather();
+		System.out.println("the weather is " + name + " for " + time + " seconds");
+    }
 	
 	public void updateViewWeather() {
 		
@@ -352,7 +367,7 @@ public class Game implements Componable, Localisable {
 	 */
 	public void updateViewAllowedAction() {
 		
-		gameView.getChildHud().getChildAction().setAllowedRoom (
+		gameView.getViewHud().getChildAction().setAllowedRoom (
 				
 			roomController.getModel().isAdjacent(app.model.Kitchen.getInstance()),
 			roomController.getModel().isAdjacent(app.model.Garden.getInstance()),
@@ -361,7 +376,7 @@ public class Game implements Componable, Localisable {
 			roomController.getModel().isAdjacent(app.model.Bedroom.getInstance())
 		);
 		
-		gameView.getChildHud().getChildAction().setAllowedInteraction (
+		gameView.getViewHud().getChildAction().setAllowedInteraction (
 				
 		    roomController.getModel().equals(app.model.Kitchen.getInstance()) ||
 			roomController.getModel().equals(app.model.Bathroom.getInstance()),
@@ -370,7 +385,7 @@ public class Game implements Componable, Localisable {
 		    roomController.getModel().equals(app.model.Garden.getInstance())
 		);
 		
-		gameView.getChildHud().getChildAction().enableCooking(roomController.getModel().equals(app.model.Kitchen.getInstance()));
+		gameView.getViewHud().getChildAction().enableCooking(roomController.getModel().equals(app.model.Kitchen.getInstance()));
 
 	}
 	

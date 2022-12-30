@@ -103,7 +103,7 @@ public class Main implements Componable, Localisable {
 			if ( gameController != null ) {
 				gameController.exit();
 			}
-			gameController = new Game(mainView.getChildCustomPet().getPetType(), "test", menuController.getModelOption().getLastSave());
+			gameController = new Game(mainView.getChildCustomPet().getPetType(), "livingroom", menuController.getModelOption().getLastSave());
 			mainView.init(gameController.getView());
 			
 			//NOTE : ne pas faire de mise a jour du texte ici, cela cause un bug
@@ -118,8 +118,9 @@ public class Main implements Componable, Localisable {
 	/**
 	 * Constructeur
 	 * @param saveName le nom de la sauvegarde à charger. Peut être null
+	 * @param newGame vrai si nouvelle partie
 	 */
-	public Main(String saveName) {
+	public Main(String saveName, boolean newGame) {
 		
 		// instancier le menuController et initialiser les options
 		menuController = new Menu();
@@ -130,7 +131,7 @@ public class Main implements Componable, Localisable {
 		
 		// afficher le jeu si charge/continue une partie
 		// sinon afficher creation de pet lors d'une nouvelle partie
-		initView(lastSaveName, saveName);
+		initView(lastSaveName, saveName, newGame);
 		
 		// charger les fichier de musique en mémoire
 		musicBackground = loadMediaFile("DogsAndCats", "mp3");
@@ -148,11 +149,12 @@ public class Main implements Componable, Localisable {
 	 * initialise la vue principale
 	 * @param lastSaveName le nom de la dernière sauvegarde enregistré. Peut être null
 	 * @param saveName le nom de la sauvegarde à charger. Peut être null
+	 * @param newGame vrai si nouvelle partie
 	 */
-	public void initView(String lastSaveName, String saveName) {
+	public void initView(String lastSaveName, String saveName, boolean newGame) {
 		
 		// creer une nouvelle partie en écrasant la partie en cours
-		if ( saveName != null && saveName.equals("new") && lastSaveName != null ) {
+		if ( newGame ) {
 			System.out.println("NEW GAME: " + lastSaveName);
 			mainView = new app.view.Main(menuController.getView());
 			mainView.getChildCustomPet().setActionValidate(new_game_generation);

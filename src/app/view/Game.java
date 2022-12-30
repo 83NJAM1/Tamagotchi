@@ -3,15 +3,8 @@ package app.view;
 import javafx.animation.AnimationTimer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.BoxBlur;
@@ -20,16 +13,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
-
-import java.io.IOException;
-import java.util.Random;
 
 import app.Componable;
 import app.Localisable;
@@ -69,53 +57,12 @@ public class Game extends StackPane implements Componable, Localisable {
 	private double petOpacity;
 	private double gameOpacity;
 	
-	Rectangle weatherEffect;
-	private String current_weather;
-	private int fallingOffset;
-	private int[] rowOrderFallingMap;
-	boolean fallingMap[][];
-	Random activeGenerator;
+	String current_weather;
+	WeatherEffect weatherEffect;
+	WeatherEffect oldWeatherEffect;
 	boolean weatherIsActivated;
 	
-	Slider velocityWeatherEffectDebug;
-	Button fallWeatherEffectDebug;
-	Button mapFallingWeatherEffectDebug;
-	int velocity;
-	boolean infiniteFall=false;
-	
 	//######################### EVENT-ACTION ####################################
-	
-	/**
-	 * change l'indice de selection vers la gauche
-	 * déclencheur -> this
-	 */
-	private EventHandler<ActionEvent> toogleInfiniteFall = new EventHandler<ActionEvent>() {
-		public void handle(ActionEvent e) {
-			infiniteFall = !infiniteFall;
-		}
-	};
-	
-	/**
-	 * change l'indice de selection vers la gauche
-	 * déclencheur -> this
-	 */
-	private EventHandler<ActionEvent> newFallingMap = new EventHandler<ActionEvent>() {
-		public void handle(ActionEvent e) {
-			generateFallingMap();
-		}
-	};
-	
-	/**
-	 * Action effectué quand t-on modifie le volume via la vue Option
-	 * déclencher -> v.Option
-	 */
-	ChangeListener<Number> change_velocityWeatherEffect = new ChangeListener<Number>() {
-		public void changed(ObservableValue<? extends Number> obs, Number vold, Number vnew) {
-
-			velocity = (int)(vnew.intValue());
-			System.out.println("velocity to :" + velocity + " from :" + vold.intValue());
-		}
-	};
 	
 	/**
 	 * Action effectué quand le pet se déplace
@@ -213,50 +160,19 @@ public class Game extends StackPane implements Componable, Localisable {
 		gameover=false;
 		gameover_msg="GAME OVER";
 
-		VBox debug = new VBox();
-		VBox content = new VBox();
-		Label debugLabel = new Label("Debug");
-		fallWeatherEffectDebug = new Button("toogle-infinite-fall");
-		fallWeatherEffectDebug.setOnAction(toogleInfiniteFall);
-		mapFallingWeatherEffectDebug = new Button("new-falling-map");
-		mapFallingWeatherEffectDebug.setOnAction(newFallingMap);
-		Label velocityLabel = new Label("Velocity");
-		debugLabel.setStyle("-fx-background-color: black; -fx-text-fill: red;");
-		velocityLabel.setStyle("-fx-background-color: black; -fx-text-fill: red;");
-		debug.setStyle("-fx-font-weight: bold; -fx-color: red; -fx-background-color: black;");
-		velocityWeatherEffectDebug = new Slider();
-		velocityWeatherEffectDebug.valueProperty().addListener(change_velocityWeatherEffect);
-		content.getChildren().addAll(velocityLabel, velocityWeatherEffectDebug, fallWeatherEffectDebug, mapFallingWeatherEffectDebug);
-		
-		
-		content.setStyle("-fx-background-color: black;");
-		debug.getChildren().addAll(debugLabel, content);
-		debug.setMaxWidth(canvas.getWidth()/2);
-		debug.setMaxHeight(canvas.getHeight()/2);
-		debug.setAlignment(Pos.CENTER);
-		content.setAlignment(Pos.BOTTOM_LEFT);
-		
-		debugLabel.setPadding(new Insets(15, 15, 15, 15));
-		setMargin(debug, new Insets(0, 0, canvas.getHeight()*1.5, canvas.getWidth()*1.5));
-		//debug.setMaxWidth(fallingOffset)
-		
 		drawingArea.getChildren().add(canvas);
-		this.getChildren().addAll(drawingArea, hud, cookView, debug);
+		this.getChildren().addAll(drawingArea, hud, cookView);
 		
 		drawLoop.start();
-		pet.changeTypeColor(2); //NOTE : a modifier 
+		pet.changeTypeColor(2); //TODO : a modifier 
 		
 		petOpacity=0.0;
 		gameOpacity = 0.0;
-		pet.x.addListener(petXMove);
-		pet.y.addListener(petYMove);
-		fallingOffset = 0;
-		weatherEffect = new Rectangle(0, 64, 64, 64);
-		
-		activeGenerator = new Random();
+		pet.getXProperty().addListener(petXMove);
+		pet.getYProperty().addListener(petYMove);
+
 		weatherIsActivated = false;
-		velocity=0;
-		initFallingMap();
+		
 		updateStyle();
 		updateDraw();
 	}
@@ -340,85 +256,13 @@ public class Game extends StackPane implements Componable, Localisable {
 	}
 	
 	public void drawWeather() {
-		drawWeatherFallingEffect(infiniteFall);
-	}
-	
-	public void initFallingMap() {
-		fallingMap = new boolean[(int)(canvas.getHeight()/weatherEffect.getWidth())+2][(int)(canvas.getWidth()/weatherEffect.getWidth())];
-		rowOrderFallingMap = new int[fallingMap.length];
-		generateFallingMap();
-		printFallingMap();
-		System.out.println("Falling map initialisation done");
-	}
-	
-	public void generateFallingMap() {
-		for ( int j=0; j<fallingMap.length-1; j++ ) {
-			for ( int i=0; i<fallingMap[j].length; i++ ) {
-				fallingMap[j][i] = activeGenerator.nextBoolean();
-			}
-			rowOrderFallingMap[j] = j;
-		}
-		
-		fallingMap[fallingMap.length-1] = fallingMap[0];
-		rowOrderFallingMap[fallingMap.length-1] = fallingMap.length-1;
-	}
-	
-	public void shiftRightRowOrderFallingMap() {
-		
-		int lastValue = rowOrderFallingMap[rowOrderFallingMap.length-1];
-		
-		for ( int i=rowOrderFallingMap.length-1; i>0; i-- ) {
-			
-			rowOrderFallingMap[i] = rowOrderFallingMap[i-1];
-			
-		}
-		rowOrderFallingMap[0] = lastValue;	
-	}
-	
-	public void printFallingMap() {
-		System.out.println("Falling map : ");
-		for ( int j=0; j<fallingMap.length; j++ ) {
-			for ( int i=0; i<fallingMap[j].length; i++ ) {
-				System.out.print((fallingMap[j][i]) ? "[X]" : "[ ]");
-			}
-			System.out.print(System.lineSeparator());
-		}
-	}
-	
-	public void drawWeatherFallingEffect(boolean infiniteFall) {
-		
-		gc.setGlobalAlpha(0.5);
-		
-		if ( infiniteFall ) {
-			if ( fallingOffset >= weatherEffect.getHeight() ) {
-				fallingOffset=velocity+1;
-				shiftRightRowOrderFallingMap();
-			}
-			else
-				fallingOffset+=velocity;
-		}
-		else if ( fallingOffset < 2*weatherEffect.getHeight()+canvas.getHeight() ) {
-			fallingOffset+=velocity;
-		}
-		
-		for ( int j=0; j<fallingMap.length; j++ ) {
-			
-			//gc.setGlobalAlpha((1-((double)(j+1)/(fallingMap.length+1)))*0.5);
-			
-			for ( int i=0; i<fallingMap[j].length; i++ ) {
-				
-				if ( fallingMap[ rowOrderFallingMap[j] ][i] ) {
-					gc.setFill(Color.GREEN);
-					gc.fillRect( i*weatherEffect.getWidth(),  (j-2 + 0.25)*weatherEffect.getHeight()+fallingOffset, weatherEffect.getWidth(), weatherEffect.getHeight() );
-				}
-				else {
-					gc.setFill(Color.YELLOW);
-					gc.fillRect( i*weatherEffect.getWidth(),  (j-2 + 0.25)*weatherEffect.getHeight()+fallingOffset, weatherEffect.getWidth(), weatherEffect.getHeight() );
-				}
+		if ( oldWeatherEffect != null ) {
+			if ( oldWeatherEffect.drawEffect() ) {
+				oldWeatherEffect = null;
 			}
 		}
-		
-		gc.setGlobalAlpha(1.0);
+		if( weatherEffect != null )
+			weatherEffect.drawEffect();
 	}
 	
 	/**
@@ -463,7 +307,9 @@ public class Game extends StackPane implements Componable, Localisable {
 				break;
 		}
 		
-		initFallingMap();
+		if( weatherEffect != null )
+			weatherEffect.resize(canvas.getWidth(), canvas.getHeight());
+		
 		updateDraw();
 		
 		if ( gameover )
@@ -471,29 +317,66 @@ public class Game extends StackPane implements Componable, Localisable {
 	}
 	
 	public void setWeather(String weather) {
-		switch( weather ) {
-	
-			case "rainy":
-				break;
-			case "cloudy":
-				break;
-			case "suny":
-				break;
-			case "stormy":
-				break;
-			case "scorchy":
-				break;
-			case "icy":
-				break;
+		
+		
+		if ( !weather.equals(current_weather) ) {
+			
+			Sprite fx;
+			Sprite fx2;
+			
+			if( weatherEffect != null ) {
+				oldWeatherEffect = weatherEffect;
+				oldWeatherEffect.stopEffect();
+				oldWeatherEffect.clear();
+			}
+			
+			switch( weather ) {
+			
+				case "rainy":
+					fx = new Sprite(Main.GAMEIMAGEPATH+"effects/gouttes.png", 0, 0, 64, 64);
+					weatherEffect = new FallingEffect(this, canvas.getWidth(), canvas.getHeight(), 24, fx, null, 
+													  FallingEffect.MapType.QUINCUNX, FallingEffect.FxType.ALTERNATE, true, gc);
+					System.out.println("rainy effect");
+					break;
+				case "cloudy":
+					weatherEffect = null;
+					break;
+				case "suny":
+					weatherEffect = null;
+					break;
+				case "stormy":
+					fx = new Sprite(Main.GAMEIMAGEPATH+"effects/gouttes-1.png", 0, 0, 64, 64);
+					fx2 = new Sprite(Main.GAMEIMAGEPATH+"effects/gouttes-2.png", 0, 0, 64, 64);
+					weatherEffect = new FallingEffect(this, canvas.getWidth(), canvas.getHeight(), 40, fx, fx2,
+													  FallingEffect.MapType.RANDOM, FallingEffect.FxType.TAILED, false, gc);
+
+					System.out.println("stormy effect");
+					break;
+				case "scorchy":
+					weatherEffect = null;
+					break;
+				case "icy":
+					fx = new Sprite(Main.GAMEIMAGEPATH+"effects/flocons.png", 0, 0, 64, 64);
+					fx2 = new Sprite(Main.GAMEIMAGEPATH+"effects/flocons_alt.png", 0, 0, 64, 64);
+					weatherEffect = new FallingEffect(this, canvas.getWidth(), canvas.getHeight(), 4, fx, fx2,
+													  FallingEffect.MapType.QUINCUNX, FallingEffect.FxType.ALTERNATE, true, gc);
+					
+					System.out.println("icy effect");
+					break;
+				default:
+					weatherEffect = null;
+					break;
+			}
+			
+			current_weather = weather;
 		}
-		current_weather = weather;
 	}
 	
 	/**
 	 * définit une nouvelle instance de pièce
 	 * @param new_room la nouvelle pièce
 	 */
-	public void setChildRoom(Room new_room) {
+	public void setViewRoom(Room new_room) {
 		gameOpacity = 0.0;
 		room = new_room;
 		updateDraw();
@@ -503,7 +386,7 @@ public class Game extends StackPane implements Componable, Localisable {
 	 * obtient la vue enfant Hud
 	 * @return l'instance de Hud
 	 */
-	public Hud getChildHud() {
+	public Hud getViewHud() {
 		return hud;
 	}
 	
@@ -514,7 +397,7 @@ public class Game extends StackPane implements Componable, Localisable {
 		setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 	}
 	
-	public Cook getCookView() {
+	public Cook getViewCook() {
 		return cookView;
 	}
 	

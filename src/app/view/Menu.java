@@ -129,6 +129,19 @@ public class Menu extends StackPane implements Componable, Localisable {
 		listButtons.setAlignment(Pos.CENTER);
 	}
 	
+	public void deactivateButton() {
+		buttonNew.setDisable(true);
+		buttonQuit.setDisable(true);
+		buttonLoad.setDisable(true);
+		buttonOpt.setDisable(true);
+	}
+	public void activateButton() {
+		buttonNew.setDisable(false);
+		buttonQuit.setDisable(false);
+		buttonLoad.setDisable(false);
+		buttonOpt.setDisable(false);
+	}
+	
 	/**
 	 * définit l'action pour le bouton quitter menu
 	 * @param e EventHandler qui gère l'action

@@ -40,7 +40,7 @@ public class Game implements Componable {
 		pet.getMoral().setBonus("play", 1.5);
 		
 		// effet météo
-		current_indexWeather = 0;
+		
 		// galcial
 		pet.getMoral().setMalus("icy", 0.05);
 		pet.getHunger().setMalus("icy", 0.05);
@@ -59,6 +59,9 @@ public class Game implements Componable {
 		
 		weathers = new String[] {"rainy", "cloudy", "suny", "stormy", "scorchy", "icy"};
 		weatherSeed = new Random();
+		nextWeather();
+		current_indexWeather = 0;
+		
 		/**
 		 * construit la maison en initialisant les pièces
 		 * 
