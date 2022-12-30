@@ -63,7 +63,6 @@ class TestModel {
 		pet.getThirst().setValue(0.);
 		pet.getHunger().setValue(0.);
 		assertEquals(true,pet.isDead(),"Le pet n'est pas mort");
-	
 	}
 	
 		
