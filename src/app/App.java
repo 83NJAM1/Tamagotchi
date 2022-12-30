@@ -52,17 +52,17 @@ public class App extends Application{
 	WIP  : Apparences (Chien, chat, lapin, robot)
 	WIP  : Plusieurs salles (Jardin, salon, cuisine, salle de bain)
 	TODO : notifications (besoins du tamagotchi)
-	TODO : Météo changeante dans le jardin
-	TODO : Mange uniquement dans la cuisine
-	TODO : Fait du sport que dehors
+	WIP : Météo changeante dans le jardin
+	WIP : Mange uniquement dans la cuisine
+	WIP : Fait du sport que dehors
 	TODO : Ajout du mode multijoueur
-	TODO : Jouer des mini jeux pour/avec le compagnon
+	WIP : Jouer des mini jeux pour/avec le compagnon
 	TODO : Participer à des activités
-	TODO : Cuisiner pour son compagnon
-	TODO : Evènements affectants les attributs (Rêves, cauchemars affectent le moral)
+	WIP : Cuisiner pour son compagnon
+	WIP : Evènements affectants les attributs (Rêves, cauchemars affectent le moral)
 	TODO : Notification lors de la sauvegarde 
 	*/
-	private final static String version = "0.0.7";
+	private final static String version = "0.0.13";
 	
 	//######################### EVENT-ACTION ####################################
 	
@@ -143,7 +143,7 @@ public class App extends Application{
 			System.gc();
 			
 			//reconstruit
-			initMain(saveName);
+			initMain(saveName, false);
 		}
 	};
 	
@@ -166,7 +166,7 @@ public class App extends Application{
 			System.gc();
 			
 			//reconstruit
-			initMain("new");
+			initMain(null, true);
 		}
 	};
 	
@@ -189,7 +189,7 @@ public class App extends Application{
 		languageNumber = NumberFormat.getInstance(Locale.FRENCH);
 		
 		// initialise le main sans spécifier de sauvegarde 
-		initMain(null);
+		initMain(null, false);
 		
 		// donnée traité ultérieurement
         stageWidthDiff = stage.getWidth() - mainController.getControllerMenu().getModelOption().getWindowWidth();
@@ -205,10 +205,10 @@ public class App extends Application{
 	 * initalise le controller principale ce qui implique l'intialisation de ses controller enfants
 	 * @param saveName le nom de la sauvegarde à charger pour initialiser le jeu. Si null une nouvelle partie est créée.
 	 */
-	private void initMain(String saveName) {
+	private void initMain(String saveName, boolean newGame) {
 		
 		// initialise la vue principale incluant la vue du jeu
-		mainController = new Main(saveName);
+		mainController = new Main(saveName, newGame);
 		mainController.getControllerMenu().getView().getChildOption().setActionChoiceBoxDefinition(choose_definition);
 		mainController.getControllerMenu().getView().getChildLoad().setActionButtonValidate(load_game);
 		mainController.getControllerMenu().getView().setActionButtonNew(new_game);

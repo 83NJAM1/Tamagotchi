@@ -1,5 +1,5 @@
 last_save : save2.tmg
-language : en
+language : fr
 volume : 0.0
 width_window : 640
 height_window : 360

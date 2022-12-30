@@ -2,6 +2,10 @@ package app.view;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
+import javafx.event.Event;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 
 import app.Componable;
@@ -26,8 +30,26 @@ public class Main extends StackPane implements Componable, Localisable {
 	
 	// La vue de customisation du pet
 	private CustomPet customPet;
-	
+	boolean menu_hiden;
 	//######################### EVENT-ACTION ####################################
+	
+	/**
+	 * ActionEvent effectué quand t-on veut masquer le Menu
+	 * déclencheur -> this -> v.Menu
+	 */
+	private EventHandler<KeyEvent> key_menu = new EventHandler<KeyEvent>() {
+		
+		public void handle(KeyEvent e) {
+			if ( e.getCode() == KeyCode.ESCAPE ) {
+				
+				if (menu_hiden)
+					showMenu();
+				else
+					hideMenu();
+			}
+			System.out.println(e.getCode() + ":" + ((menu_hiden) ? "out menu" : "in menu"));
+		}
+	};
 	
 	/**
 	 * ActionEvent effectué quand t-on veut masquer le Menu
@@ -84,8 +106,11 @@ public class Main extends StackPane implements Componable, Localisable {
 		menu = menu_instance;
 		
 		menu.setActionButtonQuit(click_quit_menu);
-		game.getChildHud().getChildAction().setActionButtonMenu(click_open_menu);
+		game.getViewHud().getChildAction().setActionButtonMenu(click_open_menu);
 		
+		menu_hiden = true;
+		this.addEventHandler(KeyEvent.KEY_RELEASED, key_menu);
+		hideMenu();
 		getChildren().add(menu);
 		getChildren().add(game);
 	}
@@ -135,7 +160,9 @@ public class Main extends StackPane implements Componable, Localisable {
      * affiche la vue du menu
      */
 	public void showMenu() {
+		menu_hiden = false;
 		game.setDisable(true);
+		menu.activateButton();
 		menu.toFront();
 	}
 	
@@ -143,7 +170,9 @@ public class Main extends StackPane implements Componable, Localisable {
      * masque la vue du menu
      */
 	public void hideMenu() {
+		menu_hiden = true;
 		game.setDisable(false);
+		menu.deactivateButton();
 		menu.toBack();
 	}
 	
