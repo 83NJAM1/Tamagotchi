@@ -507,7 +507,7 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 		
 		preview.getGraphicsContext2D().drawImage(
 				
-				previewPet.getColorSprite(),
+				previewPet.getColorSprite().getSheet(),
 				previewPet.getColorSprite().getSrcX(), previewPet.getColorSprite().getSrcY(),
 				previewPet.getColorSprite().getSrcW(), previewPet.getColorSprite().getSrcH(),
 				0, 0,
@@ -516,7 +516,7 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 		
 		preview.getGraphicsContext2D().drawImage(
 				
-				previewPet, 
+				previewPet.getSheet(), 
 				previewPet.getSrcX(), previewPet.getSrcY(), 
 			    previewPet.getSrcW(), previewPet.getSrcH(),
 			    0, 0,

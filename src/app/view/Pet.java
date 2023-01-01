@@ -1,8 +1,6 @@
 package app.view;
 
 import javafx.animation.AnimationTimer;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.shape.Rectangle;
 
 import app.Componable;
@@ -15,13 +13,21 @@ import app.Componable;
 public class Pet extends AnimatedSprite implements Componable {
 
 	//########################### ATTRIBUTS #####################################
+	AnimatedSprite fx;
 	AnimatedSprite color;
+	Sprite object;
 	
 	private State hunger; // \
 	private State thirst; // |
 	private State weight; // |--> NOTE: references partagées avec c.Stat et v.Hud
 	private State hygiene;// |
 	private State moral;  // /
+	
+	Double distanceFactor;
+	Double saveX;
+	Double saveY;
+	Double saveW;
+	Double saveH;
 	
 	/**
 	 * animationloop effectué toute les 1 second
@@ -45,7 +51,9 @@ public class Pet extends AnimatedSprite implements Componable {
 	public Pet(String spritesheet, String spritesheetColor) {
 		super(spritesheet, 0, 0, 512, 512);
 		color = new AnimatedSprite(spritesheetColor, 0, 0, 512, 512);
+		object = null;
 		setSize(0, 0, 128, 128);
+		distanceFactor=1.0;
 	}
 	
 	/**
@@ -74,6 +82,12 @@ public class Pet extends AnimatedSprite implements Componable {
 		color.changeLine(num);
 	}
 	
+	public Sprite getObject() {
+		return object;
+	}
+	public void setObject(Sprite sheet) {
+		object = sheet;
+	}
 	@Override 
 	public void setPos(double dest_x, double dest_y) {
 		super.setPos(dest_x, dest_y);
@@ -144,6 +158,13 @@ public class Pet extends AnimatedSprite implements Componable {
 	}
 	public State getChildMoral() {
 		return moral;
+	}
+	
+	public void setDisctanceFactor(double factor) {
+		distanceFactor=factor;
+	}
+	public Double getDisctanceFactor() {
+		return 1.0;//distanceFactor;
 	}
 	
 	@Override

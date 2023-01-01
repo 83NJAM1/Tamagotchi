@@ -8,7 +8,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.BoxBlur;
+import javafx.scene.effect.DisplacementMap;
 import javafx.scene.effect.Effect;
+import javafx.scene.effect.FloatMap;
+import javafx.scene.effect.Glow;
+import javafx.scene.effect.ImageInput;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -200,7 +205,7 @@ public class Game extends StackPane implements Componable, Localisable {
 		// meteo
 		if ( weatherIsActivated )
 			drawWeather();
-		
+
 		// NOTE: la vue cook n'utlise pas le canvas, pas sur que l'appel ici soit util 
 		cookView.setDimension(canvas.getWidth(),canvas.getHeight());
 		
@@ -227,26 +232,36 @@ public class Game extends StackPane implements Componable, Localisable {
 		gc.setGlobalAlpha(petOpacity);
 		
 		// la couleur du pet
-		gc.drawImage(pet.getColorSprite(), 
+		gc.drawImage(pet.getColorSprite().getSheet(), 
 				     pet.getColorSprite().getSrcX()  , pet.getColorSprite().getSrcY(), 
 			         pet.getColorSprite().getSrcW()  , pet.getColorSprite().getSrcH(),
 			         canvas.getWidth()*room.getXOriginRatio()-pet.getColorSprite().getDestW()*0.5+pet.getDestX() , 
 			         canvas.getHeight()*room.getYOriginRatio()-pet.getColorSprite().getDestH()*0.9+pet.getDestY(),
-			         pet.getColorSprite().getDestW() , pet.getColorSprite().getDestH()                           );
+			         pet.getColorSprite().getDestW()*pet.getDisctanceFactor() , pet.getColorSprite().getDestH()*pet.getDisctanceFactor() );
 		
 		// la ligne de dessin
-		gc.drawImage(pet, 
+		gc.drawImage(pet.getSheet(), 
 				     pet.getSrcX(), pet.getSrcY(), 
 			         pet.getSrcW(), pet.getSrcH(),
 			         canvas.getWidth()*room.getXOriginRatio()-pet.getDestW()*0.5+pet.getDestX() , 
 			         canvas.getHeight()*room.getYOriginRatio()-pet.getDestH()*0.9+pet.getDestY(),
-			         pet.getDestW(), pet.getDestH() );
+			         pet.getDestW() * pet.getDisctanceFactor(), pet.getDestH() * pet.getDisctanceFactor() );
+		
+		// l'objet
+		if ( pet.getObject() != null ) {
+			gc.drawImage(pet.getObject().getSheet(), 
+					     pet.getObject().getSrcX(), pet.getObject().getSrcY(), 
+				         pet.getObject().getSrcW(), pet.getObject().getSrcH(),
+				         canvas.getWidth()*room.getXOriginRatio()-pet.getObject().getDestW()*0.5+pet.getDestX() , 
+				         canvas.getHeight()*room.getYOriginRatio()-pet.getObject().getDestH()*0.9+pet.getDestY(),
+				         pet.getObject().getDestW() * pet.getDisctanceFactor(), pet.getObject().getDestH() * pet.getDisctanceFactor() );
+		}
 		
 		// un carré délimitant le pet NOTE debug
 		gc.setStroke(Color.RED);
 		gc.strokeRect(canvas.getWidth()*room.getXOriginRatio()-pet.getDestW()*0.5+pet.getDestX() , 
 					  canvas.getHeight()*room.getYOriginRatio()-pet.getDestH()*0.9+pet.getDestY(),
-			          pet.getDestW(), pet.getDestH() );
+			          pet.getDestW() * pet.getDisctanceFactor(), pet.getDestH() * pet.getDisctanceFactor() );
 		
 		// fin fondu transition
 		if ( petOpacity > 1.0 ) {
@@ -317,21 +332,21 @@ public class Game extends StackPane implements Componable, Localisable {
 	}
 	
 	public void setWeather(String weather) {
-		
-		
+
 		if ( !weather.equals(current_weather) ) {
 			
 			Sprite fx;
 			Sprite fx2;
 			
 			if( weatherEffect != null ) {
+				
 				oldWeatherEffect = weatherEffect;
 				oldWeatherEffect.stopEffect();
 				oldWeatherEffect.clear();
 			}
-			
+
 			switch( weather ) {
-			
+				
 				case "rainy":
 					fx = new Sprite(Main.GAMEIMAGEPATH+"effects/gouttes.png", 0, 0, 64, 64);
 					weatherEffect = new FallingEffect(this, canvas.getWidth(), canvas.getHeight(), 24, fx, null, 
@@ -339,16 +354,17 @@ public class Game extends StackPane implements Componable, Localisable {
 					System.out.println("rainy effect");
 					break;
 				case "cloudy":
-					weatherEffect = null;
+					weatherEffect = new SlidingEffect(gc, canvas.getWidth(), SlidingEffect.SlideType.RIGHT_LEFT, new int[]{3, 3},
+							new Sprite(Main.GAMEIMAGEPATH+"effects/nuage-2.5.png", 0, 0, 768, 96),
+							new Sprite(Main.GAMEIMAGEPATH+"effects/nuage-3.png", 0, 0, 768, 96));
+					
+					System.out.println("cloudy effect");
 					break;
 				case "suny":
 					weatherEffect = null;
 					break;
 				case "stormy":
-					fx = new Sprite(Main.GAMEIMAGEPATH+"effects/gouttes-1.png", 0, 0, 64, 64);
-					fx2 = new Sprite(Main.GAMEIMAGEPATH+"effects/gouttes-2.png", 0, 0, 64, 64);
-					weatherEffect = new FallingEffect(this, canvas.getWidth(), canvas.getHeight(), 40, fx, fx2,
-													  FallingEffect.MapType.RANDOM, FallingEffect.FxType.TAILED, false, gc);
+					weatherEffect = new StormEffect(canvas.getWidth(), canvas.getHeight(), gc);
 
 					System.out.println("stormy effect");
 					break;

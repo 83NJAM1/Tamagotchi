@@ -26,6 +26,12 @@ public abstract class Pet implements Componable  {
 	protected boolean sleeping;
 	protected boolean dying;
 	
+	protected boolean sick;
+	protected boolean catchObject;
+	protected boolean fetchObject;
+	protected boolean punish;
+	protected boolean cry;
+	
 	public Pet(String type) {
 		
 		this.type = type;
@@ -39,6 +45,13 @@ public abstract class Pet implements Componable  {
 		eating = false;
 		drinking = false;
 		playing = false;
+		sleeping = false;
+		
+		sick = false;
+		catchObject = false;
+		fetchObject = false;
+		punish = false;
+		cry = false;
 	}
 	
 	public void init(State hunger, State thirst, State weight, State hygiene, State moral) {
@@ -52,6 +65,21 @@ public abstract class Pet implements Componable  {
 		setMalusForAllStates("overtime", 0.1);
 	}
 	
+	public void setCatch(boolean mode) {
+		catchObject = mode;
+	}
+	public void setFetch(boolean mode) {
+		fetchObject = mode;
+	}
+	public void toogleSick() {
+		sick = !sick;
+	}
+	public void tooglePunish() {
+		punish = !punish;
+	}
+	public void toogleCry() {
+		cry = !cry;
+	}
 	public void toogleTakingShower() {
 		takingShower = !takingShower;
 	}
@@ -77,10 +105,34 @@ public abstract class Pet implements Componable  {
 	public boolean isPlaying() {
 		return playing;
 	}
+	public boolean isSleeping() {
+		return sleeping;
+	}
 	public boolean isDying() {
 		return dying;
 	}
+	public boolean isSick() {
+		return sick;
+	}
+	public boolean isCatching() {
+		return catchObject;
+	}
+	public boolean isFetching() {
+		return fetchObject;
+	}
+	public boolean isPunish() {
+		return punish;
+	}
+	public boolean isCrying() {
+		return cry;
+	}
 	
+	public boolean isHappy() {
+		return moral.getValue() >= 0.8;
+	}
+	public boolean isSad() {
+		return moral.getValue() <= 0.3;
+	}
 	public boolean isStinking() {
 		return hygiene.getValue() < 0.25;
 	}
@@ -108,6 +160,17 @@ public abstract class Pet implements Componable  {
 		}
 		
 		return health.getValue() <= 0.0;
+	}
+	
+	public boolean wantPlay() {
+		
+		if ( isHungry() || isThirsty() ) {
+			
+			playing = false;
+			return playing;
+		}
+		
+		return playing;
 	}
 	
 	public String getType() {

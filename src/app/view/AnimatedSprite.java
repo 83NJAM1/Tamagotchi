@@ -81,9 +81,9 @@ public class AnimatedSprite extends Sprite implements Componable {
 			int y = 0;
 			int j = nums[i];
 			
-			while ( j >= 0 && y*getSrcH() < getHeight()) {
-				if ( x*getSrcW() >= getWidth() ) {
-					x = 0;
+			while ( j >= 0 && y*getSrcH() < getSheet().getHeight()) {
+				if ( x*getSrcW() >= getSheet().getWidth()-getSrcW() ) {
+					x = -1;
 					y++;
 				}
 				x++;
@@ -114,7 +114,7 @@ public class AnimatedSprite extends Sprite implements Componable {
 			for (String keys : anime_map.keySet()) {
 				for (Rectangle frame : anime_map.get(keys)) {
 					
-					if ( frame.getY()+num*src_h < getHeight() && frame.getY()+num*src_h > 0)
+					if ( frame.getY()+num*src_h < getSheet().getHeight() && frame.getY()+num*src_h > 0)
 						frame.setY(frame.getY()+num*src_h);
 				}
 			}
@@ -125,17 +125,19 @@ public class AnimatedSprite extends Sprite implements Componable {
 	 */
 	public void nextFrame() {
 		
-		if ( current_frame+1 < current_limit ) {
+		if ( current_frame < current_limit ) {
 			current_frame++;
 		}
 		else {
-			current_frame = 0;
+			current_frame = 1;
 		}
 		
-		src_x = anime_map.get(current_anime)[current_frame].getX();
-		src_y = anime_map.get(current_anime)[current_frame].getY();
-		src_h = anime_map.get(current_anime)[current_frame].getHeight();
-		src_w = anime_map.get(current_anime)[current_frame].getWidth();
+		//System.out.println("FRAME:" + (current_frame-1) + "\n" + anime_map.get(current_anime)[current_frame-1]);
+		
+		src_x = anime_map.get(current_anime)[current_frame-1].getX();
+		src_y = anime_map.get(current_anime)[current_frame-1].getY();
+		src_h = anime_map.get(current_anime)[current_frame-1].getHeight();
+		src_w = anime_map.get(current_anime)[current_frame-1].getWidth();
 	}
 	
 	/**
@@ -155,7 +157,7 @@ public class AnimatedSprite extends Sprite implements Componable {
 	@Override
 	public void exit() {
 		
-		cancel();
+		getSheet().cancel();
 		
 		if ( animation != null ) {
 			animation.stop();

@@ -2,8 +2,11 @@ package app.controller;
 
 import javafx.scene.shape.Rectangle;
 
+import java.util.Random;
+
 import app.Componable;
 import app.Localisable;
+import app.view.Sprite;
 
 /**
  * 
@@ -27,6 +30,11 @@ public class Pet implements Componable, Localisable {
 	private State hygieneController;
 	private State moralController;
 	
+	double originX;
+	double originY;
+	
+	Random seed;
+	
 	//############################ METHODES #####################################
 	
 	/**
@@ -34,6 +42,8 @@ public class Pet implements Componable, Localisable {
 	 * @param type la chaîne de charactère identifiant le type: "cat", "dog", "rabbit" ou "robot"
 	 */
 	public Pet(String type) {
+		
+		seed = new Random();
 		
 		hungerController = new State("hunger");
 		thirstController = new State("thirst");
@@ -45,27 +55,72 @@ public class Pet implements Componable, Localisable {
 			case "cat":
 				petModel = new app.model.Animal("cat");
 				petView = new app.view.Pet(Game.GAMEIMAGEPATH+"cat/Animation_Chat_Normal.png", Game.GAMEIMAGEPATH+"cat/colorPet.png");
-				petView.addAnime("heureux", new int[]{0, 1, 2}, new Rectangle(0, 0, 512, 512), new Rectangle(512, 0, 512, 512), new Rectangle(1024, 0, 512, 512));
-				petView.addAnime("mort", new int[]{1}, new Rectangle(1024, 1536, 512, 512));
-				petView.setAnime("heureux");
+				petView.addAnime("heureux", new int[]{0, 1, 2, 1}, new int[]{0, 1, 2, 1});
+				petView.addAnime("neutre", new int[]{0, 1, 2, 1}, new int[]{4, 5, 6, 5});
+				petView.addAnime("triste", new int[]{0, 1, 2, 1}, new int[]{8, 9, 10, 9});
+				petView.addAnime("punis", new int[]{2}, new int[]{11});
+				petView.addAnime("dort", new int[]{2, 2}, new int[]{12, 13});
+				petView.addAnime("balle-1", new int[]{3}, new int[]{3});
+				petView.addAnime("balle-2", new int[]{4}, new int[]{7});
+				petView.addAnime("mort", new int[]{1}, new int[]{14});
+				petView.addAnime("soif", new int[]{0}, new int[]{16});
+				petView.addAnime("crie", new int[]{0}, new int[]{17});
+				petView.addAnime("malade", new int[]{0}, new int[]{18});
+				petView.setAnime("neutre");
 				petView.play();
 				break;
 			case "dog":
 				petModel = new app.model.Animal("dog");
 				petView = new app.view.Pet(Game.GAMEIMAGEPATH+"dog/Animation_Chien_Normal.png", Game.GAMEIMAGEPATH+"dog/colorPet.png");
-				petView.addAnime("heureux", new int[]{0, 1, 2, 3, 4}, new Rectangle(0, 0, 512, 512), 
-										 new Rectangle(512, 0, 512, 512), new Rectangle(1024, 0, 512, 512),
-										 new Rectangle(1536, 0, 512, 512), new Rectangle(2048, 0, 512, 512));
-				petView.addAnime("mort", new int[]{0}, new Rectangle(4*512, 3*512, 512, 512));
-				petView.setAnime("heureux");
+				petView.addAnime("heureux-couche", new int[]{0}, new int[]{0});
+				petView.addAnime("heureux", new int[]{1, 2}, new int[]{1, 2});
+				petView.addAnime("heureux-debout", new int[]{3, 4}, new int[]{3, 4});
+				
+				petView.addAnime("neutre-couche", new int[]{0}, new int[]{6});
+				petView.addAnime("neutre", new int[]{1, 2}, new int[]{7, 8});
+				petView.addAnime("neutre-debout", new int[]{3, 4}, new int[]{9, 10});
+				
+				petView.addAnime("triste-couche", new int[]{0}, new int[]{12});
+				petView.addAnime("triste", new int[]{1, 2}, new int[]{13, 14});
+				petView.addAnime("triste-debout", new int[]{3, 4}, new int[]{15, 16});
+				
+				petView.addAnime("punis", new int[]{2}, new int[]{17});
+				petView.addAnime("dort", new int[]{0, 0}, new int[]{23, 29});
+				petView.addAnime("balle-1", new int[]{3}, new int[]{5});
+				petView.addAnime("balle-2", new int[]{5}, new int[]{11});
+				petView.addAnime("mort", new int[]{0}, new int[]{22});
+				
+				petView.addAnime("soif-couche", new int[]{0}, new int[]{18});
+				petView.addAnime("soif", new int[]{1}, new int[]{19});
+				petView.addAnime("soif-debout", new int[]{3}, new int[]{20});
+				
+				petView.addAnime("crie-couche", new int[]{0}, new int[]{24});
+				petView.addAnime("crie", new int[]{1}, new int[]{25});
+				petView.addAnime("crie-debout", new int[]{3}, new int[]{26});
+				
+				petView.addAnime("malade-couche", new int[]{0}, new int[]{21});
+				petView.addAnime("malade", new int[]{1}, new int[]{27});
+				petView.addAnime("malade-debout", new int[]{3}, new int[]{28});
+				
+				petView.setAnime("neutre");
 				petView.play();
 				break;
 			case "robot":
 				petModel = new app.model.Robot();
 				petView = new app.view.Pet(Game.GAMEIMAGEPATH+"robot/Animation_Robot.png", Game.GAMEIMAGEPATH+"robot/colorPet.png");
-				petView.addAnime("heureux", new int[]{0, 1}, new Rectangle(0, 0, 512, 512), new Rectangle(512, 0, 512, 512));
-				petView.addAnime("mort", new int[]{4}, new Rectangle(3*512, 512, 512, 512));
-				petView.setAnime("heureux");
+				petView.addAnime("heureux", new int[]{0, 1}, new int[]{0, 1});
+				petView.addAnime("neutre", new int[]{0, 1}, new int[]{4, 5});
+				petView.addAnime("triste", new int[]{0, 1}, new int[]{8, 9});
+				petView.addAnime("punis", new int[]{4}, new int[]{6});
+				petView.addAnime("dort", new int[]{4}, new int[]{12, 13});
+				petView.addAnime("balle-1", new int[]{2}, new int[]{2});
+				petView.addAnime("balle-2", new int[]{3}, new int[]{3});
+				petView.addAnime("mort", new int[]{4}, new int[]{7});
+				petView.addAnime("soif", new int[]{0}, new int[]{10});
+				petView.addAnime("crie", new int[]{0}, new int[]{11});
+				petView.addAnime("malade", new int[]{4}, new int[]{14});
+				
+				petView.setAnime("neutre");
 				petView.play();
 				break;
 			default:
@@ -148,6 +203,9 @@ public class Pet implements Componable, Localisable {
 	 */
 	public void updateView() {
 		
+		petView.setPos(originX, originY);
+		petView.setObject(null);
+		
 		hungerController.updateValue();
 		thirstController.updateValue();
 		weightController.updateValue();
@@ -156,6 +214,43 @@ public class Pet implements Componable, Localisable {
 		
 		if ( petModel.isDead() ) {
 			petView.setAnime("mort");
+		}
+		else if ( petModel.isSleeping() ) {
+			petView.setAnime("dort");
+		}
+		else if ( petModel.isThirsty() ) {
+			petView.setAnime("soif");
+		}
+		else if ( petModel.isSick() ) {
+			petView.setAnime("malade");
+		}
+		else if ( petModel.isPunish() ) {
+			petView.setAnime("punis");
+		}
+		else if ( petModel.isPlaying() ) {
+			
+			if ( petModel.isCatching() ) {
+				petView.setAnime("balle-1");
+				petView.setObject(new Sprite("res/game/images/objects/object.png", 0, 0, 64, 64));
+				
+			}
+			else if ( petModel.isFetching() ) {
+				petView.setAnime("balle-2");
+				petView.setPos(originX+seed.nextDouble(-100.0, 100.0), originY+seed.nextDouble(-100.0, 100.0)); //*
+			}
+			
+		}
+		else if ( petModel.isCrying() ) {
+			petView.setAnime("crie");
+		}
+		else if ( petModel.isHappy() ) {
+			petView.setAnime("heureux");
+		}
+		else if ( petModel.isSad() ) {
+			petView.setAnime("triste");
+		}
+		else {
+			petView.setAnime("neutre");
 		}
 	}
 	
@@ -166,6 +261,11 @@ public class Pet implements Componable, Localisable {
 		weightController.updateText();
 		hygieneController.updateText();
 		moralController.updateText();
+	}
+	
+	public void saveOrigin() {
+		originX = petView.getDestX();
+		originY = petView.getDestY();
 	}
 	
 	@Override

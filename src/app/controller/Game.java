@@ -186,7 +186,7 @@ public class Game implements Componable, Localisable {
 		public void handle(ActionEvent e) {
 			
 			// instancie le jeu
-			miniGameController = new MiniGame("throw-stick", petController);
+			miniGameController = new MiniGame("throw-and-fetch", petController);
 			
 			// initialise le jeu
 			gameModel.setMiniGame(miniGameController.getModel());
@@ -292,6 +292,7 @@ public class Game implements Componable, Localisable {
 		weatherLoop.start();
 		
 		//applyWeather("rainy");
+		petController.saveOrigin();
 		updateViewWeather();
 		updateViewAllowedAction();
 	}
@@ -320,7 +321,7 @@ public class Game implements Componable, Localisable {
 			roomController = newRoomController;
 			gameView.setViewRoom( roomController.getView() );
 		}
-		
+		petController.saveOrigin();
 		updateViewWeather();
 		updateViewAllowedAction();
 	}
@@ -350,6 +351,8 @@ public class Game implements Componable, Localisable {
 		if ( gameModel.nextStep() || DEBUG ) {
 
 			// met a jour toutes les vues dont les models sont modifiés sans action
+			if ( miniGameController != null )
+				miniGameController.updateView();
 			petController.updateView();
 		}
 		else {

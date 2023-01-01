@@ -11,7 +11,7 @@ import app.Componable;
  */
 public class State implements Componable {
 	
-	public static final Double BASEFACTOR=0.1;
+	public static final Double BASEFACTOR=0.01;
 	
 	private String keyName;
 	private Double value;
