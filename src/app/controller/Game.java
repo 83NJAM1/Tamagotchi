@@ -321,9 +321,22 @@ public class Game implements Componable, Localisable {
 			roomController = newRoomController;
 			gameView.setViewRoom( roomController.getView() );
 		}
+		
+		
+		
 		petController.saveOrigin();
+		updatePetVisibility();
 		updateViewWeather();
 		updateViewAllowedAction();
+	}
+	
+	public void updatePetVisibility() {
+		if ( petController.getModel().isSleeping() && !roomController.getModel().equals(app.model.Bedroom.getInstance()) ) {
+			petController.getView().setVisible(false);
+		}
+		else {
+			petController.getView().setVisible(true);
+		}
 	}
 	
     public void applyWeather(String name, long time) {
@@ -353,6 +366,8 @@ public class Game implements Componable, Localisable {
 			// met a jour toutes les vues dont les models sont modifiés sans action
 			if ( miniGameController != null )
 				miniGameController.updateView();
+			
+			updatePetVisibility();
 			petController.updateView();
 		}
 		else {

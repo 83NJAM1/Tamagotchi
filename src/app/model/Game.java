@@ -59,9 +59,8 @@ public class Game implements Componable {
 		
 		weathers = new String[] {"rainy", "cloudy", "suny", "stormy", "scorchy", "icy"};
 		weatherSeed = new Random();
-		//nextWeather();
-		current_indexWeather = 1;
-		
+		nextWeather();
+		current_indexWeather = 3;
 		/**
 		 * construit la maison en initialisant les pièces
 		 * 
@@ -120,47 +119,56 @@ public class Game implements Componable {
 	 */
 	public boolean nextStep() {
 		
-		// états
-		if ( pet.isTakingShower() ) {
-			if ( current_room.equals(Bathroom.getInstance()) ) {
-				pet.applyEffect("shower");
-				pet.toogleTakingShower();
+		if ( !pet.isSleeping() ) {
+			// états
+			if ( pet.isTakingShower() ) {
+				if ( current_room.equals(Bathroom.getInstance()) ) {
+					pet.applyEffect("shower");
+					pet.toogleTakingShower();
+				}
+				else {
+					pet.toogleTakingShower();
+					System.err.println("You can't take shower in the " + current_room);
+				}
 			}
-			else {
-				pet.toogleTakingShower();
-				System.err.println("You can't take shower in the " + current_room);
+			if ( pet.isEating() ) {
+				if ( current_room.equals(Kitchen.getInstance()) ) {
+					pet.applyEffect("eat");
+					pet.toogleEating();
+				}
+				else {
+					pet.toogleEating();
+					System.err.println("You can't eat in the " + current_room);
+				}
 			}
-		}
-		if ( pet.isEating() ) {
-			if ( current_room.equals(Kitchen.getInstance()) ) {
-				pet.applyEffect("eat");
-				pet.toogleEating();
+			if ( pet.isDrinking() ) {
+				pet.applyEffect("drink");
+				pet.toogleDrinking();
 			}
-			else {
-				pet.toogleEating();
-				System.err.println("You can't eat in the " + current_room);
-			}
-		}
-		if ( pet.isDrinking() ) {
-			pet.applyEffect("drink");
-			pet.toogleDrinking();
-		}
-		
-		// apllique les effets météo seulement en extérieure
-		if ( current_room.equals(Garden.getInstance()) ) {
 			
-			pet.applyEffect( weathers[current_indexWeather] );
-		}
-		
-		// Mini jeu
-		if ( pet.isPlaying() ) {
-			if ( current_room.equals(Garden.getInstance()) && current_minigame != null) {
+			// apllique les effets météo seulement en extérieure
+			if ( current_room.equals(Garden.getInstance()) ) {
 				
-				if ( pet.wantPlay() ) {
+				pet.applyEffect( weathers[current_indexWeather] );
+			}
+			
+			// Mini jeu
+			if ( pet.isPlaying() ) {
+				if ( current_room.equals(Garden.getInstance()) && current_minigame != null) {
 					
-					if ( current_minigame.nextStep() ) {
-						pet.applyEffect("play");
-						System.out.println(current_minigame.getInfo());
+					if ( pet.wantPlay() ) {
+						
+						if ( current_minigame.nextStep() ) {
+							pet.applyEffect("play");
+							System.out.println(current_minigame.getInfo());
+						}
+						
+					}
+					else {
+						pet.tooglePlaying();
+						pet.setCatch(false);
+						pet.setFetch(false);
+						System.out.println("the " + pet.getType() + " want to stop ");
 					}
 					
 				}
@@ -168,18 +176,15 @@ public class Game implements Componable {
 					pet.tooglePlaying();
 					pet.setCatch(false);
 					pet.setFetch(false);
-					System.out.println("the " + pet.getType() + " want to stop ");
+					System.err.println("You can't play in the " + current_room + " at " + current_minigame );
 				}
-				
 			}
-			else {
-				pet.tooglePlaying();
-				pet.setCatch(false);
-				pet.setFetch(false);
-				System.err.println("You can't play in the " + current_room + " at " + current_minigame );
-			}
+			pet.getEnergy().applyMalus("sleep");
 		}
-		
+		else {
+			System.out.println(pet.getEnergy().getValue());
+			pet.getEnergy().applyBonus("sleep");
+		}
 		return !pet.isDead();
 	}
 	

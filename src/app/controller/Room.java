@@ -31,7 +31,7 @@ public class Room implements Componable {
 				break;
 			case "kitchen":
 				roomModel = app.model.Kitchen.getInstance();
-				roomView = new app.view.Room(Game.GAMEIMAGEPATH+"error/no_room.png");
+				roomView = new app.view.Room(Game.GAMEIMAGEPATH+"rooms/Cuisine.png");
 				break;
 			case "bathroom":
 				roomModel = app.model.Bathroom.getInstance();
@@ -39,11 +39,11 @@ public class Room implements Componable {
 				break;
 			case "garden":
 				roomModel = app.model.Garden.getInstance();
-				roomView = new app.view.Room(Game.GAMEIMAGEPATH+"error/no_room.png");
+				roomView = new app.view.Room(Game.GAMEIMAGEPATH+"rooms/Jardin.png");
 				break;
 			case "bedroom":
 				roomModel = app.model.Bedroom.getInstance();
-				roomView = new app.view.Room(Game.GAMEIMAGEPATH+"error/no_room.png");
+				roomView = new app.view.Room(Game.GAMEIMAGEPATH+"rooms/Chambre.png");
 				break;
 			default:
 				roomModel = app.model.Livingroom.getInstance();
