@@ -191,7 +191,27 @@ public class SlidingEffect implements WeatherEffect {
 	}
 	
 	public void resize(double width, double height) {
+		this.width = width;
+		double space;
 		
+		space = 0.0;
+		for (int i=0; i<rights.length; i++) {
+			rights[i].setPos(space, rights[i].getSheet().getHeight()*0.2);
+			rights[i].setLimitX(-rights[i].getSheet().getWidth()+velocity, width);
+			rights[i].setLimitY(-width, width);
+			
+			space += rights[i].getSheet().getWidth();
+
+		}
+		
+		space = 0.0;
+		for (int i=0; i<lefts.length; i++) {
+			lefts[i].setPos(space, 0);
+			lefts[i].setLimitX(-lefts[i].getSheet().getWidth()+velocity, width);
+			lefts[i].setLimitY(-width, width);
+			
+			space += lefts[i].getSheet().getWidth();
+		}
 	}
 	public void clear() {
 		

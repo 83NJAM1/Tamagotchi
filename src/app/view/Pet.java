@@ -24,10 +24,8 @@ public class Pet extends AnimatedSprite implements Componable {
 	private State moral;  // /
 	
 	Double distanceFactor;
-	Double saveX;
-	Double saveY;
-	Double saveW;
-	Double saveH;
+	
+	boolean visible;
 	
 	/**
 	 * animationloop effectué toute les 1 second
@@ -54,6 +52,7 @@ public class Pet extends AnimatedSprite implements Componable {
 		object = null;
 		setSize(0, 0, 128, 128);
 		distanceFactor=1.0;
+		visible = true;
 	}
 	
 	/**
@@ -87,7 +86,16 @@ public class Pet extends AnimatedSprite implements Componable {
 	}
 	public void setObject(Sprite sheet) {
 		object = sheet;
+		if ( object != null )
+			object.setSize(0,  0, dest_h.getValue()*0.25, dest_w.getValue()*0.25);
 	}
+	public boolean getVisible() {
+		return visible;
+	}
+	public void setVisible(boolean mode) {
+		visible = mode;
+	}
+	
 	@Override 
 	public void setPos(double dest_x, double dest_y) {
 		super.setPos(dest_x, dest_y);

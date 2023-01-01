@@ -60,6 +60,7 @@ public class Game extends StackPane implements Componable, Localisable {
 	private boolean gameover;
 	private String gameover_msg;
 	private double petOpacity;
+	private double petMoveOpacity;
 	private double gameOpacity;
 	
 	String current_weather;
@@ -75,7 +76,7 @@ public class Game extends StackPane implements Componable, Localisable {
 	 */
 	ChangeListener<Number> petXMove = new ChangeListener<Number>() {
 		public void changed(ObservableValue<? extends Number> obs, Number vold, Number vnew) {
-			petOpacity = 0.0;
+			petOpacity = 0.3;
 			System.out.println("pet has move to x:" + vnew + " from x:" + vold);
 		}
 	};
@@ -86,7 +87,7 @@ public class Game extends StackPane implements Componable, Localisable {
 	 */
 	ChangeListener<Number> petYMove = new ChangeListener<Number>() {
 		public void changed(ObservableValue<? extends Number> obs, Number vold, Number vnew) {
-			petOpacity = 0.0;
+			petOpacity = 0.3;
 			System.out.println("pet has move to y:" + vnew + " from y:" + vold);
 		}
 	};
@@ -172,6 +173,7 @@ public class Game extends StackPane implements Componable, Localisable {
 		pet.changeTypeColor(2); //TODO : a modifier 
 		
 		petOpacity=0.0;
+		petMoveOpacity = 1.0;
 		gameOpacity = 0.0;
 		pet.getXProperty().addListener(petXMove);
 		pet.getYProperty().addListener(petYMove);
@@ -223,13 +225,33 @@ public class Game extends StackPane implements Componable, Localisable {
 	public void drawPet() {
 		
 		// fondu transition
-		if ( gameOpacity <= 1.0 )
-			petOpacity = gameOpacity;
-		else if ( petOpacity < 1.0 ) {
-			petOpacity += 0.05;
+		if ( pet.getVisible() ) {
+			
+			petMoveOpacity = 1.0;
+			
+			if ( gameOpacity < 1.0 ) {
+				petOpacity = gameOpacity;
+			}
+			else if ( petOpacity < 1.0 ) {
+				petOpacity += 0.05;
+			}
+			
+			gc.setGlobalAlpha(petOpacity);
+			//System.out.println("cas 1");
+		}
+		else {
+			
+			petOpacity = 0.0;
+			
+			if ( petMoveOpacity > 0.0 ) {
+				petMoveOpacity -= 0.05;
+			}
+			
+			gc.setGlobalAlpha(petMoveOpacity);
+			//System.out.println("cas 2");
 		}
 		
-		gc.setGlobalAlpha(petOpacity);
+		
 		
 		// la couleur du pet
 		gc.drawImage(pet.getColorSprite().getSheet(), 
@@ -264,10 +286,10 @@ public class Game extends StackPane implements Componable, Localisable {
 			          pet.getDestW() * pet.getDisctanceFactor(), pet.getDestH() * pet.getDisctanceFactor() );
 		
 		// fin fondu transition
-		if ( petOpacity > 1.0 ) {
+		/*if ( petOpacity > 1.0 ) {
 			gc.setGlobalAlpha(1.0);
 			petOpacity = 1.0;
-		}
+		}*/
 	}
 	
 	public void drawWeather() {
@@ -354,7 +376,7 @@ public class Game extends StackPane implements Componable, Localisable {
 					System.out.println("rainy effect");
 					break;
 				case "cloudy":
-					weatherEffect = new SlidingEffect(gc, canvas.getWidth(), SlidingEffect.SlideType.RIGHT_LEFT, new int[]{3, 3},
+					weatherEffect = new SlidingEffect(gc, canvas.getWidth(), SlidingEffect.SlideType.RIGHT_LEFT, new int[]{4, 4},
 							new Sprite(Main.GAMEIMAGEPATH+"effects/nuage-2.5.png", 0, 0, 768, 96),
 							new Sprite(Main.GAMEIMAGEPATH+"effects/nuage-3.png", 0, 0, 768, 96));
 					

@@ -41,7 +41,12 @@ public class Room extends Image implements Componable {
 		// salle de bain
 		if ( this.getUrl().contains("bain") )
 			return 5267/getWidth();
-		// autre
+		else if ( this.getUrl().contains("Cuisine") ) // 728
+			return 728/getWidth();
+		else if ( this.getUrl().contains("Chambre") )// 6145
+			return 6145/getWidth();
+		else if ( this.getUrl().contains("Jardin") ) // 4026
+			return 4026/getWidth();
 		else
 			return 0.5;
 	}
@@ -54,7 +59,12 @@ public class Room extends Image implements Componable {
 		// salle de bain
 		if ( this.getUrl().contains("bain") )
 			return 3496/getHeight();
-		// autre
+		else if ( this.getUrl().contains("Cuisine") ) // 4172
+			return 4172/getHeight();
+		else if ( this.getUrl().contains("Chambre") ) // 4246
+			return 4246/getHeight();
+		else if ( this.getUrl().contains("Jardin") ) // 3993
+			return 3993/getHeight();
 		else
 			return 0.5;
 	}

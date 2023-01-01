@@ -217,6 +217,7 @@ public class Pet implements Componable, Localisable {
 		}
 		else if ( petModel.isSleeping() ) {
 			petView.setAnime("dort");
+			System.out.println(petModel.getEnergy().getValue());
 		}
 		else if ( petModel.isThirsty() ) {
 			petView.setAnime("soif");
@@ -236,7 +237,8 @@ public class Pet implements Componable, Localisable {
 			}
 			else if ( petModel.isFetching() ) {
 				petView.setAnime("balle-2");
-				petView.setPos(originX+seed.nextDouble(-100.0, 100.0), originY+seed.nextDouble(-100.0, 100.0)); //*
+				petView.setPos(originX+seed.nextDouble(-petView.getDestW(), petView.getDestW()), 
+							   originY+seed.nextDouble(-petView.getDestH()/2,petView.getDestH())/2); //*
 			}
 			
 		}

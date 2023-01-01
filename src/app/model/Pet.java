@@ -17,7 +17,8 @@ public abstract class Pet implements Componable  {
 	protected State hygiene;//  |
 	protected State moral;  // /
 	
-	protected State health;
+	protected State health; //TODO
+	protected State energy; //TODO
 	
 	protected boolean takingShower;
 	protected boolean eating;
@@ -40,6 +41,11 @@ public abstract class Pet implements Componable  {
 		health.setValue(1.0);
 		health.setMalus("dying", 1.5);
 		health.setBonus("living", 1.5);
+		
+		energy = new State("energy");
+		energy.setBonus("sleep", 2.5);
+		energy.setMalus("sleep", 1.0);
+		energy.setValue(1.00);
 		
 		takingShower = false;
 		eating = false;
@@ -145,8 +151,6 @@ public abstract class Pet implements Componable  {
 	
 	public boolean isDead() {
 		
-		applyMalus("overtime");
-		
 		if ( getWeight().getValue() <= 0 &&
 			 getThirst().getValue() <= 0 &&
 			 getHunger().getValue() <= 0    ) {
@@ -154,10 +158,20 @@ public abstract class Pet implements Componable  {
 			dying = true;
 			health.applyMalus("dying");
 		}
+		else if ( energy.getValue() <= 0.0 ) {
+			sleeping = true;
+		}
 		else {
 			dying = false;
 			health.applyBonus("living");
 		}
+		
+		// se reveille seulement full
+		if ( energy.getValue() >= 1.0 ) {
+			sleeping = false;
+		}
+		
+		applyMalus("overtime");
 		
 		return health.getValue() <= 0.0;
 	}
@@ -195,6 +209,9 @@ public abstract class Pet implements Componable  {
 	public State getHealth() {
 		return health;
 	}
+	public State getEnergy() {
+		return energy;
+	}
 	
 	public void setMalusForAllStates(String key, Double factor) {
 		hunger.setMalus(key, factor);
@@ -202,6 +219,7 @@ public abstract class Pet implements Componable  {
 		moral.setMalus(key, factor);
 		thirst.setMalus(key, factor);
 		weight.setMalus(key, factor);
+		energy.setMalus(key, factor);
 	}
 	
 	public void setBonusForAllStates(String key, Double factor) {
@@ -210,6 +228,7 @@ public abstract class Pet implements Componable  {
 		moral.setBonus(key, factor);
 		thirst.setBonus(key, factor);
 		weight.setBonus(key, factor);
+		energy.setBonus(key, factor);
 	}
 	
 	public void applyBonus(String key){
@@ -218,6 +237,7 @@ public abstract class Pet implements Componable  {
 		moral.applyBonus(key);
 		thirst.applyBonus(key);
 		weight.applyBonus(key);
+		energy.applyBonus(key);
 	}
 	
 	public void applyMalus(String key){
@@ -226,6 +246,7 @@ public abstract class Pet implements Componable  {
 		moral.applyMalus(key);
 		thirst.applyMalus(key);
 		weight.applyMalus(key);
+		energy.applyMalus(key);
 	}
 	
 	public void applyEffect(String key) {
