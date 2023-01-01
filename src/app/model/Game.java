@@ -24,14 +24,14 @@ public class Game implements Componable {
 		current_room = room_instance;
 			
 		// le pet prend une douche
-		pet.getHygiene().setBonus("shower", 10.0);
+		pet.getHygiene().setBonus("shower", 100.0);
 		
 		// le pet mange
 		pet.getWeight().setMalus("eat", 0.5);
-		pet.getHunger().setBonus("eat", 2.5);
+		pet.getHunger().setBonus("eat", 20.5);
 		
 		// le pet boie
-		pet.getThirst().setBonus("drink", 2.5);
+		pet.getThirst().setBonus("drink", 20.5);
 		
 		// le pet fait un mini-jeu
 		pet.getWeight().setBonus("play", 1.5);
@@ -59,8 +59,8 @@ public class Game implements Componable {
 		
 		weathers = new String[] {"rainy", "cloudy", "suny", "stormy", "scorchy", "icy"};
 		weatherSeed = new Random();
-		nextWeather();
-		current_indexWeather = 0;
+		//nextWeather();
+		current_indexWeather = 1;
 		
 		/**
 		 * construit la maison en initialisant les pièces
@@ -154,21 +154,29 @@ public class Game implements Componable {
 		
 		// Mini jeu
 		if ( pet.isPlaying() ) {
-			if ( current_room.equals(Garden.getInstance()) ) {
+			if ( current_room.equals(Garden.getInstance()) && current_minigame != null) {
 				
-				if ( current_minigame != null ) {
+				if ( pet.wantPlay() ) {
 					
 					if ( current_minigame.nextStep() ) {
 						pet.applyEffect("play");
+						System.out.println(current_minigame.getInfo());
 					}
 					
-					System.out.println(current_minigame.getInfo());
+				}
+				else {
+					pet.tooglePlaying();
+					pet.setCatch(false);
+					pet.setFetch(false);
+					System.out.println("the " + pet.getType() + " want to stop ");
 				}
 				
 			}
 			else {
 				pet.tooglePlaying();
-				System.err.println("You can't play in the " + current_room);
+				pet.setCatch(false);
+				pet.setFetch(false);
+				System.err.println("You can't play in the " + current_room + " at " + current_minigame );
 			}
 		}
 		

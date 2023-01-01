@@ -93,7 +93,7 @@ public class FallingEffect implements WeatherEffect {
 	
 	public void initFallingMap() {
 		
-		fallingMap = new int[(int)(height/effect.getWidth())+3][(int)(width/effect.getWidth())];
+		fallingMap = new int[(int)(height/effect.getSheet().getWidth())+3][(int)(width/effect.getSheet().getWidth())];
 		rowOrder = new int[fallingMap.length];
 		
 		generateFallingMap();
@@ -161,15 +161,24 @@ public class FallingEffect implements WeatherEffect {
 		
 		gc.setGlobalAlpha(opacity);
 		
+		initDraw();
+		drawPass1();
+		
+		gc.setGlobalAlpha(1.0);
+		return stopValue;
+	}
+	
+	public void initDraw() {
+		
 		if ( infiniteFall ) {
-			if ( fallingOffset >= effect.getHeight() ) {
+			if ( fallingOffset >= effect.getSheet().getHeight() ) {
 				fallingOffset=velocity+1;
 				shiftRightRowOrder();
 			}
 			else
 				fallingOffset+=velocity;	
 		}
-		else if ( fallingOffset < 2*effect.getHeight()+height ) {
+		else if ( fallingOffset < 2*effect.getSheet().getHeight()+height ) {
 			fallingOffset+=velocity;
 		}
 		
@@ -182,39 +191,46 @@ public class FallingEffect implements WeatherEffect {
 			if( opacity<0.5 )
 				opacity+=((double)3/(2*1000));
 		}
-		
+	}
+	
+	public void drawPass1() {
 		if ( !stopValue ) {
 			for ( int j=0; j<fallingMap.length; j++ ) {
 				
-				gc.setGlobalAlpha((1-((j-2)*effect.getHeight()+fallingOffset)/height)*opacity);
+				gc.setGlobalAlpha((1-((j-2)*effect.getSheet().getHeight()+fallingOffset)/height)*opacity);
 								
 				for ( int i=0; i<fallingMap[j].length; i++ ) {
 					
 					if ( fallingMap[ rowOrder[j] ][i] == 1 ) {
 						
 						if ( fxtype == FxType.TAILED && effectAlt != null && j<fallingMap.length-1 && fallingMap[ rowOrder[j+1] ][i] == 0 ) {
-							gc.drawImage(effectAlt, i*effectAlt.getWidth(), (j-2)*effectAlt.getHeight()+fallingOffset, effectAlt.getWidth(), effectAlt.getHeight());
+							gc.drawImage(effectAlt.getSheet(), i*effectAlt.getSheet().getWidth(), (j-2)*effectAlt.getSheet().getHeight()+fallingOffset, effectAlt.getSheet().getWidth(), effectAlt.getSheet().getHeight());
 						}
 						else {
-							gc.drawImage(effect, i*effect.getWidth(), (j-2)*effect.getHeight()+fallingOffset, effect.getWidth(), effect.getHeight());
+							gc.drawImage(effect.getSheet(), i*effect.getSheet().getWidth(), (j-2)*effect.getSheet().getHeight()+fallingOffset, effect.getSheet().getWidth(), effect.getSheet().getHeight());
 						}
 					}
 					else if ( fallingMap[ rowOrder[j] ][i] == 2 && effectAlt != null ) {
-						gc.drawImage(effectAlt, i*effectAlt.getWidth(), (j-2)*effectAlt.getHeight()+fallingOffset, effectAlt.getWidth(), effectAlt.getHeight());
+						gc.drawImage(effectAlt.getSheet(), i*effectAlt.getSheet().getWidth(), (j-2)*effectAlt.getSheet().getHeight()+fallingOffset, effectAlt.getSheet().getWidth(), effectAlt.getSheet().getHeight());
 					}
 					else if ( fxtype == FxType.COMBINED && effectAlt != null ) {
-						gc.drawImage(effectAlt, i*effectAlt.getWidth(), (j-2)*effectAlt.getHeight()+fallingOffset, effectAlt.getWidth(), effectAlt.getHeight());
+						gc.drawImage(effectAlt.getSheet(), i*effectAlt.getSheet().getWidth(), (j-2)*effectAlt.getSheet().getHeight()+fallingOffset, effectAlt.getSheet().getWidth(), effectAlt.getSheet().getHeight());
 					}
 				}
 			}
 		}
-		
-		gc.setGlobalAlpha(1.0);
-		return stopValue;
+	}
+	
+	public boolean drawEffect(int numPass) {
+		switch ( numPass ) {
+			default:
+				return drawEffect();
+		}
 	}
 	
 	public void stopEffect() {
 		makeStop = true;
+		infiniteFall = false;
 	}
 	
 	/**

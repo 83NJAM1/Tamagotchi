@@ -4,73 +4,74 @@ import java.util.Random;
 
 public class ThrowAndFetch extends MiniGame {
 
-	public final static Double MAXDISTANCE = 100.0;
+	public final static Double MAXDISTANCE = 50.0;
 	
 	Pet pet;
 	
-	Double stickDistance;
+	Double objectDistance;
 	Random generateDistance;
+	boolean throwOnce;
 	String info;
 	
 	public ThrowAndFetch(Pet pet) {
 		super("throw-and-fetch");
 		this.pet = pet;
+		throwOnce = false;
 		generateDistance = new Random();
-		stickDistance = 0.0;
-	}
-	
-	private boolean petWantContinue() {
-		
-		if ( pet.isHungry() || pet.isThirsty() ) {
-			
-			pet.tooglePlaying();
-			return false;
-		}
-		
-		return true;
+		objectDistance = -MAXDISTANCE;
 	}
 	
 	public Double getDistance() {
-		return stickDistance;
+		return objectDistance;
+	}
+	public Double getProgress() {
+		
+		System.out.println(objectDistance/MAXDISTANCE);
+		
+		if ( pet.wantPlay() ) {
+			
+			return Math.abs(objectDistance/MAXDISTANCE);
+		}
+		
+		return 1.0;
 	}
 	
-	public void throwStick() {
+	public void throwObject() {
 		
-		if ( stickDistance <= 0 ) {
+		if ( objectDistance <= -MAXDISTANCE || objectDistance >= MAXDISTANCE ) {
 			
-			stickDistance = generateDistance.nextDouble(0.0, MAXDISTANCE);
-			info = "you throw the stick to " + stickDistance; 
+			objectDistance = generateDistance.nextDouble(-MAXDISTANCE, 0.0);
+			info = "you throw the object to " + objectDistance; 
 		}
 	}
 	
 	@Override
 	public boolean nextStep() {
+				
+		if ( pet.wantPlay() && ( objectDistance < MAXDISTANCE && objectDistance > -MAXDISTANCE ) ) {
+			
+			objectDistance += 5.0;
+			
+			if ( objectDistance <= 0.0 )
+				info = "the " + pet.getType() + " try to catch the object";
+			else if ( objectDistance < MAXDISTANCE )
+				info = "the " + pet.getType() + " is fetching you the object";
+			
+			pet.setCatch(false);
+			pet.setFetch(true);
+			
+			return true;
+		}
+		else if ( objectDistance <= -MAXDISTANCE || objectDistance >= MAXDISTANCE ) {
+			
+			pet.setCatch(true);
+			pet.setFetch(false);
+			info = "you can throw the object";
+			
+			return true;
+		}
 		
-		if ( !pet.getType().equals("dog") ) {
-			
-			info = "the " + pet.getType() + " don't undestand";
-			return false;
-		}
-		else {
-			
-			if ( petWantContinue() && stickDistance > 0 ) {
-				
-				stickDistance -= 5.0;
-				info = "the " + pet.getType() + " is fetching you the stick";
-				return true;
-			}
-			else if (stickDistance <= 0) {
-				
-				info = "you can throw the stick";
-				return false;
-			}
-			else {
-				
-				info = "the " + pet.getType() + " want to stop";
-				return false;
-			}
-			
-		}
+		return false;
 	}
 	
 	@Override

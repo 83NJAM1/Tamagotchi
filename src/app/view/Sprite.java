@@ -4,10 +4,11 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.image.Image;
 
-public class Sprite extends Image {
+public class Sprite { // TODO changer l'heritage par un attribut
 	
 	//########################### ATTRIBUTS #####################################
-	 
+	Image spritesheet;
+	
 	// taille du rectange délimitant une frame
 	double src_x;
 	double src_y;
@@ -22,8 +23,14 @@ public class Sprite extends Image {
 	
 	DoubleProperty velocity_x;
 	DoubleProperty velocity_y;
-	
+	double limit_minx;
+	double limit_miny;
+	double limit_maxx;
+	double limit_maxy;
 	//############################ METHODES #####################################
+	
+	
+
 	
 	/**
 	 * constructeur
@@ -33,15 +40,20 @@ public class Sprite extends Image {
 	 * @param src_h sa hauteur
 	 * @param src_w sa largeur
 	 */
-	public Sprite(String spritesheet, int src_x, int src_y, int src_h, int src_w) {
-		super(spritesheet);
+	public Sprite(String spritesheet, double src_x, double src_y, double src_h, double src_w) {
+		
+		this.spritesheet = new Image(spritesheet);
 		
 		dest_x =  new SimpleDoubleProperty();
 		dest_y =  new SimpleDoubleProperty();
 		dest_h =  new SimpleDoubleProperty();
 		dest_w =  new SimpleDoubleProperty();
-		velocity_x =  new SimpleDoubleProperty();
-		velocity_y =  new SimpleDoubleProperty();
+		velocity_x =  new SimpleDoubleProperty(0.0);
+		velocity_y =  new SimpleDoubleProperty(0.0);
+		limit_minx = 0.0;
+		limit_miny = 0.0;
+		limit_maxx = 0.0;
+		limit_maxy = 0.0;
 		
 		this.src_x = src_x;
 		this.src_y = src_y;
@@ -51,16 +63,53 @@ public class Sprite extends Image {
 		this.setSize(src_x, src_y, src_h, src_w);
 	}
 	
+	public Image getSheet() {
+		return spritesheet;
+	}
+	
+	public void getSheet(Image newSheet) {
+		spritesheet = newSheet;
+	}
 	/**
 	 * copie
 	 */
 	public Sprite(Sprite copie) {
-		super(copie.getUrl());
-		this.src_x = copie.src_x;
-		this.src_y = copie.src_y;
-		this.src_h = copie.src_h;
-		this.src_w = copie.src_w;
-		this.setSize((int)src_x, (int)src_y, (int)src_h, (int)src_w);
+		this(copie.getSheet().getUrl(), copie.src_x, copie.src_y, copie.src_w, copie.src_h);
+	}
+	
+	public void setLimitX(double min, double max) {
+		limit_minx = min;
+		limit_maxx = max;
+	}
+	public void setLimitY(double min, double max) {
+		limit_miny = min;
+		limit_maxy = max;
+	}
+	
+	
+	public void move() {
+		
+		if ( dest_x.getValue() < limit_minx ) {
+			dest_x.setValue(limit_maxx);
+		}
+		else if ( dest_x.getValue() > limit_maxx ) {
+			dest_x.setValue(limit_minx);
+		}
+		else {
+			dest_x.setValue(dest_x.getValue()+velocity_x.getValue());
+		}
+		
+		if ( dest_y.getValue() < limit_miny ) {
+			dest_y.setValue(limit_maxy);
+		}
+		else if ( dest_y.getValue() > limit_maxy ) {
+			dest_y.setValue(limit_miny);
+		}
+		else {
+			dest_y.setValue(dest_y.getValue()+velocity_y.getValue());
+		}
+		
+		
 	}
 	
 	public void setVelocity(double x, double y) {
