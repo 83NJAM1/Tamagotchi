@@ -16,6 +16,7 @@ import app.model.Garden;
 import app.model.Bathroom;
 import app.model.Bedroom;
 import app.model.MiniGame;
+import app.model.ThrowAndFetch;
 
 class TestModel {
 	//app.controller.Pet pet;
@@ -27,7 +28,7 @@ class TestModel {
 	Garden garden;
 	Bathroom bathroom;
 	Bedroom bedroom;
-	
+	ThrowAndFetch miniGame;
 	
 	@BeforeEach
 	void setUp() {
@@ -38,8 +39,8 @@ class TestModel {
 		pet.init(new State("hunger"), new State("thirst"), new State("weight"), new State("hygiene"), new State("moral"));
 		
 		game = new Game(pet,garden);
-		//garden.init(Livingroom.getInstance());
 		
+		miniGame = new ThrowAndFetch(pet);
 	}
 	
 	@Test
@@ -73,4 +74,11 @@ class TestModel {
 		assertEquals(pet,game.getModelPet(),"Pas le bon pet");
 	}
 	
+	@Test
+	@DisplayName("Test sur MiniGame")
+	void testMiniGame() {
+		assertEquals(0,miniGame.getDistance(),"Le baton n'est pas à 0");
+		miniGame.throwStick();
+		assertNotEquals(0,miniGame.getDistance(),"Le baton est à 0");
+	}
 }
