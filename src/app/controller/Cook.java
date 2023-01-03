@@ -84,14 +84,17 @@ public class Cook {
 	
 	private EventHandler<MouseEvent> cook = new EventHandler<MouseEvent>() {
 		public void handle(MouseEvent e) {
-			double x=e.getSceneX();
-			double y=e.getSceneY();
-			double h=view.getHeight();
-			double w=view.getWidth();
+			double x=e.getX();
+			double y=e.getY();
+			double h=12*view.getWidth()/100;
+			double w=12*view.getWidth()/100;
 		    double AB = Math.sqrt(Math.pow(0,2)+ Math.pow(h/2,2));    
 		    double BC = Math.sqrt(Math.pow(w/2-x,2)+ Math.pow(h/2-y,2)); 
 		    double AC = Math.sqrt(Math.pow(x-w/2,2)+ Math.pow(y,2));
-		    
+		    System.out.println(x);
+		    System.out.println(y);
+		    System.out.println(w);
+		    System.out.println(h);
 		    if(Math.acos((BC*BC+AB*AB-AC*AC)/(2*BC*AB))* 180 / Math.PI>120)
 		    	makeDish(model.getDish("2"));
 		    else if(x>w/2)
@@ -104,7 +107,7 @@ public class Cook {
 	};
 	
 	public void makeDish(String s) {
-		view.changeResult(Game.GAMEIMAGEPATH+"recettes/"+s+".jpg");
+		view.changeResult(s);
 	}
 	
 	public void start() {
