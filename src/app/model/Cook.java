@@ -3,6 +3,8 @@ package app.model;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import app.controller.Game;
+
 public class Cook {
 	
 	private boolean ingredient0;
@@ -30,11 +32,11 @@ public class Cook {
 				(ingredient5?"5":"")+
 				(ingredient6?"6":"")+
 				(ingredient7?"7":"");
-		
-        if(Files.exists(Paths.get(s)))
-        	return s;
+
+		if(Files.exists(Paths.get(Game.GAMEIMAGEPATH+"recettes/"+s+".jpg")))
+        	return Game.GAMEIMAGEPATH+"recettes/"+s+".jpg";
         else 
-        	return dish;
+        	return Game.GAMEIMAGEPATH+"recettes/"+dish+".jpg";
 	}
 	
 	public void reset() {
