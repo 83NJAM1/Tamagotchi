@@ -1,5 +1,6 @@
 package app.view;
 
+import app.App;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -18,8 +19,17 @@ public class ActionBarThrowAndFetch extends MiniGameActionBar {
 	 * constructeur
 	 */
 	public ActionBarThrowAndFetch() {
+		super();
 		butThrow = new Button("button-throw");
 		this.getChildren().addAll(butThrow);
+		updateText();
+	}
+	
+	@Override
+	public void updateText() {
+		super.updateText();
+		if ( butThrow != null )
+			butThrow.setText(App.getString("button-throw"));
 	}
 	
 	/**
