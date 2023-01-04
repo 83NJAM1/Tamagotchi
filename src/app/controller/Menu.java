@@ -3,7 +3,7 @@ package app.controller;
 import java.util.Locale;
 
 import app.App;
-import app.Componable;
+import app.Cleanable;
 import app.Localisable;
 
 /**
@@ -11,11 +11,9 @@ import app.Localisable;
  * @author ben
  * Permet de mettre a jour la vue avec le optionModel
  */
-public class Menu implements Componable, Localisable {
+public class Menu implements Cleanable, Localisable {
 	 
 	//########################### ATTRIBUTS #####################################
-	
-	public static final String CONFIGPATH = "res/"; 
 	
 	// données de configuration
 	private app.model.Option optionModel;
@@ -30,7 +28,7 @@ public class Menu implements Componable, Localisable {
 	 * constructeur
 	 */
 	public Menu() {
-		optionModel = new app.model.Option(CONFIGPATH+"config.txt");
+		optionModel = new app.model.Option(Main.USERPATH+"config.txt");
 		menuView = new app.view.Menu();
 	}
 	
@@ -85,11 +83,11 @@ public class Menu implements Componable, Localisable {
 	}
 	
 	@Override
-	public void exit() {
+	public void clean() {
 		
 		optionModel = null;
 		
-		menuView.exit();
+		menuView.clean();
 		menuView = null;
 	}
 }

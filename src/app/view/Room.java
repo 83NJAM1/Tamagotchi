@@ -4,14 +4,14 @@ import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 
-import app.Componable;
+import app.Cleanable;
 
 /**
  * 
  * @author ben
  * view.Room est de type Image
  */
-public class Room extends Image implements Componable {
+public class Room extends Image implements Cleanable {
 
 	//########################### ATTRIBUTS #####################################
 	 
@@ -40,15 +40,15 @@ public class Room extends Image implements Componable {
 	public double getXOriginRatio() {
 		// salle de bain
 		if ( this.getUrl().contains("bain") )
-			return 5267/getWidth();
+			return 5267/8192.0;
 		else if ( this.getUrl().contains("Cuisine") ) // 728
-			return 728/getWidth();
+			return 728/8192.0;
 		else if ( this.getUrl().contains("Chambre") )// 6145
-			return 6145/getWidth();
+			return 6145/8192.0;
 		else if ( this.getUrl().contains("Jardin") ) // 4026
-			return 4026/getWidth();
+			return 4026/8192.0;
 		else
-			return 0.5;
+			return 369/948;
 	}
 	
 	/**
@@ -58,15 +58,15 @@ public class Room extends Image implements Componable {
 	public double getYOriginRatio() {
 		// salle de bain
 		if ( this.getUrl().contains("bain") )
-			return 3496/getHeight();
+			return 3496/4608.0;
 		else if ( this.getUrl().contains("Cuisine") ) // 4172
-			return 4172/getHeight();
+			return 4172/4608.0;
 		else if ( this.getUrl().contains("Chambre") ) // 4246
-			return 4246/getHeight();
+			return 4246/4608.0;
 		else if ( this.getUrl().contains("Jardin") ) // 3993
-			return 3993/getHeight();
+			return 3993/4608.0;
 		else
-			return 0.5;
+			return 394/576.0;
 	}
 	
 	public void addElement(Sprite e) {
@@ -91,7 +91,7 @@ public class Room extends Image implements Componable {
 	}
 	
 	@Override
-	public void exit() {
+	public void clean() {
 		cancel();
 	}
 }

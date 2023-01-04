@@ -58,7 +58,7 @@ public class SlidingEffect implements WeatherEffect {
 		rights = new Sprite[numbersRight];
 		
 		double space = 0.0;
-		double gap = 0;
+		double gap = 0.0;
 		int oldj=0;
 		for (int i=0; i<((numbers.length == 1) ? 1 : numbers.length/2); i++) {
 			
@@ -66,10 +66,8 @@ public class SlidingEffect implements WeatherEffect {
 				
 				int j;
 				for ( j=0; j<numbers[i]; j++ ) {
-					//System.out.println("ONLY_LEFT : lefts.len="+lefts.length+" i="+i+" i<"+((numbers.length == 1) ? 1 : numbers.length/2)+" oldj+j="+(oldj+j)+ " sprites.len="+sprites.length );
-					lefts[oldj+j] = new Sprite(sprites[i]);
-					
-					lefts[oldj+j].setPos(space, -lefts[oldj+j].getSheet().getHeight()+velocity);
+					lefts[oldj+j] = new Sprite(sprites[i]);					
+					lefts[oldj+j].setPos(space, -lefts[oldj+j].getSheet().getHeight());
 					lefts[oldj+j].setLimitX(-lefts[oldj+j].getSheet().getWidth()+velocity, width);
 					lefts[oldj+j].setLimitY(-width, width);
 					lefts[oldj+j].setVelocity(velocity, 1);
@@ -83,7 +81,7 @@ public class SlidingEffect implements WeatherEffect {
 		}
 		
 		space = 0.0;
-		gap = 0;
+		gap = 0.0;
 		oldj=0;
 		for (int i=numbers.length/2; i<numbers.length; i++) {
 			if ( slidetype == SlideType.ONLY_RIGHT || slidetype == SlideType.RIGHT_LEFT ) {
@@ -91,10 +89,10 @@ public class SlidingEffect implements WeatherEffect {
 				int j;
 				for ( j=0; j<numbers[i]; j++ ) {
 					rights[oldj+j] = new Sprite(sprites[i]);
-					rights[oldj+j].setPos(space, -(rights[oldj+j].getSheet().getHeight()+velocity)+rights[oldj+j].getSheet().getHeight()*0.2);
+					rights[oldj+j].setPos(space, -(rights[oldj+j].getSheet().getHeight()));
 					rights[oldj+j].setLimitX(-rights[oldj+j].getSheet().getWidth()+velocity, width);
 					rights[oldj+j].setLimitY(-width, width);
-					rights[oldj+j].setVelocity(-velocity, 1);
+					rights[oldj+j].setVelocity(-velocity, 2);
 					
 					space += rights[oldj+j].getSheet().getWidth()+gap;
 					
@@ -137,7 +135,7 @@ public class SlidingEffect implements WeatherEffect {
 				if ( makeStop ) {
 					rights[i].setVelocity(rights[i].getVelocityX(), -0.35);
 				}
-				else if ( rights[i].getVelocityY() > 0 && rights[i].getDestY()+rights[i].getVelocityY() >= rights[i].getSheet().getHeight()*0.2 ) {
+				else if ( rights[i].getVelocityY() > 0 && rights[i].getDestY() >= 0 ) {
 					rights[i].setVelocity(rights[i].getVelocityX(), 0.0);
 				}
 				
@@ -155,7 +153,7 @@ public class SlidingEffect implements WeatherEffect {
 				if ( makeStop ) {
 					lefts[i].setVelocity(lefts[i].getVelocityX(), -0.35);
 				}
-				else if ( lefts[i].getVelocityY() > 0 && lefts[i].getDestY()+lefts[i].getVelocityY() >= 0 ) {
+				else if ( lefts[i].getVelocityY() > 0 && lefts[i].getDestY() >= 0 ) {
 					lefts[i].setVelocity(lefts[i].getVelocityX(), 0.0);
 				}
 				
@@ -176,9 +174,6 @@ public class SlidingEffect implements WeatherEffect {
 				break;
 			case 2:
 				drawPass2(stopValue);
-				break;
-			default:
-				drawEffect();
 				break;
 		}
 		

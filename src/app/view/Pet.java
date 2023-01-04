@@ -3,14 +3,14 @@ package app.view;
 import javafx.animation.AnimationTimer;
 import javafx.scene.shape.Rectangle;
 
-import app.Componable;
+import app.Cleanable;
 
 /**
  * 
  * @author ben
  * view.Pet permet l'affichage du pet dans un etat donné par model.Pet
  */
-public class Pet extends AnimatedSprite implements Componable {
+public class Pet extends AnimatedSprite implements Cleanable {
 
 	//########################### ATTRIBUTS #####################################
 	AnimatedSprite fx;
@@ -45,7 +45,7 @@ public class Pet extends AnimatedSprite implements Componable {
     };
 	
 	//############################ METHODES #####################################
-	
+	   
 	public Pet(String spritesheet, String spritesheetColor) {
 		super(spritesheet, 0, 0, 512, 512);
 		color = new AnimatedSprite(spritesheetColor, 0, 0, 512, 512);
@@ -176,15 +176,15 @@ public class Pet extends AnimatedSprite implements Componable {
 	}
 	
 	@Override
-	public void exit() {
-		super.exit();
+	public void clean() {
+		super.clean();
 		animation.stop();
 		if ( hunger != null ) {
-			hunger.exit();
-			thirst.exit();
-			weight.exit();
-			hygiene.exit();
-			moral.exit();
+			hunger.clean();
+			thirst.clean();
+			weight.clean();
+			hygiene.clean();
+			moral.clean();
 		}
 	}
 }

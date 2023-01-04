@@ -1,6 +1,6 @@
 package app.controller;
 
-import app.Componable;
+import app.Cleanable;
 import app.Localisable;
 
 /**
@@ -8,7 +8,7 @@ import app.Localisable;
  * @author ben
  * Permet de mettre a jour la vue avec le statModel
  */
-public class State implements Componable, Localisable {
+public class State implements Cleanable, Localisable {
 	
 	//########################### ATTRIBUTS #####################################
  
@@ -67,11 +67,11 @@ public class State implements Componable, Localisable {
 	}
 	
 	@Override
-	public void exit() {
+	public void clean() {
 	
 		stateModel = null;
 		
-		stateView.exit();
+		stateView.clean();
 		stateView = null;
 	}
 }

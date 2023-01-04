@@ -15,7 +15,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Slider;
 
 import app.App;
-import app.Componable;
+import app.Cleanable;
 import app.Localisable;
 
 /**
@@ -24,7 +24,7 @@ import app.Localisable;
  * view.Option est de type HBox car l'affichage d'option
  * est souvant représenté sous forme de liste
  */
-public class Option extends VBox implements Componable, Localisable {
+public class Option extends VBox implements Cleanable, Localisable {
 	
 	//########################### ATTRIBUTS #####################################
  
@@ -160,7 +160,7 @@ public class Option extends VBox implements Componable, Localisable {
 	}
 	
 	@Override
-	public void exit() {
+	public void clean() {
 		buttonQuit.setDisable(true);
 		sliderVolume.setDisable(true);
 		choiceWindowDefinition.setDisable(true);

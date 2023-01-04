@@ -6,7 +6,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import app.App;
-import app.Componable;
+import app.Cleanable;
 import app.Localisable;
 
 /**
@@ -14,7 +14,7 @@ import app.Localisable;
  * @author ben
  * permet l'affichage d'un état représenter par une JAUGE et un NOM
  */
-public class State extends VBox implements Componable, Localisable {
+public class State extends VBox implements Cleanable, Localisable {
 	
 	Label name;
 	Label valueTxt;
@@ -55,7 +55,7 @@ public class State extends VBox implements Componable, Localisable {
 	}
 	
 	@Override
-	public void exit() {
+	public void clean() {
 		name = null;
 		valueTxt = null;
 		valueBar = null;

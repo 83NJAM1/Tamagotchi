@@ -27,6 +27,8 @@ public class Save {
 
 	public Save(String pathname) {
 
+		System.out.println("MODEL-SAVE - CONS: " + pathname);
+		
 		states = new Hashtable<String, Double>();
 		
 		try {
@@ -60,6 +62,9 @@ public class Save {
 	 * PAS DEFINITIF
 	 */
 	public void save() {
+		
+		System.out.println("MODEL-SAVE - SAVE: " + file.getAbsolutePath());
+		
 		try {
 			FileWriter out = new FileWriter(file);
 			out.write( (new Date()).getTime() + System.lineSeparator() + gameRecord.toString() );
@@ -75,6 +80,8 @@ public class Save {
 	 * @param pathname
 	 */
 	public void load(String pathname) {
+		
+		System.out.println("MODEL-SAVE - LOAD: " + pathname);
 		
 		try {
 			FileReader in = new FileReader(pathname);

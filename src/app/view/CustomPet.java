@@ -36,7 +36,7 @@ import javafx.scene.canvas.Canvas;
 import javax.imageio.ImageIO;
 
 import app.App;
-import app.Componable;
+import app.Cleanable;
 import app.Localisable;
 
 /**
@@ -45,7 +45,7 @@ import app.Localisable;
  * view.CustomPet est de type AnchorPane
  * car le choix de design implique qu'il soit composé de sous vue
  */
-public class CustomPet extends StackPane implements Componable, Localisable {
+public class CustomPet extends StackPane implements Cleanable, Localisable {
 
 	//########################### ATTRIBUTS #####################################
 
@@ -56,8 +56,12 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 	// partie centrale
 	private Canvas preview;
 	private Image maskPetColor;
+	private Image maskPetColorFat;
+	private Image maskPetColorThin;
 	private Pet previewPet;
 	private WritableImage petColor;
+	private WritableImage petColorFat;
+	private WritableImage petColorThin;
 	
 	// partie droite
 	private Label labelPetType;
@@ -65,6 +69,7 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 	private Button butPetTypeA;
 	private Button butPetTypeB;
 	private Button butPetTypeC;
+	private Button butPetTypeD;
 	
 	// partie gauche-haut
 	private Label labelBackPalet;
@@ -99,7 +104,9 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 	private String currentPetType;
 	
 	private BooleanProperty terminated = new SimpleBooleanProperty(true);
-	
+	File repA;
+	File repB;
+	File repC;
 	/**
 	 * thread pour generer l'image des couleurs
 	 */
@@ -139,21 +146,83 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 				}
 			}
 
-			try {
-				File dump = new File("bin/"+Main.GAMEIMAGEPATH+currentPetType+"/colorPet.png");
-				ImageIO.write(SwingFXUtils.fromFXImage(petColor, null), "png", dump); //TODO 
+			for( int y=0; y < (int)maskPetColorFat.getHeight(); y++ ) {
+				for ( int x=0; x < (int)maskPetColorFat.getWidth(); x++ ) {
+					
+					Color maskColor = maskPetColorFat.getPixelReader().getColor(x, y);
+					
+					if ( maskColor.getOpacity() > 0 ) {
+						
+						// A
+						if( maskColor.getBlue() == 1.0 && maskColor.getRed() == 1.0 && maskColor.getGreen() == 1.0) {
+							petColorFat.getPixelWriter().setColor(x, y, new Color(colorA.getRed(), colorA.getGreen(), colorA.getBlue(), maskColor.getOpacity()));
+						}
+						// B
+						else if( maskColor.getBlue() == 0 && maskColor.getRed() == 0 && maskColor.getGreen() == 0) {
+							petColorFat.getPixelWriter().setColor(x, y, new Color(colorB.getRed(), colorB.getGreen(), colorB.getBlue(), maskColor.getOpacity()));
+						}
+						// C
+						else if( maskColor.getBlue() >= 0.9 && maskColor.getRed() <= 0.1 && maskColor.getGreen() <= 0.1 ) { 
+							petColorFat.getPixelWriter().setColor(x, y, new Color(colorC.getRed(), colorC.getGreen(), colorC.getBlue(), maskColor.getOpacity()));
+						}
+						// D
+						else if( maskColor.getBlue() <= 0.1 && maskColor.getRed() >= 0.9 && maskColor.getGreen() <= 0.1 ) {
+							petColorFat.getPixelWriter().setColor(x, y, new Color(colorD.getRed(), colorD.getGreen(), colorD.getBlue(), maskColor.getOpacity()));
+						}
+						// E
+						else if( maskColor.getBlue() <= 0.1 && maskColor.getRed() <= 0.1 && maskColor.getGreen() >= 0.9 ) {
+							petColorFat.getPixelWriter().setColor(x, y, new Color(colorE.getRed(), colorE.getGreen(), colorE.getBlue(), maskColor.getOpacity()));
+						}
+						
+					}
+				}
+			}
+			
+			for( int y=0; y < (int)maskPetColorThin.getHeight(); y++ ) {
+				for ( int x=0; x < (int)maskPetColorThin.getWidth(); x++ ) {
+					
+					Color maskColor = maskPetColorThin.getPixelReader().getColor(x, y);
+					
+					if ( maskColor.getOpacity() > 0 ) {
+						
+						// A
+						if( maskColor.getBlue() == 1.0 && maskColor.getRed() == 1.0 && maskColor.getGreen() == 1.0) {
+							petColorThin.getPixelWriter().setColor(x, y, new Color(colorA.getRed(), colorA.getGreen(), colorA.getBlue(), maskColor.getOpacity()));
+						}
+						// B
+						else if( maskColor.getBlue() == 0 && maskColor.getRed() == 0 && maskColor.getGreen() == 0) {
+							petColorThin.getPixelWriter().setColor(x, y, new Color(colorB.getRed(), colorB.getGreen(), colorB.getBlue(), maskColor.getOpacity()));
+						}
+						// C
+						else if( maskColor.getBlue() >= 0.9 && maskColor.getRed() <= 0.1 && maskColor.getGreen() <= 0.1 ) { 
+							petColorThin.getPixelWriter().setColor(x, y, new Color(colorC.getRed(), colorC.getGreen(), colorC.getBlue(), maskColor.getOpacity()));
+						}
+						// D
+						else if( maskColor.getBlue() <= 0.1 && maskColor.getRed() >= 0.9 && maskColor.getGreen() <= 0.1 ) {
+							petColorThin.getPixelWriter().setColor(x, y, new Color(colorD.getRed(), colorD.getGreen(), colorD.getBlue(), maskColor.getOpacity()));
+						}
+						// E
+						else if( maskColor.getBlue() <= 0.1 && maskColor.getRed() <= 0.1 && maskColor.getGreen() >= 0.9 ) {
+							petColorThin.getPixelWriter().setColor(x, y, new Color(colorE.getRed(), colorE.getGreen(), colorE.getBlue(), maskColor.getOpacity()));
+						}
+						
+					}
+				}
+			}
+			
+			try {				
+				File dump = new File(Main.USERPATH+currentPetType+"/colorPet.png");
+				ImageIO.write(SwingFXUtils.fromFXImage(petColor, null), "png", dump); //TODO
+				
+				File dumpfat = new File(Main.USERPATH+currentPetType+"/colorPetFat.png");
+				ImageIO.write(SwingFXUtils.fromFXImage(petColorFat, null), "png", dumpfat); //TODO 
+				
+				File dumpthin = new File(Main.USERPATH+currentPetType+"/colorPetThin.png");
+				ImageIO.write(SwingFXUtils.fromFXImage(petColorThin, null), "png", dumpthin); //TODO 
 				//System.err.println(dump.getAbsolutePath());
 			} catch(Exception e) {
 				System.err.println(e);
 			}
-			
-			/*try {
-				File dump = new File(Main.GAMEIMAGEPATH+currentPetType+"/colorPet.png");
-				ImageIO.write(SwingFXUtils.fromFXImage(petColor, null), "png", dump);
-			}
-			catch(Exception e) {
-				System.err.println(e);
-			}*/
 			
 			terminated.setValue(true);
 		}
@@ -307,6 +376,12 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 			//image generation
 			maskPetColor = new Image(Main.GAMEIMAGEPATH+"cat/Coloriage_Chat_Normal.png");
 			petColor = new WritableImage((int)maskPetColor.getWidth(), (int)maskPetColor.getHeight());
+			
+			maskPetColorFat = new Image(Main.GAMEIMAGEPATH+"cat/Coloriage_Chat_Gros.png");
+			petColorFat = new WritableImage((int)maskPetColorFat.getWidth(), (int)maskPetColorFat.getHeight());
+			
+			maskPetColorThin = new Image(Main.GAMEIMAGEPATH+"cat/Coloriage_Chat_Maigre.png");
+			petColorThin = new WritableImage((int)maskPetColorThin.getWidth(), (int)maskPetColorThin.getHeight());
 			updatePreview();
 		}
 	};
@@ -323,6 +398,34 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 			//image generation
 			maskPetColor = new Image(Main.GAMEIMAGEPATH+"dog/Coloriage_Chien_Normal.png");
 			petColor = new WritableImage((int)maskPetColor.getWidth(), (int)maskPetColor.getHeight());
+			
+			maskPetColorFat = new Image(Main.GAMEIMAGEPATH+"dog/Coloriage_Chien_Gros.png");
+			petColorFat = new WritableImage((int)maskPetColorFat.getWidth(), (int)maskPetColorFat.getHeight());
+			
+			maskPetColorThin = new Image(Main.GAMEIMAGEPATH+"dog/Coloriage_Chien_Maigre.png");
+			petColorThin = new WritableImage((int)maskPetColorThin.getWidth(), (int)maskPetColorThin.getHeight());
+			updatePreview();
+		}
+	};
+	
+	/**
+	 * fait apperaître le popup choix des couleurs pour backColorB
+	 * déclencheur -> this
+	 */ 
+	private EventHandler<ActionEvent> petTypeD = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			//preview.setImage(new Image("res/test_dog.png"));
+			currentPetType="rabbit";
+			
+			//image generation
+			maskPetColor = new Image(Main.GAMEIMAGEPATH+"rabbit/Coloriage_Lapin_Normal.png");
+			petColor = new WritableImage((int)maskPetColor.getWidth(), (int)maskPetColor.getHeight());
+			
+			maskPetColorFat = new Image(Main.GAMEIMAGEPATH+"rabbit/Coloriage_Lapin_Gros.png");
+			petColorFat = new WritableImage((int)maskPetColorFat.getWidth(), (int)maskPetColorFat.getHeight());
+			
+			maskPetColorThin = new Image(Main.GAMEIMAGEPATH+"rabbit/Coloriage_Lapin_Maigre.png");
+			petColorThin = new WritableImage((int)maskPetColorThin.getWidth(), (int)maskPetColorThin.getHeight());
 			updatePreview();
 		}
 	};
@@ -349,7 +452,25 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 	 * constructeur
 	 */
 	public CustomPet() {
-	
+		
+		File repUser = new File(Main.USERPATH);
+		if ( !repUser.exists() ) {
+			repUser.mkdir();
+		}
+		
+		repC = new File(Main.USERPATH+"robot");
+		if ( !repC.exists() ) {
+			repC.mkdir();
+		}
+		repB = new File(Main.USERPATH+"dog");
+		if ( !repB.exists() ) {
+			repB.mkdir();
+		}
+		repA = new File(Main.USERPATH+"cat");
+		if ( !repA.exists() ) {
+			repA.mkdir();
+		}
+		
 		preview = new Canvas(256, 256);
 		colorpicker = new ColorPicker();
 		
@@ -360,6 +481,7 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 		petType = new VBox(15);
 		butPetTypeA = new Button("button-cat");
 		butPetTypeB = new Button("button-dog");
+		butPetTypeD = new Button("button-rabbit");
 		butPetTypeC = new Button("button-robot");
 		
 		labelBackPalet = new Label("#Choose your first colors#");
@@ -419,7 +541,11 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 		updateStype();
 		currentPetType="dog";
 		maskPetColor = new Image(Main.GAMEIMAGEPATH+"dog/Coloriage_Chien_Normal.png");
+		maskPetColorFat = new Image(Main.GAMEIMAGEPATH+"dog/Coloriage_Chien_Gros.png");
+		maskPetColorThin = new Image(Main.GAMEIMAGEPATH+"dog/Coloriage_Chien_Maigre.png");
 		petColor = new WritableImage((int)maskPetColor.getWidth(), (int)maskPetColor.getHeight());
+		petColorFat = new WritableImage((int)maskPetColorFat.getWidth(), (int)maskPetColorFat.getHeight());
+		petColorThin = new WritableImage((int)maskPetColorThin.getWidth(), (int)maskPetColorThin.getHeight());
 		generatePet();
 		drawLoop.start();
 		terminated.addListener(terminatedAction);
@@ -475,26 +601,27 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 	public void generatePet() {
 		
 		if ( previewPet != null ) {
-			previewPet.exit();
+			previewPet.clean();
 			System.gc();
 		}
-		
+		System.out.println(repB.getPath()+"/colorPet.png");
 		switch(currentPetType) {
+
 			case "cat":
 				previewPet = new Pet(Main.GAMEIMAGEPATH+currentPetType+"/Animation_Chat_Normal.png", 
-									 Main.GAMEIMAGEPATH+currentPetType+"/colorPet.png");
+									 "file:"+repA.getPath()+"/colorPet.png");
 				
 				previewPet.addAnime("heureux", new int[]{0, 1, 2}, new int[]{0, 1, 2});
 				break;
 			case "dog":
 				previewPet = new Pet(Main.GAMEIMAGEPATH+currentPetType+"/Animation_Chien_Normal.png", 
-						 			 Main.GAMEIMAGEPATH+currentPetType+"/colorPet.png");
+									 "file:"+repB.getPath()+"/colorPet.png");
 				
 				previewPet.addAnime("heureux", new int[]{0, 1, 2, 3}, new int[]{0, 1, 2, 3});
 				break;
 			case "robot":
 				previewPet = new Pet(Main.GAMEIMAGEPATH+currentPetType+"/Animation_Robot.png", 
-						 			 Main.GAMEIMAGEPATH+currentPetType+"/colorPet.png");
+									 "file:"+repC.getPath()+"/colorPet.png");
 				
 				previewPet.addAnime("heureux", new int[]{0, 1}, new int[]{0, 1});	
 				break;
@@ -544,7 +671,7 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 	}
 	
 	@Override
-	public void exit() {
+	public void clean() {
 		drawLoop.stop();
 		preview = null;
 		colorpicker = null;

@@ -12,7 +12,7 @@ import javafx.geometry.Pos;
 import javafx.event.ActionEvent;
 
 import app.App;
-import app.Componable;
+import app.Cleanable;
 import app.Localisable;
 
 /**
@@ -21,7 +21,7 @@ import app.Localisable;
  * view.Menu de type StackPane car c'est le conteneur de tout les sous menus
  * il est composé de plusieurs vues qui se superposeront
  */
-public class Menu extends StackPane implements Componable, Localisable {
+public class Menu extends StackPane implements Cleanable, Localisable {
 
 	//########################### ATTRIBUTS #####################################
 	
@@ -193,15 +193,15 @@ public class Menu extends StackPane implements Componable, Localisable {
 	}
 	
 	@Override
-	public void exit() {
+	public void clean() {
 		
 		if ( option != null ) {
-			option.exit();
+			option.clean();
 			option = null;
 		}
 		
 		if ( load != null ) {
-			load.exit();
+			load.clean();
 			load = null;
 		}
 		

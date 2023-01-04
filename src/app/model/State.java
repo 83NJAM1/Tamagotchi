@@ -2,14 +2,14 @@ package app.model;
 
 import java.util.HashMap;
 
-import app.Componable;
+import app.Cleanable;
 
 /**
  * 
  * @author ben
  * Un état représenter par une JAUGE et un NOM
  */
-public class State implements Componable {
+public class State implements Cleanable {
 	
 	public static final Double BASEFACTOR=0.01;
 	
@@ -81,7 +81,7 @@ public class State implements Componable {
 	}
 	
 	@Override
-	public void exit() {
+	public void clean() {
 		
 		if ( malusFactor != null ) {
 			malusFactor.clear();

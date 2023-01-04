@@ -4,7 +4,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.Random;
 
-import app.Componable;
+import app.Cleanable;
 import app.Localisable;
 import app.view.Sprite;
 
@@ -13,7 +13,7 @@ import app.view.Sprite;
  * @author ben
  * Permet de mettre a jour la vue avec le model
  */
-public class Pet implements Componable, Localisable {
+public class Pet implements Cleanable, Localisable {
 	
 	//########################### ATTRIBUTS #####################################
 	
@@ -35,6 +35,7 @@ public class Pet implements Componable, Localisable {
 	
 	Random seed;
 	
+	String currentSkin;
 	//############################ METHODES #####################################
 	
 	/**
@@ -54,7 +55,7 @@ public class Pet implements Componable, Localisable {
 		switch(type) {
 			case "cat":
 				petModel = new app.model.Animal("cat");
-				petView = new app.view.Pet(Game.GAMEIMAGEPATH+"cat/Animation_Chat_Normal.png", Game.GAMEIMAGEPATH+"cat/colorPet.png");
+				petView = new app.view.Pet(Game.GAMEIMAGEPATH+"cat/Animation_Chat_Normal.png", Game.GAMEIMAGEPATH+"cat/Coloriage_Chat_Normal.png");
 				petView.addAnime("heureux", new int[]{0, 1, 2, 1}, new int[]{0, 1, 2, 1});
 				petView.addAnime("neutre", new int[]{0, 1, 2, 1}, new int[]{4, 5, 6, 5});
 				petView.addAnime("triste", new int[]{0, 1, 2, 1}, new int[]{8, 9, 10, 9});
@@ -71,7 +72,7 @@ public class Pet implements Componable, Localisable {
 				break;
 			case "dog":
 				petModel = new app.model.Animal("dog");
-				petView = new app.view.Pet(Game.GAMEIMAGEPATH+"dog/Animation_Chien_Normal.png", Game.GAMEIMAGEPATH+"dog/colorPet.png");
+				petView = new app.view.Pet(Game.GAMEIMAGEPATH+"dog/Animation_Chien_Normal.png", Game.GAMEIMAGEPATH+"dog/Coloriage_Chien_Normal.png"); 
 				petView.addAnime("heureux-couche", new int[]{0}, new int[]{0});
 				petView.addAnime("heureux", new int[]{1, 2}, new int[]{1, 2});
 				petView.addAnime("heureux-debout", new int[]{3, 4}, new int[]{3, 4});
@@ -107,7 +108,7 @@ public class Pet implements Componable, Localisable {
 				break;
 			case "robot":
 				petModel = new app.model.Robot();
-				petView = new app.view.Pet(Game.GAMEIMAGEPATH+"robot/Animation_Robot.png", Game.GAMEIMAGEPATH+"robot/colorPet.png");
+				petView = new app.view.Pet(Game.GAMEIMAGEPATH+"robot/Animation_Robot.png", Game.GAMEIMAGEPATH+"robot/Coloriage_Robot.png");
 				petView.addAnime("heureux", new int[]{0, 1}, new int[]{0, 1});
 				petView.addAnime("neutre", new int[]{0, 1}, new int[]{4, 5});
 				petView.addAnime("triste", new int[]{0, 1}, new int[]{8, 9});
@@ -140,6 +141,10 @@ public class Pet implements Componable, Localisable {
 		petView.setChildWeight(weightController.getView());
 		petView.setChildHygiene(hygieneController.getView());
 		petView.setChildMoral(moralController.getView());
+		
+		currentSkin="";
+		
+		updateSkin();
 	}
 	
 	/**
@@ -198,6 +203,76 @@ public class Pet implements Componable, Localisable {
 		return petView;
 	}
 	
+	public void setFat() {
+		switch(petModel.getType()) {
+			case "cat":
+				petView.setSheet(Game.GAMEIMAGEPATH+"cat/Animation_Chat_Gros.png");
+				petView.getColorSprite().setSheet("file:"+Main.USERPATH+"cat/colorPetFat.png");
+				break;
+			case "dog":
+				petView.setSheet(Game.GAMEIMAGEPATH+"dog/Animation_Chien_Gros.png");
+				petView.getColorSprite().setSheet("file:"+Main.USERPATH+"dog/colorPetFat.png");
+				break;
+			case "rabbit":
+				petView.setSheet(Game.GAMEIMAGEPATH+"rabbit/Animation_Lapin_Gros.png");
+				petView.getColorSprite().setSheet("file:"+Main.USERPATH+"rabbit/colorPetFat.png");
+				break;
+		}
+	}
+	
+	public void setFit() {
+		switch(petModel.getType()) {
+			case "cat":
+				petView.setSheet(Game.GAMEIMAGEPATH+"cat/Animation_Chat_Normal.png");
+				petView.getColorSprite().setSheet("file:"+Main.USERPATH+"cat/colorPet.png");
+				break;
+			case "dog":
+				petView.setSheet(Game.GAMEIMAGEPATH+"dog/Animation_Chien_Normal.png");
+				petView.getColorSprite().setSheet("file:"+Main.USERPATH+"dog/colorPet.png");
+				break;
+			case "rabbit":
+				petView.setSheet(Game.GAMEIMAGEPATH+"rabbit/Animation_Lapin_Normal.png");
+				petView.getColorSprite().setSheet("file:"+Main.USERPATH+"rabbit/colorPet.png");
+				break;
+		}
+	}
+	
+	public void setThin() {
+		switch(petModel.getType()) {
+			case "cat":
+				petView.setSheet(Game.GAMEIMAGEPATH+"cat/Animation_Chat_Maigre.png");
+				petView.getColorSprite().setSheet("file:"+Main.USERPATH+"cat/colorPetThin.png");
+				break;
+			case "dog":
+				petView.setSheet(Game.GAMEIMAGEPATH+"dog/Animation_Chien_Maigre.png");
+				petView.getColorSprite().setSheet("file:"+Main.USERPATH+"dog/colorPetThin.png");
+				break;
+			case "rabbit":
+				petView.setSheet(Game.GAMEIMAGEPATH+"rabbit/Animation_Lapin_Maigre.png");
+				petView.getColorSprite().setSheet("file:"+Main.USERPATH+"rabbit/colorPetThin.png");
+				break;
+		}
+	}
+	
+	public void updateSkin(){
+		if ( !currentSkin.equals("fat") && weightController.getModel().getValue() > 0.75 ) {
+			currentSkin="fat";
+			setFat();
+		}
+		else if ( !currentSkin.equals("thin") && weightController.getModel().getValue() < 0.25 ) {
+			currentSkin="thin";
+			setThin();
+		}
+		else if ( !currentSkin.equals("fit") && ( weightController.getModel().getValue() > 0.25 && weightController.getModel().getValue() < 0.75 )) {
+			currentSkin="fit";
+			setFit();
+		}
+		else if ( !currentSkin.equals("fix") && petModel.getType().equals("robot") ) {
+			currentSkin="fix";
+			petView.getColorSprite().setSheet("file:"+Main.USERPATH+"robot/colorPet.png");
+		}
+	}
+	
 	/**
 	 * met a jour les states
 	 */
@@ -211,6 +286,8 @@ public class Pet implements Componable, Localisable {
 		weightController.updateValue();
 		hygieneController.updateValue();
 		moralController.updateValue();
+		
+		updateSkin();
 		
 		if ( petModel.isDead() ) {
 			petView.setAnime("mort");
@@ -271,27 +348,27 @@ public class Pet implements Componable, Localisable {
 	}
 	
 	@Override
-	public void exit() {
+	public void clean() {
 		
-		petModel.exit();
+		petModel.clean();
 		petModel = null;
 		
-		petView.exit();
+		petView.clean();
 		petView = null;
 		
-		hungerController.exit();
+		hungerController.clean();
 		hungerController = null;
 		
-		thirstController.exit();
+		thirstController.clean();
 		thirstController = null;
 		
-		weightController.exit();
+		weightController.clean();
 		weightController = null;
 		
-		hygieneController.exit();
+		hygieneController.clean();
 		hygieneController = null;
 		
-		moralController.exit();
+		moralController.clean();
 		moralController = null;
 	}
 }
