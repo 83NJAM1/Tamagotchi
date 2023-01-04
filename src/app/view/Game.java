@@ -198,15 +198,33 @@ public class Game extends StackPane implements Componable, Localisable {
 		
 		gc.setGlobalAlpha(gameOpacity);
 		
+		// weather-back
+		if( weatherEffect != null )
+			weatherEffect.drawEffect(1);
+		if ( oldWeatherEffect != null ) {
+			if ( oldWeatherEffect.drawEffect(1) ) {
+				oldWeatherEffect = null;
+			}
+		}
+		
 		//room
 		gc.drawImage(room, 0, 0, canvas.getWidth(), canvas.getHeight());
 		
 		//pet
 		drawPet();
 		
-		// meteo
-		if ( weatherIsActivated )
-			drawWeather();
+		// weather-front
+		if( weatherEffect != null ) {
+			weatherEffect.drawEffect(2);
+			weatherEffect.drawEffect(3);
+		}
+		if ( oldWeatherEffect != null ) {
+			boolean p2 = oldWeatherEffect.drawEffect(2);
+			boolean p3 = oldWeatherEffect.drawEffect(3);
+			if (  p2 && p3 ) {
+				oldWeatherEffect = null;
+			}
+		}
 
 		// NOTE: la vue cook n'utlise pas le canvas, pas sur que l'appel ici soit util 
 		cookView.setDimension(canvas.getWidth(),canvas.getHeight());
@@ -290,16 +308,6 @@ public class Game extends StackPane implements Componable, Localisable {
 			gc.setGlobalAlpha(1.0);
 			petOpacity = 1.0;
 		}*/
-	}
-	
-	public void drawWeather() {
-		if ( oldWeatherEffect != null ) {
-			if ( oldWeatherEffect.drawEffect() ) {
-				oldWeatherEffect = null;
-			}
-		}
-		if( weatherEffect != null )
-			weatherEffect.drawEffect();
 	}
 	
 	/**

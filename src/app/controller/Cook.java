@@ -1,5 +1,8 @@
 package app.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
@@ -96,18 +99,24 @@ public class Cook {
 		    System.out.println(w);
 		    System.out.println(h);
 		    if(Math.acos((BC*BC+AB*AB-AC*AC)/(2*BC*AB))* 180 / Math.PI>120)
-		    	makeDish(model.getDish("2"));
+		    	makeDish(model.getDish(), "2");
 		    else if(x>w/2)
-		    	makeDish(model.getDish("1"));
+		    	makeDish(model.getDish(), "1");
 		    else
-		    	makeDish(model.getDish("0"));
+		    	makeDish(model.getDish(), "0");
 		    done=true;
 		    draw();
 			}
 	};
 	
-	public void makeDish(String s) {
-		view.changeResult(s);
+	public void makeDish(String id, String dish) {
+		
+		String imageName =  Game.GAMEIMAGEPATH+"recettes/"+dish+id+".jpg";
+		
+		if(Files.exists(Paths.get(imageName)))
+			view.changeResult(imageName);
+        else 
+        	view.changeResult(Game.GAMEIMAGEPATH+"recettes/"+dish+".jpg");
 	}
 	
 	public void start() {

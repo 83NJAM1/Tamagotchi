@@ -78,7 +78,7 @@ class TestModel {
 	@DisplayName("Test sur MiniGame")
 	void testMiniGame() {
 		assertEquals(0,miniGame.getDistance(),"Le baton n'est pas à 0");
-		miniGame.throwStick();
+		miniGame.throwObject();
 		assertNotEquals(0,miniGame.getDistance(),"Le baton est à 0");
 	}
 }
