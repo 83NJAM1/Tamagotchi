@@ -48,7 +48,7 @@ public class Room extends Image implements Cleanable {
 		else if ( this.getUrl().contains("Jardin") ) // 4026
 			return 4026/8192.0;
 		else
-			return 369/948;
+			return 369/948.0;
 	}
 	
 	/**

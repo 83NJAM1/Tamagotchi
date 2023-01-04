@@ -27,7 +27,7 @@ public class Room implements Cleanable {
 		switch(roomName) {
 			case "livingroom":
 				roomModel = app.model.Livingroom.getInstance();
-				roomView = new app.view.Room(Game.GAMEIMAGEPATH+"error/no_room.png");
+				roomView = new app.view.Room(Game.GAMEIMAGEPATH+"rooms/Salon.png");
 				break;
 			case "kitchen":
 				roomModel = app.model.Kitchen.getInstance();

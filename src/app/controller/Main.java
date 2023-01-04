@@ -231,12 +231,11 @@ public class Main implements Cleanable, Localisable {
 				// si autre format faire un autre appel
 				// sinon afficher erreur
 				System.err.println(e);
-				return result;
 				//System.exit(1);
 			}
 			else {
 				System.err.println(e);
-				System.exit(1);
+				return result;
 			}
 		}
 		
