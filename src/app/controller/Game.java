@@ -267,6 +267,7 @@ public class Game implements Componable, Localisable {
 		gameView = new app.view.Game( petController.getView(), roomController.getView() );
 		gameover = new SimpleBooleanProperty(this, "gameover", false);
 		cookControler = new Cook(new app.model.Cook(),gameView.getViewCook());
+		cookControler.getView().setActionShare(makePetEating);
 	}
 	
 	/*

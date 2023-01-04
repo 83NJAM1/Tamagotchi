@@ -141,4 +141,8 @@ public class Cook {
 				);
 	}
 	
+	public app.view.Cook getView(){
+		return view;
+	}
+	
 }
