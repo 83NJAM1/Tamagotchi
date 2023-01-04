@@ -140,10 +140,20 @@ public class CustomPet extends StackPane implements Componable, Localisable {
 			}
 
 			try {
-				ImageIO.write(SwingFXUtils.fromFXImage(petColor, null), "png", new File("bin/"+Main.GAMEIMAGEPATH+currentPetType+"/colorPet.png"));
+				File dump = new File("bin/"+Main.GAMEIMAGEPATH+currentPetType+"/colorPet.png");
+				ImageIO.write(SwingFXUtils.fromFXImage(petColor, null), "png", dump); //TODO 
+				//System.err.println(dump.getAbsolutePath());
 			} catch(Exception e) {
 				System.err.println(e);
 			}
+			
+			/*try {
+				File dump = new File(Main.GAMEIMAGEPATH+currentPetType+"/colorPet.png");
+				ImageIO.write(SwingFXUtils.fromFXImage(petColor, null), "png", dump);
+			}
+			catch(Exception e) {
+				System.err.println(e);
+			}*/
 			
 			terminated.setValue(true);
 		}
