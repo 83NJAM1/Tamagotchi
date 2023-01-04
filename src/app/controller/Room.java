@@ -39,7 +39,7 @@ public class Room implements Componable {
 				break;
 			case "garden":
 				roomModel = app.model.Garden.getInstance();
-				roomView = new app.view.Room(Game.GAMEIMAGEPATH+"rooms/Jardin.png");
+				roomView = new app.view.Room(Game.GAMEIMAGEPATH+"rooms/Jardin_V3.png");
 				break;
 			case "bedroom":
 				roomModel = app.model.Bedroom.getInstance();
