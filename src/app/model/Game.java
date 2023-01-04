@@ -27,14 +27,14 @@ public class Game implements Cleanable {
 		pet.getHygiene().setBonus("shower", 100.0);
 		
 		// le pet mange
-		pet.getWeight().setMalus("eat", 0.5);
+		pet.getWeight().setBonus("eat", 0.5); //grossi
 		pet.getHunger().setBonus("eat", 20.5);
 		
 		// le pet boie
 		pet.getThirst().setBonus("drink", 20.5);
 		
 		// le pet fait un mini-jeu
-		pet.getWeight().setBonus("play", 1.5);
+		pet.getWeight().setMalus("play", 1.5); //maigri
 		pet.getThirst().setMalus("play", 0.05);
 		pet.getHunger().setMalus("play", 0.05);
 		pet.getMoral().setBonus("play", 1.5);
@@ -60,7 +60,7 @@ public class Game implements Cleanable {
 		weathers = new String[] {"rainy", "cloudy", "suny", "stormy", "scorchy", "icy"};
 		weatherSeed = new Random();
 		nextWeather();
-		current_indexWeather = 1;
+		
 		/**
 		 * construit la maison en initialisant les pièces
 		 * 

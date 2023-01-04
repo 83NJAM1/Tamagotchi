@@ -1,5 +1,10 @@
 package app.model;
 
+/**
+ * 
+ * @author ben
+ *
+ */
 public class Bedroom extends Room {
 
 	private static Bedroom uniqueInstance;

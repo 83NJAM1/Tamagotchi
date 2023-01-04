@@ -1,8 +1,14 @@
 package app.view;
 
-import app.App;
 import javafx.scene.canvas.GraphicsContext;
 
+import app.App;
+
+/**
+ * effet meteo
+ * @author ben
+ *
+ */
 public class StormEffect implements WeatherEffect {
 	
 	double height;
@@ -12,7 +18,13 @@ public class StormEffect implements WeatherEffect {
 	FallingEffect fx2;
 	SlidingEffect fx3;
 	GraphicsContext gc;
-	 
+	
+	/**
+	 * constructeur
+	 * @param w
+	 * @param h
+	 * @param gc
+	 */
 	public StormEffect(double w, double h, GraphicsContext gc) {
 		this.gc = gc;
 		
@@ -30,6 +42,7 @@ public class StormEffect implements WeatherEffect {
 				new Sprite(Main.GAMEIMAGEPATH+"effects/nuage-4.png", 0, 0, 640, 80));
 	}
 	
+	@Override
 	public boolean drawEffect() {
 		
 		boolean one = fx1.drawEffect();
@@ -39,6 +52,7 @@ public class StormEffect implements WeatherEffect {
 		return one && tow && three;
 	}
 	
+	@Override
 	public boolean drawEffect(int numPass) {
 		
 		switch(numPass) {
@@ -54,7 +68,8 @@ public class StormEffect implements WeatherEffect {
 		}
 		
 	}
-	
+
+	@Override
 	public void stopEffect() {
 		makeStop = true;
 		fx1.stopEffect();
@@ -62,12 +77,14 @@ public class StormEffect implements WeatherEffect {
 		fx3.stopEffect();
 	}
 	
+	@Override
 	public void resize(double width, double height) {
 		fx1.resize(width, height);
 		fx2.resize(width, height);
 		fx3.resize(width, height);
 	}
 	
+	@Override
 	public void clear() {
 		fx1.clear();
 		fx2.clear();

@@ -1,6 +1,5 @@
 package app.controller;
 
-import app.view.Sprite;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 

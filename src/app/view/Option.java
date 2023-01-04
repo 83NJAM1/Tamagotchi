@@ -24,7 +24,7 @@ import app.Localisable;
  * view.Option est de type HBox car l'affichage d'option
  * est souvant représenté sous forme de liste
  */
-public class Option extends VBox implements Cleanable, Localisable {
+public class Option extends VBox implements Cleanable, Localisable, Stylable {
 	
 	//########################### ATTRIBUTS #####################################
  
@@ -138,6 +138,7 @@ public class Option extends VBox implements Cleanable, Localisable {
 		return choiceWindowDefinition.getSelectionModel().getSelectedItem();
 	}
 	
+	@Override
 	public void updateStyle() {
 		this.setAlignment(Pos.CENTER);
 		this.setSpacing(15);

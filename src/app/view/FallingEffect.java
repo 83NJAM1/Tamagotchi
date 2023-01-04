@@ -15,6 +15,11 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
+/**
+ * effet pour la meteo
+ * @author ben
+ *
+ */
 public class FallingEffect implements WeatherEffect {
 	
 	GraphicsContext gc;
@@ -51,6 +56,19 @@ public class FallingEffect implements WeatherEffect {
 	MapType maptype;
 	FxType fxtype;
 	
+	/**
+	 * constructeur
+	 * @param parent utilisé pour le debug
+	 * @param width  
+	 * @param height 
+	 * @param velocity 
+	 * @param fx1    l'image 1er plan
+	 * @param fx2    l'image 2em plan
+	 * @param maptype 
+	 * @param fxtype
+	 * @param debugmode
+	 * @param gc
+	 */
 	public FallingEffect(StackPane parent, double width, double height, double velocity, 
 						 Sprite fx1, Sprite fx2, MapType maptype, FxType fxtype, boolean debugmode, GraphicsContext gc) {
 		this.parent = parent;
@@ -78,6 +96,7 @@ public class FallingEffect implements WeatherEffect {
 			initDebug();
 	}
 	
+	@Override
 	public void resize(double width, double height) {
 		
 		this.width = width; 
@@ -91,6 +110,9 @@ public class FallingEffect implements WeatherEffect {
 		}
 	}
 	
+	/**
+	 * initialise la map
+	 */
 	public void initFallingMap() {
 		
 		fallingMap = new int[(int)(height/effect.getSheet().getWidth())+3][(int)(width/effect.getSheet().getWidth())];
@@ -105,6 +127,9 @@ public class FallingEffect implements WeatherEffect {
 		
 	}
 	
+	/**
+	 * genere la map
+	 */
 	public void generateFallingMap() {
 		
 		if ( maptype == MapType.RANDOM ) {
@@ -127,6 +152,9 @@ public class FallingEffect implements WeatherEffect {
 		}
 	}
 	
+	/**
+	 * décalle les lignes de la map vers la droite
+	 */
 	public void shiftRightRowOrder() {
 		
 		int lastValue = rowOrder[rowOrder.length-1];
@@ -139,6 +167,9 @@ public class FallingEffect implements WeatherEffect {
 		rowOrder[0] = lastValue;	
 	}
 	
+	/**
+	 * affiche dans le terminal la map NOTE debug
+	 */
 	public void printFallingMap() {
 		System.out.println("Falling map : ");
 		for ( int j=0; j<fallingMap.length; j++ ) {
@@ -157,17 +188,9 @@ public class FallingEffect implements WeatherEffect {
 		}
 	}
 	
-	public boolean drawEffect() {
-		
-		gc.setGlobalAlpha(opacity);
-		
-		initDraw();
-		drawPass1();
-		
-		gc.setGlobalAlpha(1.0);
-		return stopValue;
-	}
-	
+	/**
+	 * 1er étape du dessin
+	 */
 	public void initDraw() {
 		
 		if ( infiniteFall ) {
@@ -193,6 +216,9 @@ public class FallingEffect implements WeatherEffect {
 		}
 	}
 	
+	/**
+	 * dessin 1
+	 */
 	public void drawPass1() {
 		if ( !stopValue ) {
 			for ( int j=0; j<fallingMap.length; j++ ) {
@@ -221,6 +247,19 @@ public class FallingEffect implements WeatherEffect {
 		}
 	}
 	
+	@Override
+	public boolean drawEffect() {
+		
+		gc.setGlobalAlpha(opacity);
+		
+		initDraw();
+		drawPass1();
+		
+		gc.setGlobalAlpha(1.0);
+		return stopValue;
+	}
+
+	@Override
 	public boolean drawEffect(int numPass) {
 		switch ( numPass ) {
 			default:
@@ -228,6 +267,7 @@ public class FallingEffect implements WeatherEffect {
 		}
 	}
 	
+	@Override
 	public void stopEffect() {
 		makeStop = true;
 		infiniteFall = false;
@@ -301,6 +341,7 @@ public class FallingEffect implements WeatherEffect {
 		
 	}
 	
+	@Override
 	public void clear() {
 		
 		if ( debugmode ) {// NOTE DEBUG

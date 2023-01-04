@@ -1,12 +1,16 @@
 package app.view;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * Effet pour la météo
+ * @author ben
+ *
+ */
 public class BrigthEffect implements WeatherEffect {
-
+	
 	double w;
 	double h;
 	GraphicsContext gc;
@@ -17,6 +21,14 @@ public class BrigthEffect implements WeatherEffect {
 	double maxIntensity;
 	Color color;
 	
+	/**
+	 * constructeur
+	 * @param w largeur
+	 * @param h hauteur
+	 * @param gc provenant de view.Game
+	 * @param c la couleur voulu
+	 * @param i l'intensité ( opacité ) 
+	 */
 	public BrigthEffect(double w, double h, GraphicsContext gc, Color c, double i) {
 		this.w = w;
 		this.h = h;
@@ -29,6 +41,7 @@ public class BrigthEffect implements WeatherEffect {
 		
 	}
 	
+	@Override
 	public boolean drawEffect() {
 		
 		if ( !makestop ) {
@@ -54,6 +67,7 @@ public class BrigthEffect implements WeatherEffect {
 		return true;
 	}
 	
+	@Override
 	public boolean drawEffect(int numPass) {
 		switch (numPass) {
 			case 2:
@@ -63,13 +77,19 @@ public class BrigthEffect implements WeatherEffect {
 		}
 	}
 	
+	@Override
 	public void stopEffect() {
 		makestop=true;
 	}
+	
+	@Override
 	public void resize(double width, double height) {
-		
+		w = width;
+		h = height;
+		fx = new Rectangle(0, 0, w, h);
 	}
+	
+	@Override
 	public void clear() {
-		
 	}
 }

@@ -76,24 +76,96 @@ public class Pet extends AnimatedSprite implements Cleanable {
 		addAnime(name, numSprite);
 		color.addAnime(name, numColorSprite);
 	}
-	
 	public void changeTypeColor(int num) {
 		color.changeLine(num);
 	}
 	
+	/**
+	 * obtient le sprite de l'objet a lancer
+	 * @return
+	 */
 	public Sprite getObject() {
 		return object;
 	}
+	/**
+	 * définit le sprite de l'objet à lancer
+	 * @param sheet
+	 */
 	public void setObject(Sprite sheet) {
 		object = sheet;
 		if ( object != null )
 			object.setSize(0,  0, dest_h.getValue()*0.25, dest_w.getValue()*0.25);
 	}
+	
+	/**
+	 * obtient si le pet doit être dessiner ou non
+	 * @return
+	 */
 	public boolean getVisible() {
 		return visible;
 	}
+	
+	/**
+	 * définit si le pet doit être dessiner ou non
+	 * @param true dessiné, false non déssiné
+	 */
 	public void setVisible(boolean mode) {
 		visible = mode;
+	}
+	
+	/**
+	 * obtient le sprite animé de couleur du pet
+	 * @return 
+	 */
+	public AnimatedSprite getColorSprite() {
+		return color;
+	}
+	
+	public void setViewHunger(State hunger) {
+		this.hunger = hunger;
+	}
+	public void setViewThirst(State thirst) {
+		this.thirst = thirst;
+	}
+	public void setViewWeight(State weight) {
+		this.weight = weight;
+	}
+	public void setViewHygiene(State hygiene) {
+		this.hygiene = hygiene;
+	}
+	public void setViewMoral(State moral) {
+		this.moral = moral;
+	}
+	
+	public State getViewHunger() {
+		return hunger;
+	}
+	public State getViewThirst() {
+		return thirst;
+	}
+	public State getViewWeight() {
+		return weight;
+	}
+	public State getViewHygiene() {
+		return hygiene;
+	}
+	public State getViewMoral() {
+		return moral;
+	}
+	
+	/**
+	 * NOTE non utilisé
+	 * @param factor
+	 */
+	public void setDisctanceFactor(double factor) {
+		distanceFactor=factor;
+	}
+	/**
+	 * NOTE non utilisé
+	 * @param factor
+	 */
+	public Double getDisctanceFactor() {
+		return 1.0;//distanceFactor;
 	}
 	
 	@Override 
@@ -130,49 +202,6 @@ public class Pet extends AnimatedSprite implements Cleanable {
 	@Override
 	public void stop() {
 		animation.stop();
-	}
-	
-	public AnimatedSprite getColorSprite() {
-		return color;
-	}
-	
-	public void setChildHunger(State hunger) {
-		this.hunger = hunger;
-	}
-	public void setChildThirst(State thirst) {
-		this.thirst = thirst;
-	}
-	public void setChildWeight(State weight) {
-		this.weight = weight;
-	}
-	public void setChildHygiene(State hygiene) {
-		this.hygiene = hygiene;
-	}
-	public void setChildMoral(State moral) {
-		this.moral = moral;
-	}
-	
-	public State getChildHunger() {
-		return hunger;
-	}
-	public State getChildThirst() {
-		return thirst;
-	}
-	public State getChildWeight() {
-		return weight;
-	}
-	public State getChildHygiene() {
-		return hygiene;
-	}
-	public State getChildMoral() {
-		return moral;
-	}
-	
-	public void setDisctanceFactor(double factor) {
-		distanceFactor=factor;
-	}
-	public Double getDisctanceFactor() {
-		return 1.0;//distanceFactor;
 	}
 	
 	@Override

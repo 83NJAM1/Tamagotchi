@@ -1,5 +1,10 @@
 package app.model;
 
+/**
+ * 
+ * @author ben
+ *
+ */
 public abstract class MiniGame {
 
 	private String id_name;

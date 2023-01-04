@@ -21,7 +21,7 @@ import app.Localisable;
  * view.Menu de type StackPane car c'est le conteneur de tout les sous menus
  * il est composé de plusieurs vues qui se superposeront
  */
-public class Menu extends StackPane implements Cleanable, Localisable {
+public class Menu extends StackPane implements Cleanable, Localisable, Stylable {
 
 	//########################### ATTRIBUTS #####################################
 	
@@ -116,25 +116,20 @@ public class Menu extends StackPane implements Cleanable, Localisable {
 		listButtons.getChildren().addAll(buttonNew, buttonLoad, buttonOpt, buttonQuit);
 		this.getChildren().add(listButtons);
 	}
-	
+		
 	/**
-	 * Met à jour le style de tous les élements
+	 * desactive les boutons du menu NOTE évite le déclenchement d'action via le clavier 
 	 */
-	public void updateStyle() {
-								   //top, right, bottom, left
-		setMargin(option, new Insets(50., 250. , 50.   , 250.));
-		setMargin(load, new Insets(50., 50. , 50.   , 50.));
-		setBackground(new Background(new BackgroundFill( Color.WHITESMOKE, null, null) ) );
-		listButtons.setSpacing(15);
-		listButtons.setAlignment(Pos.CENTER);
-	}
-	
 	public void deactivateButton() {
 		buttonNew.setDisable(true);
 		buttonQuit.setDisable(true);
 		buttonLoad.setDisable(true);
 		buttonOpt.setDisable(true);
 	}
+	
+	/**
+	 * active les boutons du menu
+	 */
 	public void activateButton() {
 		buttonNew.setDisable(false);
 		buttonQuit.setDisable(false);
@@ -162,7 +157,7 @@ public class Menu extends StackPane implements Cleanable, Localisable {
 	 * obtient la vue enfant Option
 	 * @return l'instance de Option
 	 */
-	public Option getChildOption() {
+	public Option getViewOption() {
 		return option;
 	}
 	
@@ -170,7 +165,7 @@ public class Menu extends StackPane implements Cleanable, Localisable {
 	 * obtient la vue enfant Load
 	 * @return l'instance de Load
 	 */
-	public Load getChildLoad() {
+	public Load getViewLoad() {
 		return load;
 	}
 	
@@ -180,6 +175,16 @@ public class Menu extends StackPane implements Cleanable, Localisable {
 	public void closeLoad() {
 		getChildren().remove(load);
 		listButtons.setDisable(false);
+	}
+	
+	@Override
+	public void updateStyle() {
+								   //top, right, bottom, left
+		setMargin(option, new Insets(50., 250. , 50.   , 250.));
+		setMargin(load, new Insets(50., 50. , 50.   , 50.));
+		setBackground(new Background(new BackgroundFill( Color.WHITESMOKE, null, null) ) );
+		listButtons.setSpacing(15);
+		listButtons.setAlignment(Pos.CENTER);
 	}
 	
 	@Override

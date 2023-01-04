@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
 import java.io.File;
+import java.util.Date;
 import java.util.Random;
 
 import app.App;
@@ -256,11 +257,17 @@ public class Game implements Cleanable, Localisable {
 		
 		startInit();
 		
-		petController.getControllerHunger().setValue(saveModel.getState("hunger"));
-		petController.getControllerThirst().setValue(saveModel.getState("thirst"));
-		petController.getControllerWeight().setValue(saveModel.getState("weight"));
-		petController.getControllerHygiene().setValue(saveModel.getState("hygiene"));
-		petController.getControllerMoral().setValue(saveModel.getState("moral"));
+		Date date = new Date();
+		
+		double difftime = ( ( date.getTime() - saveModel.getDate().getTime() ) / 1000.0 ) / 60 / 60 / 24 / 2;
+		
+		petController.getControllerHunger().setValue(saveModel.getState("hunger")   - difftime);
+		petController.getControllerThirst().setValue(saveModel.getState("thirst")   - difftime);
+		petController.getControllerWeight().setValue(saveModel.getState("weight")   - difftime);
+		petController.getControllerHygiene().setValue(saveModel.getState("hygiene") - difftime);
+		petController.getControllerMoral().setValue(saveModel.getState("moral")     - difftime);
+		petController.getModel().getHealth().setValue(saveModel.getState("health")  - difftime);
+		petController.getModel().getEnergy().setValue(saveModel.getState("energy")  - difftime);
 		
 		endInit();
 	}
@@ -292,17 +299,17 @@ public class Game implements Cleanable, Localisable {
 		
 		saveModel.setGameInstance(gameModel);
 		
-		gameView.getViewHud().getChildAction().setActionButtonKitchen(gotoKitchen);
-		gameView.getViewHud().getChildAction().setActionButtonBathroom(gotoBathroom);
-		gameView.getViewHud().getChildAction().setActionButtonLivingroom(gotoLivingroom);
-		gameView.getViewHud().getChildAction().setActionButtonBedroom(gotoBedroom);
-		gameView.getViewHud().getChildAction().setActionButtonGarden(gotoGarden);
+		gameView.getViewHud().getViewAction().setActionButtonKitchen(gotoKitchen);
+		gameView.getViewHud().getViewAction().setActionButtonBathroom(gotoBathroom);
+		gameView.getViewHud().getViewAction().setActionButtonLivingroom(gotoLivingroom);
+		gameView.getViewHud().getViewAction().setActionButtonBedroom(gotoBedroom);
+		gameView.getViewHud().getViewAction().setActionButtonGarden(gotoGarden);
 		
-		gameView.getViewHud().getChildAction().setActionButtonDrink(makePetDrinking);
-		gameView.getViewHud().getChildAction().setActionButtonEat(makePetEating);
-		gameView.getViewHud().getChildAction().setActionButtonTakeShower(makePetTakingShower);
-		gameView.getViewHud().getChildAction().setActionButtonCook(makePetCook);
-		gameView.getViewHud().getChildAction().setActionButtonPlay(makePetPlaying);
+		gameView.getViewHud().getViewAction().setActionButtonDrink(makePetDrinking);
+		gameView.getViewHud().getViewAction().setActionButtonEat(makePetEating);
+		gameView.getViewHud().getViewAction().setActionButtonTakeShower(makePetTakingShower);
+		gameView.getViewHud().getViewAction().setActionButtonCook(makePetCook);
+		gameView.getViewHud().getViewAction().setActionButtonPlay(makePetPlaying);
 
 		gameLoop.start();
 		weatherLoop.start();
@@ -401,7 +408,7 @@ public class Game implements Cleanable, Localisable {
 	 */
 	public void updateViewAllowedAction() {
 		
-		gameView.getViewHud().getChildAction().setAllowedRoom (
+		gameView.getViewHud().getViewAction().setAllowedRoom (
 				
 			roomController.getModel().isAdjacent(app.model.Kitchen.getInstance()),
 			roomController.getModel().isAdjacent(app.model.Garden.getInstance()),
@@ -410,7 +417,7 @@ public class Game implements Cleanable, Localisable {
 			roomController.getModel().isAdjacent(app.model.Bedroom.getInstance())
 		);
 		
-		gameView.getViewHud().getChildAction().setAllowedInteraction (
+		gameView.getViewHud().getViewAction().setAllowedInteraction (
 				
 		    roomController.getModel().equals(app.model.Kitchen.getInstance()) ||
 			roomController.getModel().equals(app.model.Bathroom.getInstance()),
@@ -419,7 +426,7 @@ public class Game implements Cleanable, Localisable {
 		    roomController.getModel().equals(app.model.Garden.getInstance())
 		);
 		
-		gameView.getViewHud().getChildAction().enableCooking(roomController.getModel().equals(app.model.Kitchen.getInstance()));
+		gameView.getViewHud().getViewAction().enableCooking(roomController.getModel().equals(app.model.Kitchen.getInstance()));
 
 	}
 	

@@ -136,11 +136,11 @@ public class Pet implements Cleanable, Localisable {
 			 		  hygieneController.getModel(),
 			 		  moralController.getModel());
 		
-		petView.setChildHunger(hungerController.getView());
-		petView.setChildThirst(thirstController.getView());
-		petView.setChildWeight(weightController.getView());
-		petView.setChildHygiene(hygieneController.getView());
-		petView.setChildMoral(moralController.getView());
+		petView.setViewHunger(hungerController.getView());
+		petView.setViewThirst(thirstController.getView());
+		petView.setViewWeight(weightController.getView());
+		petView.setViewHygiene(hygieneController.getView());
+		petView.setViewMoral(moralController.getView());
 		
 		currentSkin="";
 		
@@ -333,6 +333,11 @@ public class Pet implements Cleanable, Localisable {
 		}
 	}
 	
+	public void saveOrigin() {
+		originX = petView.getDestX();
+		originY = petView.getDestY();
+	}
+	
 	@Override
 	public void updateText() {
 		hungerController.updateText();
@@ -340,11 +345,6 @@ public class Pet implements Cleanable, Localisable {
 		weightController.updateText();
 		hygieneController.updateText();
 		moralController.updateText();
-	}
-	
-	public void saveOrigin() {
-		originX = petView.getDestX();
-		originY = petView.getDestY();
 	}
 	
 	@Override

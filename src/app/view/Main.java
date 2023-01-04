@@ -19,6 +19,7 @@ import app.Localisable;
 public class Main extends StackPane implements Cleanable, Localisable {
 
 	//########################### ATTRIBUTS #####################################
+	
 	public static final String GAMEIMAGEPATH = "res/game/images/"; 
 	public static final String IUIMAGEPATH = "res/interface/images/";
 	public static final String USERPATH = "user/";
@@ -32,10 +33,11 @@ public class Main extends StackPane implements Cleanable, Localisable {
 	// La vue de customisation du pet
 	private CustomPet customPet;
 	boolean menu_hiden;
+	
 	//######################### EVENT-ACTION ####################################
 	
 	/**
-	 * ActionEvent effectué quand t-on veut masquer le Menu
+	 * ActionEvent effectué quand t-on appuie sur échape
 	 * déclencheur -> this -> v.Menu
 	 */
 	private EventHandler<KeyEvent> key_menu = new EventHandler<KeyEvent>() {
@@ -107,7 +109,7 @@ public class Main extends StackPane implements Cleanable, Localisable {
 		menu = menu_instance;
 		
 		menu.setActionButtonQuit(click_quit_menu);
-		game.getViewHud().getChildAction().setActionButtonMenu(click_open_menu);
+		game.getViewHud().getViewAction().setActionButtonMenu(click_open_menu);
 		
 		menu_hiden = true;
 		this.addEventHandler(KeyEvent.KEY_RELEASED, key_menu);
@@ -133,7 +135,7 @@ public class Main extends StackPane implements Cleanable, Localisable {
 	 * obtient la vue de customisation
 	 * @return customPet, la vue
 	 */
-	public CustomPet getChildCustomPet() {
+	public CustomPet getViewCustomPet() {
 		return customPet;
 	}
 	

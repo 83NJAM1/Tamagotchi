@@ -45,11 +45,11 @@ public class Menu implements Cleanable, Localisable {
 		}
 		
 		if ( optionModel.getWindowWidth() <= 640 )
-			menuView.getChildOption().setSelectedChoiceDefinition(0);
+			menuView.getViewOption().setSelectedChoiceDefinition(0);
 		else
-			menuView.getChildOption().setSelectedChoiceDefinition(1);
+			menuView.getViewOption().setSelectedChoiceDefinition(1);
 		
-		menuView.getChildOption().changeVolumeValue(optionModel.getVolume());
+		menuView.getViewOption().changeVolumeValue(optionModel.getVolume());
 		
 		System.out.println("loading option:\n" + optionModel.toString().indent(4));
 	}

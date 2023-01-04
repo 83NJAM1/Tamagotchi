@@ -255,7 +255,7 @@ public abstract class Pet implements Cleanable  {
 	}
 	
 	public int getStatsNumber() {
-		return 5;
+		return 7;
 	}
 	
 	@Override
@@ -266,7 +266,9 @@ public abstract class Pet implements Cleanable  {
 		  			  + getThirst().toString() + System.lineSeparator()
 		  			  + getWeight().toString() + System.lineSeparator()
 		  			  + getHygiene().toString() + System.lineSeparator()
-		  			  + getMoral().toString() + System.lineSeparator();
+		  			  + getMoral().toString() + System.lineSeparator()
+		  			  + getHealth().toString() + System.lineSeparator()
+		  			  + getEnergy().toString() + System.lineSeparator();
 		return output;
 	}
 	

@@ -5,15 +5,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.Blend;
-import javafx.scene.effect.BlendMode;
-import javafx.scene.effect.BoxBlur;
-import javafx.scene.effect.DisplacementMap;
-import javafx.scene.effect.Effect;
-import javafx.scene.effect.FloatMap;
-import javafx.scene.effect.Glow;
-import javafx.scene.effect.ImageInput;
-import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -140,8 +131,8 @@ public class Game extends StackPane implements Cleanable, Localisable {
 				
 				if(!doonce) {
 					hud.hideStats();
-					hud.getChildAction().setAllowedMainAction(false, false, false, true);
-					hud.getChildAction().enableCooking(false);
+					hud.getViewAction().setAllowedMainAction(false, false, false, true);
+					hud.getViewAction().enableCooking(false);
 				}
 			}
         }
@@ -157,7 +148,7 @@ public class Game extends StackPane implements Cleanable, Localisable {
 	public Game(Pet pet_instance, Room room_instance) {
 		pet = pet_instance;
 		room = room_instance;
-		hud = new Hud(pet.getChildHygiene(), pet.getChildHunger(), pet.getChildMoral(), pet.getChildWeight(), pet.getChildThirst());
+		hud = new Hud(pet.getViewHygiene(), pet.getViewHunger(), pet.getViewMoral(), pet.getViewWeight(), pet.getViewThirst());
 		cookView=new Cook();
 		drawingArea = new AnchorPane();
 		canvas = new Canvas(640, 360);
@@ -246,10 +237,17 @@ public class Game extends StackPane implements Cleanable, Localisable {
 		}
 	}
 	
+	/**
+	 * afficher / masquer la météo
+	 * @param state
+	 */
 	public void setWeatherTo(boolean state) {
 		weatherIsActivated = state;
 	}
 	
+	/**
+	 * dessine le pet
+	 */
 	public void drawPet() {
 		
 		// fondu transition
@@ -278,9 +276,7 @@ public class Game extends StackPane implements Cleanable, Localisable {
 			gc.setGlobalAlpha(petMoveOpacity);
 			//System.out.println("cas 2");
 		}
-		
-		
-		
+
 		// la couleur du pet
 		gc.drawImage(pet.getColorSprite().getSheet(), 
 				     pet.getColorSprite().getSrcX()  , pet.getColorSprite().getSrcY(), 
@@ -307,17 +303,14 @@ public class Game extends StackPane implements Cleanable, Localisable {
 				         pet.getObject().getDestW() * pet.getDisctanceFactor(), pet.getObject().getDestH() * pet.getDisctanceFactor() );
 		}
 		
-		// un carré délimitant le pet NOTE debug
-		gc.setStroke(Color.RED);
-		gc.strokeRect(canvas.getWidth()*room.getXOriginRatio()-pet.getDestW()*0.5+pet.getDestX() , 
-					  canvas.getHeight()*room.getYOriginRatio()-pet.getDestH()*0.9+pet.getDestY(),
-			          pet.getDestW() * pet.getDisctanceFactor(), pet.getDestH() * pet.getDisctanceFactor() );
-		
-		// fin fondu transition
-		/*if ( petOpacity > 1.0 ) {
-			gc.setGlobalAlpha(1.0);
-			petOpacity = 1.0;
-		}*/
+		// un carré délimitant le pet NOTE debug		
+		if ( App.DEBUG ) {
+			gc.setStroke(Color.RED);
+			gc.strokeRect(canvas.getWidth()*room.getXOriginRatio()-pet.getDestW()*0.5+pet.getDestX() , 
+						  canvas.getHeight()*room.getYOriginRatio()-pet.getDestH()*0.9+pet.getDestY(),
+				          pet.getDestW() * pet.getDisctanceFactor(), pet.getDestH() * pet.getDisctanceFactor() );
+		}
+
 	}
 	
 	/**
@@ -371,6 +364,10 @@ public class Game extends StackPane implements Cleanable, Localisable {
 			drawGameOver(1.0, "GAME OVER");
 	}
 	
+	/**
+	 * créer un nouvelle effet meteo
+	 * @param weather
+	 */
 	public void setWeather(String weather) {
 
 		if ( !weather.equals(current_weather) ) {
@@ -447,6 +444,9 @@ public class Game extends StackPane implements Cleanable, Localisable {
 		return hud;
 	}
 	
+	/**
+	 * met a jour le style
+	 */
 	public void updateStyle() {
 		font = Font.font("Linux Biolinum Keyboard O", FontWeight.NORMAL, FontPosture.REGULAR, 46);
 		AnchorPane.setLeftAnchor(canvas, 0.);
@@ -454,6 +454,10 @@ public class Game extends StackPane implements Cleanable, Localisable {
 		setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 	}
 	
+	/**
+	 * obtient la vue cook
+	 * @return
+	 */
 	public Cook getViewCook() {
 		return cookView;
 	}

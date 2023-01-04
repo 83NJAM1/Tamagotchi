@@ -3,6 +3,11 @@ package app.controller;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
+/**
+ * 
+ * @author alexis
+ *
+ */
 public class Cook {
 	
 	private app.model.Cook model;

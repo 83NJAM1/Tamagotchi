@@ -3,11 +3,12 @@ package app.view;
 import java.util.Random;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.BlendMode;
-import javafx.scene.paint.Color;
 
-//import java.util.ArrayList;
-
+/**
+ * 
+ * @author ben
+ * effet météo
+ */
 public class SlidingEffect implements WeatherEffect {
 
 	GraphicsContext gc;
@@ -22,6 +23,14 @@ public class SlidingEffect implements WeatherEffect {
 	SlideType slidetype;
 	double gapx;
 	
+	/**
+	 * constructeur
+	 * @param gc
+	 * @param width
+	 * @param slidetype
+	 * @param numbers
+	 * @param sprites
+	 */
 	public SlidingEffect (GraphicsContext gc, double width, SlideType slidetype, int[] numbers, Sprite ... sprites) {
 		this.slidetype = slidetype;
 		this.gc = gc;
@@ -102,18 +111,11 @@ public class SlidingEffect implements WeatherEffect {
 			}
 		}
 	}
-	public boolean drawEffect() {
 		
-		boolean stopValue = initDraw();
-		gc.setGlobalAlpha( opacity );
-		
-		drawPass1(stopValue);
-		drawPass2(stopValue);
-		
-		gc.setGlobalAlpha( 1.0 );
-		return stopValue;
-	}
-	
+	/**
+	 * 1er étape de dessin
+	 * @return
+	 */
 	public boolean initDraw() {
 		
 		if(makeStop) {
@@ -127,6 +129,10 @@ public class SlidingEffect implements WeatherEffect {
 		return opacity<=0;
 	}
 	
+	/**
+	 * dessine le premier effet
+	 * @param stopValue s'il doit stopper
+	 */
 	public void drawPass1(boolean stopValue) {
 
 		if ( !stopValue ) {
@@ -145,6 +151,11 @@ public class SlidingEffect implements WeatherEffect {
 			}
 		}	
 	}
+	
+	/**
+	 * dessine le deuxieme effet
+	 * @param stopValue s'il doit stopper
+	 */
 	public void drawPass2(boolean stopValue) {
 				
 		if ( !stopValue ) {
@@ -163,6 +174,20 @@ public class SlidingEffect implements WeatherEffect {
 		}
 	}
 	
+	@Override
+	public boolean drawEffect() {
+		
+		boolean stopValue = initDraw();
+		gc.setGlobalAlpha( opacity );
+		
+		drawPass1(stopValue);
+		drawPass2(stopValue);
+		
+		gc.setGlobalAlpha( 1.0 );
+		return stopValue;
+	}
+	
+	@Override
 	public boolean drawEffect(int numPass) {
 		
 		boolean stopValue = initDraw();
@@ -181,10 +206,12 @@ public class SlidingEffect implements WeatherEffect {
 		return stopValue;
 	}
 	
+	@Override
 	public void stopEffect() {
 		makeStop = true;
 	}
 	
+	@Override
 	public void resize(double width, double height) {
 		this.width = width;
 		double space;
@@ -208,7 +235,8 @@ public class SlidingEffect implements WeatherEffect {
 			space += lefts[i].getSheet().getWidth();
 		}
 	}
+	
+	@Override
 	public void clear() {
-		
 	}
 }

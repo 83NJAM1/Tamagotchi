@@ -2,6 +2,11 @@ package app.model;
 
 import java.util.Random; 
 
+/**
+ * un mini jeu de lancer d'objet, le pet doit rattraper l'objet
+ * @author ben
+ *
+ */
 public class ThrowAndFetch extends MiniGame {
 
 	public final static Double MAXDISTANCE = 50.0;
@@ -13,6 +18,10 @@ public class ThrowAndFetch extends MiniGame {
 	boolean throwOnce;
 	String info;
 	
+	/**
+	 * constructeur
+	 * @param pet
+	 */
 	public ThrowAndFetch(Pet pet) {
 		super("throw-and-fetch");
 		this.pet = pet;
@@ -21,9 +30,18 @@ public class ThrowAndFetch extends MiniGame {
 		objectDistance = -MAXDISTANCE;
 	}
 	
+	/**
+	 * obtient la distance actuel de l'objet 
+	 * @return
+	 */
 	public Double getDistance() {
 		return objectDistance;
 	}
+	
+	/**
+	 * obtient la progression du pet pour ramener l'objet
+	 * @return
+	 */
 	public Double getProgress() {
 		
 		System.out.println(objectDistance/MAXDISTANCE);
@@ -36,6 +54,9 @@ public class ThrowAndFetch extends MiniGame {
 		return 1.0;
 	}
 	
+	/**
+	 * lance l'objet, génère une nouvelle distance
+	 */
 	public void throwObject() {
 		
 		if ( objectDistance <= -MAXDISTANCE || objectDistance >= MAXDISTANCE ) {

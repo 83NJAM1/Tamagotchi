@@ -24,13 +24,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Popup;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.canvas.Canvas;
 
 import javax.imageio.ImageIO;
@@ -45,7 +39,7 @@ import app.Localisable;
  * view.CustomPet est de type AnchorPane
  * car le choix de design implique qu'il soit composé de sous vue
  */
-public class CustomPet extends StackPane implements Cleanable, Localisable {
+public class CustomPet extends StackPane implements Cleanable, Localisable, Stylable {
 
 	//########################### ATTRIBUTS #####################################
 
@@ -74,22 +68,12 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 	// partie gauche-haut
 	private Label labelBackPalet;
 	private HBox backPalet;
-	private Button butBckColorA;
+	private Button butColorA;
 	private Color  colorA;
-	private Button butBckColorB;
+	private Button butColorB;
 	private Color  colorB;
-	private Button butBckColorC;
+	private Button butColorC;
 	private Color  colorC;
-	
-	// partie gauche-bas
-	private Label labelFrontPalet;
-	private HBox frontPalet;
-	private Button butFrtColorA;
-	private Color  colorD;
-	private Button butFrtColorB;
-	private Color  colorE;
-	private Button butFrtColorC;
-	private Color  colorF;
 	
 	// l'ensemble
 	private VBox TopCenterBottom;
@@ -103,10 +87,13 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 	// le type de pet choisie
 	private String currentPetType;
 	
+	// utilisé pour savoir si le thread est terminer
 	private BooleanProperty terminated = new SimpleBooleanProperty(true);
-	File repA;
-	File repB;
-	File repC;
+	File repA; // repertoire pour chat
+	File repB; // repertoire pour chient
+	File repC; // repertoire pour robot
+	File repD; // repertoire pour lapin
+	
 	/**
 	 * thread pour generer l'image des couleurs
 	 */
@@ -131,15 +118,15 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 						}
 						// C
 						else if( maskColor.getBlue() >= 0.9 && maskColor.getRed() <= 0.1 && maskColor.getGreen() <= 0.1 ) { 
-							petColor.getPixelWriter().setColor(x, y, new Color(colorC.getRed(), colorC.getGreen(), colorC.getBlue(), maskColor.getOpacity()));
+							petColor.getPixelWriter().setColor(x, y, new Color(colorA.getRed(), colorA.getGreen(), colorA.getBlue(), maskColor.getOpacity()));
 						}
 						// D
 						else if( maskColor.getBlue() <= 0.1 && maskColor.getRed() >= 0.9 && maskColor.getGreen() <= 0.1 ) {
-							petColor.getPixelWriter().setColor(x, y, new Color(colorD.getRed(), colorD.getGreen(), colorD.getBlue(), maskColor.getOpacity()));
+							petColor.getPixelWriter().setColor(x, y, new Color(colorB.getRed(), colorB.getGreen(), colorB.getBlue(), maskColor.getOpacity()));
 						}
 						// E
 						else if( maskColor.getBlue() <= 0.1 && maskColor.getRed() <= 0.1 && maskColor.getGreen() >= 0.9 ) {
-							petColor.getPixelWriter().setColor(x, y, new Color(colorE.getRed(), colorE.getGreen(), colorE.getBlue(), maskColor.getOpacity()));
+							petColor.getPixelWriter().setColor(x, y, new Color(colorC.getRed(), colorC.getGreen(), colorC.getBlue(), maskColor.getOpacity()));
 						}
 						
 					}
@@ -163,15 +150,15 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 						}
 						// C
 						else if( maskColor.getBlue() >= 0.9 && maskColor.getRed() <= 0.1 && maskColor.getGreen() <= 0.1 ) { 
-							petColorFat.getPixelWriter().setColor(x, y, new Color(colorC.getRed(), colorC.getGreen(), colorC.getBlue(), maskColor.getOpacity()));
+							petColorFat.getPixelWriter().setColor(x, y, new Color(colorA.getRed(), colorA.getGreen(), colorA.getBlue(), maskColor.getOpacity()));
 						}
 						// D
 						else if( maskColor.getBlue() <= 0.1 && maskColor.getRed() >= 0.9 && maskColor.getGreen() <= 0.1 ) {
-							petColorFat.getPixelWriter().setColor(x, y, new Color(colorD.getRed(), colorD.getGreen(), colorD.getBlue(), maskColor.getOpacity()));
+							petColorFat.getPixelWriter().setColor(x, y, new Color(colorB.getRed(), colorB.getGreen(), colorB.getBlue(), maskColor.getOpacity()));
 						}
 						// E
 						else if( maskColor.getBlue() <= 0.1 && maskColor.getRed() <= 0.1 && maskColor.getGreen() >= 0.9 ) {
-							petColorFat.getPixelWriter().setColor(x, y, new Color(colorE.getRed(), colorE.getGreen(), colorE.getBlue(), maskColor.getOpacity()));
+							petColorFat.getPixelWriter().setColor(x, y, new Color(colorC.getRed(), colorC.getGreen(), colorC.getBlue(), maskColor.getOpacity()));
 						}
 						
 					}
@@ -195,15 +182,15 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 						}
 						// C
 						else if( maskColor.getBlue() >= 0.9 && maskColor.getRed() <= 0.1 && maskColor.getGreen() <= 0.1 ) { 
-							petColorThin.getPixelWriter().setColor(x, y, new Color(colorC.getRed(), colorC.getGreen(), colorC.getBlue(), maskColor.getOpacity()));
+							petColorThin.getPixelWriter().setColor(x, y, new Color(colorA.getRed(), colorA.getGreen(), colorA.getBlue(), maskColor.getOpacity()));
 						}
 						// D
 						else if( maskColor.getBlue() <= 0.1 && maskColor.getRed() >= 0.9 && maskColor.getGreen() <= 0.1 ) {
-							petColorThin.getPixelWriter().setColor(x, y, new Color(colorD.getRed(), colorD.getGreen(), colorD.getBlue(), maskColor.getOpacity()));
+							petColorThin.getPixelWriter().setColor(x, y, new Color(colorB.getRed(), colorB.getGreen(), colorB.getBlue(), maskColor.getOpacity()));
 						}
 						// E
 						else if( maskColor.getBlue() <= 0.1 && maskColor.getRed() <= 0.1 && maskColor.getGreen() >= 0.9 ) {
-							petColorThin.getPixelWriter().setColor(x, y, new Color(colorE.getRed(), colorE.getGreen(), colorE.getBlue(), maskColor.getOpacity()));
+							petColorThin.getPixelWriter().setColor(x, y, new Color(colorC.getRed(), colorC.getGreen(), colorC.getBlue(), maskColor.getOpacity()));
 						}
 						
 					}
@@ -267,23 +254,14 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 	private EventHandler<ActionEvent> colorOk = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			
-			if ( currentButton.equals(butBckColorA) ) {
+			if ( currentButton.equals(butColorA) ) {
 				colorA = colorpicker.getValue();
 			}
-			else if ( currentButton.equals(butBckColorB) ) {
+			else if ( currentButton.equals(butColorB) ) {
 				colorB = colorpicker.getValue();
 			}
-			else if ( currentButton.equals(butBckColorC) ) {
+			else if ( currentButton.equals(butColorC) ) {
 				colorC = colorpicker.getValue();
-			}
-			else if ( currentButton.equals(butFrtColorA) ) {
-				colorD = colorpicker.getValue();
-			}
-			else if ( currentButton.equals(butFrtColorB) ) {
-				colorE = colorpicker.getValue();
-			}
-			else if ( currentButton.equals(butFrtColorC) ) {
-				colorF = colorpicker.getValue();
 			}
 
 			currentButton.setBackground(new Background(new BackgroundFill( colorpicker.getValue(), null, null) ) );
@@ -296,11 +274,11 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 	 * fait apperaître le popup choix des couleurs pour backColorA
 	 * déclencheur -> this
 	 */ 
-	private EventHandler<ActionEvent> bckColorA = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> actionColorA = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			currentButton = butBckColorA;
-			popup.show(butBckColorA, App.getX()+butBckColorA.getLocalToSceneTransform().getTx(), 
-					 				 App.getY()+butBckColorA.getLocalToSceneTransform().getTy());
+			currentButton = butColorA;
+			popup.show(butColorA, App.getX()+butColorA.getLocalToSceneTransform().getTx(), 
+					 				 App.getY()+butColorA.getLocalToSceneTransform().getTy());
 		}
 	};
 	
@@ -308,11 +286,11 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 	 * fait apperaître le popup choix des couleurs pour backColorB
 	 * déclencheur -> this
 	 */ 
-	private EventHandler<ActionEvent> bckColorB = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> actionColorB = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			currentButton = butBckColorB;
-			popup.show(butBckColorB, App.getX()+butBckColorB.getLocalToSceneTransform().getTx(), 
-					 				 App.getY()+butBckColorB.getLocalToSceneTransform().getTy());
+			currentButton = butColorB;
+			popup.show(butColorB, App.getX()+butColorB.getLocalToSceneTransform().getTx(), 
+					 				 App.getY()+butColorB.getLocalToSceneTransform().getTy());
 		}
 	};
 	
@@ -320,52 +298,16 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 	 * fait apperaître le popup choix des couleurs pour backColorC
 	 * déclencheur -> this
 	 */ 
-	private EventHandler<ActionEvent> bckColorC = new EventHandler<ActionEvent>() {
+	private EventHandler<ActionEvent> actionColorC = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			currentButton = butBckColorC;
-			popup.show(butBckColorC, App.getX()+butBckColorC.getLocalToSceneTransform().getTx(), 
-									 App.getY()+butBckColorC.getLocalToSceneTransform().getTy());
+			currentButton = butColorC;
+			popup.show(butColorC, App.getX()+butColorC.getLocalToSceneTransform().getTx(), 
+									 App.getY()+butColorC.getLocalToSceneTransform().getTy());
 		}
 	};
 	
 	/**
-	 * fait apperaître le popup choix des couleurs pour backColorA
-	 * déclencheur -> this
-	 */ 
-	private EventHandler<ActionEvent> frtColorA = new EventHandler<ActionEvent>() {
-		public void handle(ActionEvent e) {
-			currentButton = butFrtColorA;
-			popup.show(butFrtColorA, App.getX()+butFrtColorA.getLocalToSceneTransform().getTx(), 
-					 				 App.getY()+butFrtColorA.getLocalToSceneTransform().getTy());
-		}
-	};
-	
-	/**
-	 * fait apperaître le popup choix des couleurs pour backColorB
-	 * déclencheur -> this
-	 */ 
-	private EventHandler<ActionEvent> frtColorB = new EventHandler<ActionEvent>() {
-		public void handle(ActionEvent e) {
-			currentButton = butFrtColorB;
-			popup.show(butFrtColorB, App.getX()+butFrtColorB.getLocalToSceneTransform().getTx(), 
-					 				 App.getY()+butFrtColorB.getLocalToSceneTransform().getTy());
-		}
-	};
-	
-	/**
-	 * fait apperaître le popup choix des couleurs pour backColorC
-	 * déclencheur -> this
-	 */ 
-	private EventHandler<ActionEvent> frtColorC = new EventHandler<ActionEvent>() {
-		public void handle(ActionEvent e) {
-			currentButton = butFrtColorC;
-			popup.show(butFrtColorC, App.getX()+butFrtColorC.getLocalToSceneTransform().getTx(), 
-									 App.getY()+butFrtColorC.getLocalToSceneTransform().getTy());
-		}
-	};
-	
-	/**
-	 * fait apperaître le popup choix des couleurs pour backColorA
+	 * change le pet par un chat et met a jour la preview
 	 * déclencheur -> this
 	 */ 
 	private EventHandler<ActionEvent> petTypeA = new EventHandler<ActionEvent>() {
@@ -387,7 +329,7 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 	};
 	
 	/**
-	 * fait apperaître le popup choix des couleurs pour backColorB
+	 * change le pet par un chien et met a jour la preview
 	 * déclencheur -> this
 	 */ 
 	private EventHandler<ActionEvent> petTypeB = new EventHandler<ActionEvent>() {
@@ -409,7 +351,23 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 	};
 	
 	/**
-	 * fait apperaître le popup choix des couleurs pour backColorB
+	 * change le pet par un robot et met a jour la preview
+	 * déclencheur -> this
+	 */ 
+	private EventHandler<ActionEvent> petTypeC = new EventHandler<ActionEvent>() {
+		public void handle(ActionEvent e) {
+			
+			currentPetType="robot";
+			
+			//image generation
+			maskPetColor = new Image(Main.GAMEIMAGEPATH+"robot/Coloriage_Robot.png");
+			petColor = new WritableImage((int)maskPetColor.getWidth(), (int)maskPetColor.getHeight());
+			updatePreview();
+		}
+	};
+	
+	/**
+	 * change le pet par un lapin et met a jour la preview
 	 * déclencheur -> this
 	 */ 
 	private EventHandler<ActionEvent> petTypeD = new EventHandler<ActionEvent>() {
@@ -430,22 +388,6 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 		}
 	};
 	
-	/**
-	 * fait apperaître le popup choix des couleurs pour backColorC
-	 * déclencheur -> this
-	 */ 
-	private EventHandler<ActionEvent> petTypeC = new EventHandler<ActionEvent>() {
-		public void handle(ActionEvent e) {
-			
-			currentPetType="robot";
-			
-			//image generation
-			maskPetColor = new Image(Main.GAMEIMAGEPATH+"robot/Coloriage_Robot.png");
-			petColor = new WritableImage((int)maskPetColor.getWidth(), (int)maskPetColor.getHeight());
-			updatePreview();
-		}
-	};
-	
 	//############################ METHODES #####################################
 	
 	/**
@@ -454,10 +396,15 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 	public CustomPet() {
 		
 		File repUser = new File(Main.USERPATH);
+		
 		if ( !repUser.exists() ) {
 			repUser.mkdir();
 		}
 		
+		repD = new File(Main.USERPATH+"lapin");
+		if ( !repD.exists() ) {
+			repD.mkdir();
+		}
 		repC = new File(Main.USERPATH+"robot");
 		if ( !repC.exists() ) {
 			repC.mkdir();
@@ -481,22 +428,15 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 		petType = new VBox(15);
 		butPetTypeA = new Button("button-cat");
 		butPetTypeB = new Button("button-dog");
-		butPetTypeD = new Button("button-rabbit");
 		butPetTypeC = new Button("button-robot");
+		butPetTypeD = new Button("button-rabbit");
 		
 		labelBackPalet = new Label("#Choose your first colors#");
 		
 		backPalet = new HBox(2);
-		butBckColorA = new Button();
-		butBckColorB = new Button();
-		butBckColorC = new Button();
-		
-		labelFrontPalet = new Label("#Choose your second colors#");
-		
-		frontPalet = new HBox(2);
-		butFrtColorA = new Button();
-		butFrtColorB = new Button();
-		butFrtColorC = new Button();
+		butColorA = new Button();
+		butColorB = new Button();
+		butColorC = new Button();
 		
 		TopCenterBottom = new VBox(15);
 		LeftCenterRight = new HBox(15);
@@ -506,24 +446,20 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 		
 		colorpicker.setOnAction(colorOk);
 		
-		butBckColorA.setOnAction(bckColorA);
-		butBckColorB.setOnAction(bckColorB);
-		butBckColorC.setOnAction(bckColorC);
-		
-		butFrtColorA.setOnAction(frtColorA);
-		butFrtColorB.setOnAction(frtColorB);
-		butFrtColorC.setOnAction(frtColorC);
-		
+		butColorA.setOnAction(actionColorA);
+		butColorB.setOnAction(actionColorB);
+		butColorC.setOnAction(actionColorC);
+				
 		butPetTypeA.setOnAction(petTypeA);
 		butPetTypeB.setOnAction(petTypeB);
 		butPetTypeC.setOnAction(petTypeC);
+		butPetTypeD.setOnAction(petTypeD);
 		
 		popup.getContent().add(colorpicker);
-		petType.getChildren().addAll(butPetTypeA, butPetTypeB, butPetTypeC);
-		backPalet.getChildren().addAll(butBckColorA, butBckColorB, butBckColorC);
-		frontPalet.getChildren().addAll(butFrtColorA, butFrtColorB, butFrtColorC);
+		petType.getChildren().addAll(butPetTypeA, butPetTypeB, butPetTypeC); //butPetTypeD
+		backPalet.getChildren().addAll(butColorA, butColorB, butColorC);
 		
-		leftSide.getChildren().addAll(labelBackPalet, backPalet, labelFrontPalet, frontPalet);
+		leftSide.getChildren().addAll(labelBackPalet, backPalet);
 		rightSide.getChildren().addAll(labelPetType, petType);
 		
 		LeftCenterRight.getChildren().addAll(leftSide, preview, rightSide);
@@ -532,13 +468,10 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 		this.getChildren().addAll(TopCenterBottom);
 		colorpicker.hide();
 		
-		colorA = Color.WHITE;
-		colorB = Color.WHEAT;
-		colorC = Color.BEIGE;
-		colorD = Color.DARKORANGE;
-		colorE = Color.CHOCOLATE;
-		
-		updateStype();
+		colorA = Color.BEIGE;
+		colorB = Color.DARKORANGE;
+		colorC = Color.CHOCOLATE;
+
 		currentPetType="dog";
 		maskPetColor = new Image(Main.GAMEIMAGEPATH+"dog/Coloriage_Chien_Normal.png");
 		maskPetColorFat = new Image(Main.GAMEIMAGEPATH+"dog/Coloriage_Chien_Gros.png");
@@ -546,9 +479,13 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 		petColor = new WritableImage((int)maskPetColor.getWidth(), (int)maskPetColor.getHeight());
 		petColorFat = new WritableImage((int)maskPetColorFat.getWidth(), (int)maskPetColorFat.getHeight());
 		petColorThin = new WritableImage((int)maskPetColorThin.getWidth(), (int)maskPetColorThin.getHeight());
-		generatePet();
+
 		drawLoop.start();
 		terminated.addListener(terminatedAction);
+		
+		generatePet();
+		updateStyle();
+		updateText();
 	}
 	
 	/**
@@ -567,29 +504,9 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 		return currentPetType;
 	}
 	
-	public void updateStype() {
-
-		petType.setAlignment(Pos.CENTER);
-		leftSide.setAlignment(Pos.CENTER);
-		rightSide.setAlignment(Pos.CENTER);
-		TopCenterBottom.setAlignment(Pos.CENTER);
-		LeftCenterRight.setAlignment(Pos.CENTER);
-		
-		labelPetType.setAlignment(Pos.BASELINE_LEFT);
-		labelBackPalet.setAlignment(Pos.BASELINE_LEFT);
-		labelFrontPalet.setAlignment(Pos.BASELINE_LEFT);
-		
-		labelPetType.setTextAlignment(TextAlignment.LEFT);
-		labelBackPalet.setTextAlignment(TextAlignment.LEFT);
-		labelFrontPalet.setTextAlignment(TextAlignment.LEFT);
-
-		/*Border border = new Border( new BorderStroke(Color.BLACK, BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderWidths.DEFAULT) );
-		
-		petType.setBorder(border);
-		leftSide.setBorder(border);
-		rightSide.setBorder(border);*/
-	}
-	
+	/**
+	 * écrit l'image des nouvelles couleurs
+	 */
 	public void updateColorImage() {
 		
 		if ( terminated.getValue() ) {
@@ -598,13 +515,16 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 		}
 	}
 	
+	/**
+	 * genere le pet en chargant les images lui correspondant
+	 */
 	public void generatePet() {
 		
 		if ( previewPet != null ) {
 			previewPet.clean();
 			System.gc();
 		}
-		System.out.println(repB.getPath()+"/colorPet.png");
+
 		switch(currentPetType) {
 
 			case "cat":
@@ -632,6 +552,9 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 		previewPet.changeTypeColor(2);
 	}
 	
+	/**
+	 * met a jour la preview
+	 */
 	public void updatePreview() {
 
 			updateColorImage();
@@ -639,6 +562,9 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 			updateDraw();
 	}
 	
+	/**
+	 * redessine tout
+	 */
 	public void updateDraw() {
 		preview.getGraphicsContext2D().clearRect(0, 0, 256, 256);
 		
@@ -665,9 +591,34 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 		}
 	}
 	
+	@Override
+	public void updateStyle() {
+
+		petType.setAlignment(Pos.CENTER);
+		leftSide.setAlignment(Pos.CENTER);
+		rightSide.setAlignment(Pos.CENTER);
+		TopCenterBottom.setAlignment(Pos.CENTER);
+		LeftCenterRight.setAlignment(Pos.CENTER);
+		
+		labelPetType.setAlignment(Pos.BASELINE_LEFT);
+		labelBackPalet.setAlignment(Pos.BASELINE_LEFT);
+		
+		labelPetType.setTextAlignment(TextAlignment.LEFT);
+		labelBackPalet.setTextAlignment(TextAlignment.LEFT);
+		
+		petType.setSpacing(15);
+	}
+	
 	//TODO
 	@Override
 	public void updateText() {
+		labelPetType.setText(App.getString("text-choice-pet"));
+		butPetTypeA.setText(App.getString("button-cat"));
+		butPetTypeB.setText(App.getString("button-dog"));
+		butPetTypeC.setText(App.getString("button-robot"));
+		butPetTypeD.setText(App.getString("button-rabbit"));
+		validate.setText(App.getString("button-validate"));
+		labelBackPalet.setText(App.getString("text-choice-color"));
 	}
 	
 	@Override
@@ -687,16 +638,9 @@ public class CustomPet extends StackPane implements Cleanable, Localisable {
 		labelBackPalet = null;
 		
 		backPalet = null;
-		butBckColorA = null;
-		butBckColorB = null;
-		butBckColorC = null;
-		
-		labelFrontPalet = null;
-		
-		frontPalet = null;
-		butFrtColorA = null;
-		butFrtColorB = null;
-		butFrtColorC = null;
+		butColorA = null;
+		butColorB = null;
+		butColorC = null;
 		
 		TopCenterBottom = null;
 		LeftCenterRight = null;

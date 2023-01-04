@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 public class Sprite { // TODO changer l'heritage par un attribut
 	
 	//########################### ATTRIBUTS #####################################
+	
 	Image spritesheet;
 	
 	// taille du rectange délimitant une frame
@@ -27,11 +28,9 @@ public class Sprite { // TODO changer l'heritage par un attribut
 	double limit_miny;
 	double limit_maxx;
 	double limit_maxy;
-	//############################ METHODES #####################################
-	
-	
 
-	
+	//############################ METHODES #####################################
+
 	/**
 	 * constructeur
 	 * @param spritesheet l'image des sprites
@@ -112,6 +111,10 @@ public class Sprite { // TODO changer l'heritage par un attribut
 		
 	}
 	
+	/**
+	 * definit les velocitées x et y
+	 * @return x
+	 */
 	public void setVelocity(double x, double y) {
 		velocity_x.setValue(x);
 		velocity_y.setValue(y);

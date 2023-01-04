@@ -16,7 +16,7 @@ import app.Localisable;
  * @author ben
  * affiche les stats ainsi que les actions
  */
-public class Hud extends AnchorPane implements Cleanable, Localisable {
+public class Hud extends AnchorPane implements Cleanable, Localisable, Stylable {
 	
 	//########################### ATTRIBUTS #####################################
  
@@ -59,12 +59,16 @@ public class Hud extends AnchorPane implements Cleanable, Localisable {
 			statsBox.getChildren().add(s);
 		}
 		
-		actionBar.setActionButtonStat(click_stat);
+		actionBar.setActionButtonState(click_stat);
 		
 		this.getChildren().addAll(actionBar, statsBox);
 		updateStyle();
 	}
 	
+	/**
+	 * definit la bar d'action du mini jeu
+	 * @param actionBarMiniGame
+	 */
 	public void setActionBarMiniGame(HBox actionBarMiniGame) {
 		this.actionBarMiniGame = actionBarMiniGame;
 		this.getChildren().remove(actionBar);
@@ -73,6 +77,9 @@ public class Hud extends AnchorPane implements Cleanable, Localisable {
 		AnchorPane.setLeftAnchor(actionBarMiniGame, 10.);
 	}
 	
+	/**
+	 * supprime la bar d'action du mini jeu
+	 */
 	public void removeActionBarMiniGame() {
 		this.getChildren().remove(actionBarMiniGame);
 		this.getChildren().add(actionBar);
@@ -82,7 +89,7 @@ public class Hud extends AnchorPane implements Cleanable, Localisable {
 	 * obtient la vue enfant ActionBar
 	 * @return l'instance de ActionBar
 	 */
-	public ActionBar getChildAction() {
+	public ActionBar getViewAction() {
 		return actionBar;
 	}
 	
@@ -93,6 +100,7 @@ public class Hud extends AnchorPane implements Cleanable, Localisable {
 		statsBox.setVisible(false);;
 	}
 	
+	@Override
 	public void updateStyle() {
 		AnchorPane.setTopAnchor(statsBox, 10.);
 		AnchorPane.setLeftAnchor(statsBox, 10.);

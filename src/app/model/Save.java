@@ -24,7 +24,11 @@ public class Save {
 	private String petType;
 	private int numberStates;
 	private Hashtable<String, Double> states;
-
+	
+	/**
+	 * constructeur
+	 * @param pathname
+	 */
 	public Save(String pathname) {
 
 		System.out.println("MODEL-SAVE - CONS: " + pathname);
@@ -45,21 +49,40 @@ public class Save {
 		gameRecord = game;
 	}
 	
+	/**
+	 * obtient la date de la dernière sauvegarde
+	 * @return
+	 */
 	public Date getDate() {
 		return dateLoaded;
 	}
+	
+	/**
+	 * obtient la room enregistré
+	 * @return
+	 */
 	public String getRoomId() {
 		return idRoom;
 	}
+	
+	/**
+	 * obtient le type de pet enregistré
+	 * @return
+	 */
 	public String getPetType() {
 		return petType;
 	}
+	
+	/**
+	 * obtient la state enregistré
+	 * @return
+	 */
 	public Double getState(String key) {
 		return states.get(key);
 	}
 	
 	/**
-	 * PAS DEFINITIF
+	 * NOTE PAS DEFINITIF
 	 */
 	public void save() {
 		
@@ -76,7 +99,7 @@ public class Save {
 	}
 	
 	/**
-	 * PAS DEFINITIF
+	 * NOTE PAS DEFINITIF
 	 * @param pathname
 	 */
 	public void load(String pathname) {
@@ -120,6 +143,8 @@ public class Save {
 			 + "    " + states.get("thirst") + System.lineSeparator()
 			 + "    " + states.get("weight") + System.lineSeparator()
 			 + "    " + states.get("hygiene") + System.lineSeparator()
-			 + "    " + states.get("moral") + System.lineSeparator();
+			 + "    " + states.get("moral") + System.lineSeparator()
+			 + "    " + states.get("health") + System.lineSeparator()
+			 + "    " + states.get("energy") + System.lineSeparator();
 	}
 }

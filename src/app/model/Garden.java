@@ -1,5 +1,10 @@
 package app.model;
 
+/**
+ * 
+ * @author ben
+ *
+ */
 public class Garden extends Room {
 	
 	private static Garden uniqueInstance;

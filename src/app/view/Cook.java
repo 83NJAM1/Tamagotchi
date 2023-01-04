@@ -11,6 +11,11 @@ import javafx.scene.image.ImageView;
 
 import app.App;
 
+/**
+ * 
+ * @author alexis
+ *
+ */
 public class Cook extends StackPane {
 	
 	private double width;

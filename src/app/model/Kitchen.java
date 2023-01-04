@@ -1,5 +1,10 @@
 package app.model;
 
+/**
+ * 
+ * @author ben
+ *
+ */
 public class Kitchen extends Room {
 
 	private static Kitchen uniqueInstance;

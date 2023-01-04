@@ -17,7 +17,11 @@ public class State implements Cleanable {
 	private Double value;
 	private HashMap<String,Double> malusFactor;
 	private HashMap<String,Double> bonusFactor;
-	 
+	
+	/**
+	 * constructeur
+	 * @param keyName l'identifiant
+	 */
 	public State(String keyName) {
 		this.keyName = keyName;
 		value = 0.5;
@@ -37,6 +41,11 @@ public class State implements Cleanable {
 		this.value = value;
 	}
 	
+	/**
+	 * définit un bonus pour la state
+	 * @param key
+	 * @param factor
+	 */
 	public void setBonus(String key, Double factor) {
 		
 		if ( factor > 0 ) 
@@ -45,6 +54,11 @@ public class State implements Cleanable {
 			System.err.println("must be a positive factor");
 	}
 	
+	/**
+	 * définit un malus pour la state
+	 * @param key
+	 * @param factor
+	 */
 	public void setMalus(String key, Double factor) {
 		
 		if ( factor > 0 )
@@ -53,6 +67,11 @@ public class State implements Cleanable {
 			System.err.println("must be a positive factor");
 	}
 	
+	/**
+	 * applique le malus
+	 * @param key
+	 * @return
+	 */
 	public Double applyMalus(String key) {
 		
 		if ( malusFactor.containsKey(key) )
@@ -64,6 +83,11 @@ public class State implements Cleanable {
 		return value;
 	}
 	
+	/**
+	 * applique le bonus
+	 * @param key
+	 * @return
+	 */
 	public Double applyBonus(String key) {
 		
 		if ( bonusFactor.containsKey(key) )

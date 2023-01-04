@@ -18,14 +18,14 @@ import app.Localisable;
  * @author ben
  * permet de selectionner les actions du jeu et d'aller au menu
  */
-public class ActionBar extends HBox implements Cleanable, Localisable {
+public class ActionBar extends HBox implements Cleanable, Localisable, Stylable {
 	 
 	//########################### ATTRIBUTS #####################################
 	
 	// bouton affiche menu
 	private Button butMenu;
 	// bouton affiche/masque états
-	private Button butStat;
+	private Button butState;
 	// bouton affiche sous menu pièces
 	private Button butMenuRoom;
 	// bouton affiche sous menu action du pet
@@ -78,7 +78,7 @@ public class ActionBar extends HBox implements Cleanable, Localisable {
 	};
 	
 	/**
-	 * Action qui Affiche le sous menu des pièces
+	 * Action qui Affiche le sous menu des interaction avec le pet
 	 */
 	private EventHandler<ActionEvent> click_petaction = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
@@ -95,7 +95,7 @@ public class ActionBar extends HBox implements Cleanable, Localisable {
 		
 		// instancie les boutons principaux
 		butMenu = new Button();
-		butStat = new Button();
+		butState = new Button();
 		butMenuRoom = new Button();
 		butMenuPetAction = new Button();
 		butCook = new Button();
@@ -137,20 +137,11 @@ public class ActionBar extends HBox implements Cleanable, Localisable {
 		//constructions de la vue
 		roomContextMenu.getItems().addAll(customMenuRoomA, customMenuRoomB, customMenuRoomC, customMenuRoomD, customMenuRoomE);
 		petActionContextMenu.getItems().addAll(customMenuActionDrink, customMenuActionEat, customMenuActionTakeShower, customMenuActionPlay);
-		this.getChildren().addAll(butMenu, butStat, butMenuRoom, butMenuPetAction, butCook);
+		this.getChildren().addAll(butMenu, butState, butMenuRoom, butMenuPetAction, butCook);
 	}
 	
 	/**
-	 * Met à jour le style de tous les éléments
-	 */
-	public void updateStyle() {
-		//this.setPrefHeight(92);
-		butMenuRoom.setAlignment(Pos.CENTER);
-		butMenu.setAlignment(Pos.CENTER_RIGHT);		
-	}
-	
-	/**
-	 * Utilisé par v.Main
+	 * definit l'action pour bouton menu
 	 * @param e ce qui doit être déclencher par le bouton butMenu
 	 */
 	public void setActionButtonMenu(EventHandler<ActionEvent> e) {
@@ -158,15 +149,15 @@ public class ActionBar extends HBox implements Cleanable, Localisable {
 	}
 	
 	/**
-	 * Utilisé par v.Hud
-	 * @param e ce qui doit être déclencher par le bouton butStat
+	 * definit l'action pour bouton state
+	 * @param e ce qui doit être déclencher par le bouton butState
 	 */
-	public void setActionButtonStat(EventHandler<ActionEvent> e) {
-		butStat.setOnAction(e);
+	public void setActionButtonState(EventHandler<ActionEvent> e) {
+		butState.setOnAction(e);
 	}
 	
 	/**
-	 * utilisé par c.Game
+	 * definit l'action pour bouton cuisine
 	 * @param e ce qui doit être déclencher par le bouton butRoomA
 	 */
 	public void setActionButtonKitchen(EventHandler<ActionEvent> e) {
@@ -174,7 +165,7 @@ public class ActionBar extends HBox implements Cleanable, Localisable {
 	}
 	
 	/**
-	 * utilisé par c.Game
+	 * definit l'action pour bouton jardin
 	 * @param e ce qui doit être déclencher par le bouton butGarden
 	 */
 	public void setActionButtonGarden(EventHandler<ActionEvent> e) {
@@ -182,7 +173,7 @@ public class ActionBar extends HBox implements Cleanable, Localisable {
 	}
 	
 	/**
-	 * utilisé par c.Game
+	 * definit l'action pour bouton salle de bain
 	 * @param e ce qui doit être déclencher par le bouton butBathroom
 	 */
 	public void setActionButtonBathroom(EventHandler<ActionEvent> e) {
@@ -190,7 +181,7 @@ public class ActionBar extends HBox implements Cleanable, Localisable {
 	}
 	
 	/**
-	 * utilisé par c.Game
+	 * definit l'action pour bouton salon
 	 * @param e ce qui doit être déclencher par le bouton butLivingroom
 	 */
 	public void setActionButtonLivingroom(EventHandler<ActionEvent> e) {
@@ -198,7 +189,7 @@ public class ActionBar extends HBox implements Cleanable, Localisable {
 	}
 	
 	/**
-	 * utilisé par c.Game
+	 * definit l'action pour bouton chambre
 	 * @param e ce qui doit être déclencher par le bouton butBedroom
 	 */
 	public void setActionButtonBedroom(EventHandler<ActionEvent> e) {
@@ -227,7 +218,7 @@ public class ActionBar extends HBox implements Cleanable, Localisable {
 		butTakeShower.setOnAction(e);
 	}
 	/**
-	 * définit l'action pour le bouton prendre une douche
+	 * définit l'action pour le bouton cuisiner
 	 * @param e ce qui doit être déclencher par le bouton butTakeShower
 	 */
 	public void setActionButtonCook(EventHandler<ActionEvent> e) {
@@ -241,13 +232,24 @@ public class ActionBar extends HBox implements Cleanable, Localisable {
 		butPlay.setOnAction(e);
 	}
 	
+	/**
+	 * désactive/active le bouton cuisiner
+	 * @param canCook
+	 */
 	public void enableCooking(boolean canCook) {
 		butCook.setDisable(!canCook);
 	}
 	
+	/**
+	 * désactive/active certain boutons principaux
+	 * @param canToogleStates
+	 * @param canChangeRoom
+	 * @param canPetInterection
+	 * @param canShowMenu
+	 */
 	public void setAllowedMainAction(boolean canToogleStates, boolean canChangeRoom, boolean canPetInterection, boolean canShowMenu) {
 		
-		butStat.setDisable(!canToogleStates);
+		butState.setDisable(!canToogleStates);
 		butMenuRoom.setDisable(!canChangeRoom);
 		if ( !canChangeRoom )
 			roomContextMenu.hide();
@@ -257,6 +259,14 @@ public class ActionBar extends HBox implements Cleanable, Localisable {
 		butMenu.setDisable(!canShowMenu);
 	}
 	
+	/**
+	 * désactive/active certain boutons pour les pièces
+	 * @param canGotoKitchen
+	 * @param canGotoGarden
+	 * @param canGotoBthroom
+	 * @param canGotoLivingroom
+	 * @param canGotoBedroom
+	 */
 	public void setAllowedRoom(boolean canGotoKitchen,  boolean canGotoGarden, boolean canGotoBthroom, 
 							   boolean canGotoLivingroom, boolean canGotoBedroom) {
 		
@@ -267,6 +277,13 @@ public class ActionBar extends HBox implements Cleanable, Localisable {
 		butBedroom.setDisable(!canGotoBedroom);
 	}
 	
+	/**
+	 * désactive/active certain boutons d'interaction
+	 * @param canDrink
+	 * @param canEat
+	 * @param canTakeShower
+	 * @param canPlay
+	 */
 	public void setAllowedInteraction( boolean canDrink,  boolean canEat, boolean canTakeShower, boolean canPlay ) {
 
 		butDrink.setDisable(!canDrink);
@@ -276,9 +293,16 @@ public class ActionBar extends HBox implements Cleanable, Localisable {
 	}
 	
 	@Override
+	public void updateStyle() {
+		//this.setPrefHeight(92);
+		butMenuRoom.setAlignment(Pos.CENTER);
+		butMenu.setAlignment(Pos.CENTER_RIGHT);		
+	}
+	
+	@Override
 	public void updateText() {
 		butMenu.setText(App.getString("button-menu"));
-		butStat.setText(App.getString("button-stats"));
+		butState.setText(App.getString("button-stats"));
 		butMenuRoom.setText(App.getString("button-rooms"));
 		butKitchen.setText(App.getString("button-kitchen"));
 		butGarden.setText(App.getString("button-garden"));
@@ -296,7 +320,7 @@ public class ActionBar extends HBox implements Cleanable, Localisable {
 	@Override
 	public void clean() {
 		butMenu = null;
-		butStat = null;
+		butState = null;
 		butMenuRoom = null;
 		customMenuRoomA = null;
 		customMenuRoomB = null;

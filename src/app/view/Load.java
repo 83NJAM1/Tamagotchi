@@ -27,7 +27,7 @@ import app.Localisable;
  * @author ben
  * view.Load est de type StackPane
  */
-public class Load extends StackPane implements Cleanable, Localisable {
+public class Load extends StackPane implements Cleanable, Localisable, Stylable {
 	
 	//########################### ATTRIBUTS #####################################
 	
@@ -157,6 +157,7 @@ public class Load extends StackPane implements Cleanable, Localisable {
 		return savesList.getSelectionModel().getSelectedItem();
 	}
 	
+	@Override
 	public void updateStyle() {
 		//this.setBackground(new Background(new BackgroundFill( Color.BLUE, null, null) ) );
 		savesList.setOrientation(Orientation.HORIZONTAL);

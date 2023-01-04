@@ -1,5 +1,5 @@
 last_save : save.tmg
 language : fr
-volume : 0.25
+volume : 0.5161290322580645
 width_window : 640
 height_window : 360

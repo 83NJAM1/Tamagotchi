@@ -14,7 +14,7 @@ import app.Localisable;
  * @author ben
  * permet l'affichage d'un état représenter par une JAUGE et un NOM
  */
-public class State extends VBox implements Cleanable, Localisable {
+public class State extends VBox implements Cleanable, Localisable, Stylable {
 	
 	Label name;
 	Label valueTxt;
@@ -46,6 +46,7 @@ public class State extends VBox implements Cleanable, Localisable {
 		valueBar.setProgress(value);
 	}
 	
+	@Override
 	public void updateStyle() {
 	}
 	

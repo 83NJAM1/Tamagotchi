@@ -74,7 +74,7 @@ public class App extends Application{
 	 */
 	private EventHandler<ActionEvent> choose_definition = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
-			if ( mainController.getControllerMenu().getView().getChildOption().getChoosenDefinitionIndex() == 0) {
+			if ( mainController.getControllerMenu().getView().getViewOption().getChoosenDefinitionIndex() == 0) {
 				stage.setWidth(640+stageWidthDiff);
 				stage.setHeight(360+stageHeightDiff);
 				mainController.getControllerMenu().getModelOption().setWindowWidth(640);
@@ -133,7 +133,7 @@ public class App extends Application{
 		public void handle(ActionEvent e) {
 			
 			//sauvegarde les données
-			String saveName = mainController.getControllerMenu().getView().getChildLoad().getChoosenSave();
+			String saveName = mainController.getControllerMenu().getView().getViewLoad().getChoosenSave();
 			mainController.saveGame();
 			
 			//detruit tout
@@ -211,8 +211,8 @@ public class App extends Application{
 		
 		// initialise la vue principale incluant la vue du jeu
 		mainController = new Main(saveName, newGame);
-		mainController.getControllerMenu().getView().getChildOption().setActionChoiceBoxDefinition(choose_definition);
-		mainController.getControllerMenu().getView().getChildLoad().setActionButtonValidate(load_game);
+		mainController.getControllerMenu().getView().getViewOption().setActionChoiceBoxDefinition(choose_definition);
+		mainController.getControllerMenu().getView().getViewLoad().setActionButtonValidate(load_game);
 		mainController.getControllerMenu().getView().setActionButtonNew(new_game);
 		
 		// initialise la scene utilisé pour affocher la vue principale
@@ -276,7 +276,7 @@ public class App extends Application{
 	 * @param number la valeur
 	 * @return le nombre en chaîne de charactère dans la langue courament utilisé par l'application
 	 */
-	public static URL getRessource(String rsc) {
+	public static URL getResource(String rsc) {
 		return App.class.getResource(rsc);
 	}
 	

@@ -3,6 +3,11 @@ package app.model;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * 
+ * @author alexis
+ *
+ */
 public class Cook {
 	
 	private boolean ingredient0;

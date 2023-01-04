@@ -1,6 +1,11 @@
 package app.controller;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.JarURLConnection;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Locale;
 
@@ -43,7 +48,7 @@ public class Main implements Cleanable, Localisable {
 	private Media musicBackground;
 	private Media musicGameover;
 	private MediaPlayer mediaplayer;
-		
+	private boolean fromJar;
 	//######################### EVENT-ACTION ####################################
 	
 	/**
@@ -62,10 +67,11 @@ public class Main implements Cleanable, Localisable {
 	 */
 	ChangeListener<Number> change_volume_value = new ChangeListener<Number>() {
 		public void changed(ObservableValue<? extends Number> obs, Number vold, Number vnew) {
-			menuController.getModelOption().setVolume(vnew.doubleValue());
-			mediaplayer.setVolume(vnew.doubleValue());
-			
-			menuController.saveOption();
+			if ( mediaplayer != null ) {
+				menuController.getModelOption().setVolume(vnew.doubleValue());
+				mediaplayer.setVolume(vnew.doubleValue());	
+				menuController.saveOption();
+			}
 		}
 	};
 	
@@ -77,7 +83,7 @@ public class Main implements Cleanable, Localisable {
 		public void handle(ActionEvent e) {
 			
 			Locale loc;
-			if ( menuController.getView().getChildOption().getChoosenLanguageIndex() == 0) {
+			if ( menuController.getView().getViewOption().getChoosenLanguageIndex() == 0) {
 				loc = Locale.FRENCH;
 			}
 			else {
@@ -105,12 +111,12 @@ public class Main implements Cleanable, Localisable {
 			if ( gameController != null ) {
 				gameController.clean();
 			}
-			gameController = new Game(mainView.getChildCustomPet().getPetType(), "livingroom", menuController.getModelOption().getLastSave());
+			gameController = new Game(mainView.getViewCustomPet().getPetType(), "livingroom", menuController.getModelOption().getLastSave());
 			mainView.init(gameController.getView());
 			
 			//NOTE : ne pas faire de mise a jour du texte ici, cela cause un bug
 			
-			changeGameDefinition(menuController.getView().getChildOption().getChoosenDefinitionIndex());
+			changeGameDefinition(menuController.getView().getViewOption().getChoosenDefinitionIndex());
 			gameController.gameover.addListener(change_gameover_value);
 		}
 	};
@@ -142,6 +148,7 @@ public class Main implements Cleanable, Localisable {
 		initView(lastSaveName, saveName, newGame);
 		
 		// charger les fichier de musique en mémoire
+		fromJar = false;
 		musicBackground = loadMediaFile("DogsAndCats", "mp3");
 		musicGameover = loadMediaFile("LowBattery", "mp3");
 		
@@ -149,8 +156,8 @@ public class Main implements Cleanable, Localisable {
 		playBackgroundMusic();
 		
 		// association des actions aux objets
-		menuController.getView().getChildOption().setActionChoiceBoxLanguage(choose_lang);
-		menuController.getView().getChildOption().setActionSliderVolume(change_volume_value);
+		menuController.getView().getViewOption().setActionChoiceBoxLanguage(choose_lang);
+		menuController.getView().getViewOption().setActionSliderVolume(change_volume_value);
 	}
 	
 	/**
@@ -165,7 +172,7 @@ public class Main implements Cleanable, Localisable {
 		if ( newGame ) {
 			System.out.println("NEW GAME: " + lastSaveName);
 			mainView = new app.view.Main(menuController.getView());
-			mainView.getChildCustomPet().setActionValidate(new_game_generation);
+			mainView.getViewCustomPet().setActionValidate(new_game_generation);
 		}
 		// charge la sauvegarde selectionnée
 		else if ( saveName != null ) {
@@ -187,12 +194,12 @@ public class Main implements Cleanable, Localisable {
 			menuController.getModelOption().setLastSave("save.tmg");
 			menuController.saveOption();
 			mainView = new app.view.Main(menuController.getView());
-			mainView.getChildCustomPet().setActionValidate(new_game_generation);
+			mainView.getViewCustomPet().setActionValidate(new_game_generation);
 		}
 		
 		if ( gameController != null ) {
 			updateText();
-			changeGameDefinition(menuController.getView().getChildOption().getChoosenDefinitionIndex());
+			changeGameDefinition(menuController.getView().getViewOption().getChoosenDefinitionIndex());
 			gameController.gameover.addListener(change_gameover_value);
 		}
 	}
@@ -214,18 +221,26 @@ public class Main implements Cleanable, Localisable {
 	public Media loadMediaFile(String musicNameNoExt, String ext) {
 
 		Media result = null;
-		String cp = System.getProperty("java.class.path").split(":")[0]+"/";
-		System.out.println( cp );
+		
+		String cp = System.getProperty("java.class.path").split(":")[0];
+		String header="";
+		String end="/";
+		if(cp.contains(".jar")) {
+			header = "jar:";
+			end = "!/";
+			fromJar=true;
+		}
+		
 		try {
 			if (ext.equals("mp3"))
-				result = new Media(Paths.get(cp+GAMEMUSICPATH+musicNameNoExt+".mp3").toUri().toString());
-			else if (ext.equals("wav"))
-				result = new Media(Paths.get(cp+GAMEMUSICPATH+musicNameNoExt+".wav").toUri().toString());
+				result = new Media( header+Paths.get(cp+end+GAMEMUSICPATH+musicNameNoExt+".mp3").toUri().toString() );
+			else if (ext.equals("wav") )
+				result = new Media( header+Paths.get(cp+end+GAMEMUSICPATH+musicNameNoExt+".wav").toUri().toString() );
 			
 		} catch(MediaException e) {
 			if (ext.equals("mp3")) {
 				System.err.println(e + "\nRetry with .wav");
-				result = loadMediaFile(GAMEMUSICPATH+musicNameNoExt, "wav");
+				result = loadMediaFile(musicNameNoExt, "wav");
 			}
 			else if (ext.equals("wav")) {
 				// si autre format faire un autre appel
@@ -237,7 +252,9 @@ public class Main implements Cleanable, Localisable {
 				System.err.println(e);
 				return result;
 			}
-		}
+		} 
+		
+		System.out.println( "media:" + result.getSource());
 		
 		return result;
 	}
@@ -247,7 +264,7 @@ public class Main implements Cleanable, Localisable {
 	 * affiche les metadatas via un autre thread.
 	 */
 	public void playBackgroundMusic() {
-		if ( musicBackground != null ) {
+		if ( musicBackground != null && !fromJar) {
 			mediaplayer = new MediaPlayer(musicBackground);
 			mediaplayer.setOnReady( new Runnable() {
 		        @Override
@@ -271,7 +288,7 @@ public class Main implements Cleanable, Localisable {
 	 * affiche les metadatas via un autre thread.
 	 */
 	public void playGameoverMusic() {
-		if ( musicGameover != null ) {
+		if ( musicGameover != null && !fromJar) {
 			mediaplayer.stop();
 			mediaplayer = new MediaPlayer(musicGameover);
 			mediaplayer.setOnReady( new Runnable() {
