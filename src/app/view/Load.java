@@ -20,19 +20,18 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import app.App;
-import app.Componable;
+import app.Cleanable;
 import app.Localisable;
-
 /**
  * 
  * @author ben
  * view.Load est de type StackPane
  */
-public class Load extends StackPane implements Componable, Localisable {
+public class Load extends StackPane implements Cleanable, Localisable {
 	
 	//########################### ATTRIBUTS #####################################
 	
-	public static final String SAVEPATH = "res/saves/"; 
+	public static final String SAVEPATH = Main.USERPATH+"saves/"; 
 	
 	private int currentIndex;
 	private ObservableList<String> savesObsList;
@@ -88,6 +87,13 @@ public class Load extends StackPane implements Componable, Localisable {
 	 * constructeur
 	 */
 	public Load() {
+		
+		File saveDir = new File(SAVEPATH);
+		
+		if ( !saveDir.exists() ) {
+			saveDir.mkdir();
+		}
+		
 		//instanciation
 		savesList = new ListView<String>();
 		allContent = new VBox();
@@ -174,7 +180,7 @@ public class Load extends StackPane implements Componable, Localisable {
 	}
 	
 	@Override
-	public void exit() {
+	public void clean() {
 		savesObsList.clear();
 		savesObsList = null;
 		savesList = null;

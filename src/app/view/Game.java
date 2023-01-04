@@ -23,8 +23,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
-
-import app.Componable;
+import app.App;
+import app.Cleanable;
 import app.Localisable;
 
 /**
@@ -33,7 +33,7 @@ import app.Localisable;
  * view.Game est de type StakPane
  * Permet les opérations d'affichage concernant le jeu
  */
-public class Game extends StackPane implements Componable, Localisable {
+public class Game extends StackPane implements Cleanable, Localisable {
 	 
 	//########################### ATTRIBUTS #####################################
 	
@@ -188,7 +188,9 @@ public class Game extends StackPane implements Componable, Localisable {
 	 * met à jour le jeu en redéssinant
 	 */
 	public void updateDraw() {
-
+		
+		//BlendMode m = gc.getGlobalBlendMode();
+		
 		// netoie
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		
@@ -198,12 +200,18 @@ public class Game extends StackPane implements Componable, Localisable {
 		
 		gc.setGlobalAlpha(gameOpacity);
 		
+		// sky
+		gc.setFill(Color.SKYBLUE);
+		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		
 		// weather-back
-		if( weatherEffect != null )
-			weatherEffect.drawEffect(1);
-		if ( oldWeatherEffect != null ) {
-			if ( oldWeatherEffect.drawEffect(1) ) {
-				oldWeatherEffect = null;
+		if ( weatherIsActivated ) {
+			if( weatherEffect != null )
+				weatherEffect.drawEffect(1);
+			if ( oldWeatherEffect != null ) {
+				if ( oldWeatherEffect.drawEffect(1) ) {
+					oldWeatherEffect = null;
+				}
 			}
 		}
 		
@@ -214,15 +222,17 @@ public class Game extends StackPane implements Componable, Localisable {
 		drawPet();
 		
 		// weather-front
-		if( weatherEffect != null ) {
-			weatherEffect.drawEffect(2);
-			weatherEffect.drawEffect(3);
-		}
-		if ( oldWeatherEffect != null ) {
-			boolean p2 = oldWeatherEffect.drawEffect(2);
-			boolean p3 = oldWeatherEffect.drawEffect(3);
-			if (  p2 && p3 ) {
-				oldWeatherEffect = null;
+		if ( weatherIsActivated ) {
+			if( weatherEffect != null ) {
+				weatherEffect.drawEffect(2);
+				weatherEffect.drawEffect(3);
+			}
+			if ( oldWeatherEffect != null ) {
+				boolean p2 = oldWeatherEffect.drawEffect(2);
+				boolean p3 = oldWeatherEffect.drawEffect(3);
+				if (  p2 && p3 ) {
+					oldWeatherEffect = null;
+				}
 			}
 		}
 
@@ -380,18 +390,19 @@ public class Game extends StackPane implements Componable, Localisable {
 				case "rainy":
 					fx = new Sprite(Main.GAMEIMAGEPATH+"effects/gouttes.png", 0, 0, 64, 64);
 					weatherEffect = new FallingEffect(this, canvas.getWidth(), canvas.getHeight(), 24, fx, null, 
-													  FallingEffect.MapType.QUINCUNX, FallingEffect.FxType.ALTERNATE, true, gc);
+													  FallingEffect.MapType.QUINCUNX, FallingEffect.FxType.ALTERNATE, App.DEBUG, gc);
 					System.out.println("rainy effect");
 					break;
 				case "cloudy":
-					weatherEffect = new SlidingEffect(gc, canvas.getWidth(), SlidingEffect.SlideType.RIGHT_LEFT, new int[]{4, 4},
-							new Sprite(Main.GAMEIMAGEPATH+"effects/nuage-2.5.png", 0, 0, 768, 96),
-							new Sprite(Main.GAMEIMAGEPATH+"effects/nuage-3.png", 0, 0, 768, 96));
+					weatherEffect = new SlidingEffect(gc, canvas.getWidth(), SlidingEffect.SlideType.RIGHT_LEFT, 
+													  new int[]{((int)canvas.getWidth()/640)+1, ((int)canvas.getWidth()/640)+1},
+							new Sprite(Main.GAMEIMAGEPATH+"effects/nuage-2.png", 0, 0, 640, 80),
+							new Sprite(Main.GAMEIMAGEPATH+"effects/nuage-3.png", 0, 0, 640, 80));
 					
 					System.out.println("cloudy effect");
 					break;
 				case "suny":
-					weatherEffect = null;
+					weatherEffect = new BrigthEffect(canvas.getWidth(), canvas.getHeight(), gc, Color.YELLOW, 0.2);
 					break;
 				case "stormy":
 					weatherEffect = new StormEffect(canvas.getWidth(), canvas.getHeight(), gc);
@@ -399,13 +410,13 @@ public class Game extends StackPane implements Componable, Localisable {
 					System.out.println("stormy effect");
 					break;
 				case "scorchy":
-					weatherEffect = null;
+					weatherEffect =  new BrigthEffect(canvas.getWidth(), canvas.getHeight(), gc, Color.ORANGE, 0.25);
 					break;
 				case "icy":
 					fx = new Sprite(Main.GAMEIMAGEPATH+"effects/flocons.png", 0, 0, 64, 64);
 					fx2 = new Sprite(Main.GAMEIMAGEPATH+"effects/flocons_alt.png", 0, 0, 64, 64);
 					weatherEffect = new FallingEffect(this, canvas.getWidth(), canvas.getHeight(), 4, fx, fx2,
-													  FallingEffect.MapType.QUINCUNX, FallingEffect.FxType.ALTERNATE, true, gc);
+													  FallingEffect.MapType.QUINCUNX, FallingEffect.FxType.ALTERNATE, App.DEBUG, gc);
 					
 					System.out.println("icy effect");
 					break;
@@ -454,7 +465,7 @@ public class Game extends StackPane implements Componable, Localisable {
 	}
 	
 	@Override
-	public void exit() {
+	public void clean() {
 		
 		if ( drawLoop != null) {
 			drawLoop.stop();
@@ -465,15 +476,15 @@ public class Game extends StackPane implements Componable, Localisable {
 			drawGameoverLoop = null;
 		}
 		if ( hud != null ) {
-			hud.exit();
+			hud.clean();
 			hud = null;
 		}
 		if ( room != null ) {
-			room.exit();
+			room.clean();
 			room = null;
 		}
 		if ( pet != null ) {
-			pet.exit();
+			pet.clean();
 			pet = null;
 		}
 

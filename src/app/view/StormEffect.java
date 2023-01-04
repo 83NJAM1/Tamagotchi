@@ -1,5 +1,6 @@
 package app.view;
 
+import app.App;
 import javafx.scene.canvas.GraphicsContext;
 
 public class StormEffect implements WeatherEffect {
@@ -15,18 +16,18 @@ public class StormEffect implements WeatherEffect {
 	public StormEffect(double w, double h, GraphicsContext gc) {
 		this.gc = gc;
 		
-		fx1 = new SlidingEffect(gc, w, SlidingEffect.SlideType.ONLY_RIGHT, new int[]{4},
-				new Sprite(Main.GAMEIMAGEPATH+"effects/nuage-5.png", 0, 0, 768, 96));
+		fx1 = new SlidingEffect(gc, w, SlidingEffect.SlideType.ONLY_RIGHT, new int[]{((int)w/640)+1},
+				new Sprite(Main.GAMEIMAGEPATH+"effects/nuage-5.png", 0, 0, 640, 80));
 		
 
 
 		Sprite s1 = new Sprite(Main.GAMEIMAGEPATH+"effects/gouttes-1.png", 0, 0, 64, 64);
 		Sprite s2 = new Sprite(Main.GAMEIMAGEPATH+"effects/gouttes-2.png", 0, 0, 64, 64);
 		
-		fx2 = new FallingEffect(null, w, h, 40, s1, s2, FallingEffect.MapType.RANDOM, FallingEffect.FxType.TAILED, false, gc);
+		fx2 = new FallingEffect(null, w, h, 40, s1, s2, FallingEffect.MapType.RANDOM, FallingEffect.FxType.TAILED, App.DEBUG, gc);
 		
-		fx3 = new SlidingEffect(gc, w, SlidingEffect.SlideType.ONLY_LEFT, new int[]{4},
-				new Sprite(Main.GAMEIMAGEPATH+"effects/nuage-4.png", 0, 0, 768, 96));
+		fx3 = new SlidingEffect(gc, w, SlidingEffect.SlideType.ONLY_LEFT, new int[]{((int)w/640)+1},
+				new Sprite(Main.GAMEIMAGEPATH+"effects/nuage-4.png", 0, 0, 640, 80));
 	}
 	
 	public boolean drawEffect() {

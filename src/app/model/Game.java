@@ -2,14 +2,14 @@ package app.model;
 
 import java.util.Random;
 
-import app.Componable;
+import app.Cleanable;
 
 /**
  * 
  * @author ben
  * Encapsule tous les élements du jeu
  */
-public class Game implements Componable {
+public class Game implements Cleanable {
 	 
 	private Pet pet; //NOTE: référence partagé avec c.Pet
 	private Room current_room; //NOTE: référence partagé avec c.Room
@@ -60,7 +60,7 @@ public class Game implements Componable {
 		weathers = new String[] {"rainy", "cloudy", "suny", "stormy", "scorchy", "icy"};
 		weatherSeed = new Random();
 		nextWeather();
-		current_indexWeather = 3;
+		current_indexWeather = 1;
 		/**
 		 * construit la maison en initialisant les pièces
 		 * 
@@ -205,7 +205,7 @@ public class Game implements Componable {
 	}
 	
 	@Override
-	public void exit() {
+	public void clean() {
 		pet = null;
 		current_room = null;
 	}

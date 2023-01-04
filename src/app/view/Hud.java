@@ -8,7 +8,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 
-import app.Componable;
+import app.Cleanable;
 import app.Localisable;
 
 /**
@@ -16,7 +16,7 @@ import app.Localisable;
  * @author ben
  * affiche les stats ainsi que les actions
  */
-public class Hud extends AnchorPane implements Componable, Localisable {
+public class Hud extends AnchorPane implements Cleanable, Localisable {
 	
 	//########################### ATTRIBUTS #####################################
  
@@ -106,7 +106,7 @@ public class Hud extends AnchorPane implements Componable, Localisable {
 	}
 	
 	@Override
-	public void exit() {
+	public void clean() {
 		stats.clear();
 		actionBar = null;
 		statsBox = null;

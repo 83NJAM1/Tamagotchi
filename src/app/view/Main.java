@@ -8,7 +8,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 
-import app.Componable;
+import app.Cleanable;
 import app.Localisable;
 
 /**
@@ -16,11 +16,12 @@ import app.Localisable;
  * @author ben
  * permet d'interchanger les vues Game, Menu et CustomPet 
  */
-public class Main extends StackPane implements Componable, Localisable {
+public class Main extends StackPane implements Cleanable, Localisable {
 
 	//########################### ATTRIBUTS #####################################
 	public static final String GAMEIMAGEPATH = "res/game/images/"; 
 	public static final String IUIMAGEPATH = "res/interface/images/";
+	public static final String USERPATH = "user/";
 	
 	// la vue du jeu
 	private Game game; //NOTE: reference partagé avec controller.Game
@@ -124,7 +125,7 @@ public class Main extends StackPane implements Componable, Localisable {
 		init(game_instance, menu);
 
 		getChildren().remove(customPet);
-		customPet.exit();
+		customPet.clean();
 		customPet = null;
 	}
 	
@@ -183,13 +184,13 @@ public class Main extends StackPane implements Componable, Localisable {
 	}
 	
 	@Override
-	public void exit() {
-		menu.exit();
+	public void clean() {
+		menu.clean();
 		if ( game != null ) {
-			game.exit();
+			game.clean();
 		}
 		if ( customPet != null ) {
-			customPet.exit();
+			customPet.clean();
 		}
 		menu = null;
 		game = null;

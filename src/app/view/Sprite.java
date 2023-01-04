@@ -67,8 +67,8 @@ public class Sprite { // TODO changer l'heritage par un attribut
 		return spritesheet;
 	}
 	
-	public void getSheet(Image newSheet) {
-		spritesheet = newSheet;
+	public void setSheet(String newSheet) {
+		spritesheet = new Image(newSheet);
 	}
 	/**
 	 * copie

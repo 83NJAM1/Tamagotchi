@@ -3,6 +3,7 @@ package app;
 //JDK
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.net.URL;
 import java.text.NumberFormat;
 
 //JFX
@@ -42,6 +43,7 @@ public class App extends Application{
 	private static Double x_window;
 	private static Double y_window;
 	
+	public static boolean DEBUG=false; //NOTE DEGUG MODE
 	/* 
 	WIP  : Meurt au bout d’un certain temps
 	WIP  : Etat physique (faim, soif,poids)
@@ -98,7 +100,7 @@ public class App extends Application{
 	private EventHandler<WindowEvent> close_app = new EventHandler<WindowEvent>() {
 		public void handle(WindowEvent e) {
 			mainController.saveGame();
-			mainController.exit();
+			mainController.clean();
 			System.out.println(getString("bye"));
 		}
 	};
@@ -137,7 +139,7 @@ public class App extends Application{
 			//detruit tout
 			stage.close();
 			mainController.getControllerMenu().getView().closeLoad();
-			mainController.exit();
+			mainController.clean();
 			stage.setScene(null);
 			mainController=null;
 			System.gc();
@@ -160,7 +162,7 @@ public class App extends Application{
 			//detruit tout
 			stage.close();
 			mainController.getControllerMenu().getView().closeLoad();
-			mainController.exit();
+			mainController.clean();
 			stage.setScene(null);
 			mainController=null;
 			System.gc();
@@ -268,6 +270,16 @@ public class App extends Application{
 	public static String getString(Double number) {
 		return languageNumber.format(number);
 	}
+	
+	/**
+	 * obtient un nombre localisé
+	 * @param number la valeur
+	 * @return le nombre en chaîne de charactère dans la langue courament utilisé par l'application
+	 */
+	public static URL getRessource(String rsc) {
+		return App.class.getResource(rsc);
+	}
+	
 	/**
 	 * obtient la localisation actuelement définit pour l'application
 	 * @return l'objet de localisation

@@ -1,13 +1,13 @@
 package app.controller;
 
-import app.Componable;
+import app.Cleanable;
 
 /**
  * 
  * @author ben
  * Permet de mettre a jour la vue avec le roomModel
  */
-public class Room implements Componable {
+public class Room implements Cleanable {
 	
 	//########################### ATTRIBUTS #####################################
  
@@ -32,6 +32,7 @@ public class Room implements Componable {
 			case "kitchen":
 				roomModel = app.model.Kitchen.getInstance();
 				roomView = new app.view.Room(Game.GAMEIMAGEPATH+"rooms/Cuisine.png");
+				System.out.println(roomView.getUrl());
 				break;
 			case "bathroom":
 				roomModel = app.model.Bathroom.getInstance();
@@ -69,10 +70,10 @@ public class Room implements Componable {
 	}
 		
 	@Override
-	public void exit() {
+	public void clean() {
 		roomModel = null;
 		
-		roomView.exit();
+		roomView.clean();
 		roomView = null;
 	}
 }

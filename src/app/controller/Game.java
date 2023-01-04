@@ -6,9 +6,11 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
+import java.io.File;
 import java.util.Random;
 
-import app.Componable;
+import app.App;
+import app.Cleanable;
 import app.Localisable;
 
 /**
@@ -16,11 +18,11 @@ import app.Localisable;
  * @author ben
  * permet de faire intéragire l'ensemble du jeu avec les actions à associer
  */
-public class Game implements Componable, Localisable {
+public class Game implements Cleanable, Localisable {
 	
 	//########################### ATTRIBUTS #####################################
 	
-	public static final String SAVEPATH = "res/saves/"; 
+	public static final String SAVEPATH = Main.USERPATH+"saves/"; 
 	public static final String GAMEIMAGEPATH = "res/game/images/"; 
 	
 	// données du jeu
@@ -74,7 +76,7 @@ public class Game implements Componable, Localisable {
 		
 		long old_time=0;
 		final long DELAY_MIN = 1_000_000_000;
-		final long DELAY_MAX = DELAY_MIN*60; // NOTE 1 minute maximum
+		final long DELAY_MAX = DELAY_MIN*120; // NOTE 1 minute maximum
 		final Random DELAY_SEED = new Random();
 		
         public void handle(long new_time) {
@@ -228,6 +230,8 @@ public class Game implements Componable, Localisable {
 	 */
 	public Game(String petType, String roomName, String saveName) {
 		
+		checkPath();
+		
 		saveModel = new app.model.Save(SAVEPATH+saveName);
 		
 		petController = new Pet(petType);
@@ -241,6 +245,8 @@ public class Game implements Componable, Localisable {
 	 * Constructeur charger partie
 	 */
 	public Game(String saveName) {
+		
+		checkPath();
 		
 		saveModel = new app.model.Save(SAVEPATH+saveName);
 		
@@ -257,6 +263,15 @@ public class Game implements Componable, Localisable {
 		petController.getControllerMoral().setValue(saveModel.getState("moral"));
 		
 		endInit();
+	}
+	
+	private void checkPath() {
+		
+		File saveDir = new File(SAVEPATH);
+		
+		if ( !saveDir.exists() ) {
+			saveDir.mkdir();
+		}
 	}
 	
 	/*
@@ -359,9 +374,9 @@ public class Game implements Componable, Localisable {
 	 */
 	public void updateGame() {
 		
-		boolean DEBUG=true; //NOTE DEGUG MODE
 		
-		if ( gameModel.nextStep() || DEBUG ) {
+		
+		if ( gameModel.nextStep() || App.DEBUG ) {
 
 			// met a jour toutes les vues dont les models sont modifiés sans action
 			if ( miniGameController != null )
@@ -438,23 +453,23 @@ public class Game implements Componable, Localisable {
 	}
 	
 	@Override
-	public void exit() {
+	public void clean() {
 		weatherLoop.stop();
 		weatherLoop = null;
 		
 		gameLoop.stop();
 		gameLoop = null;
 		
-		petController.exit();
+		petController.clean();
 		petController = null;
 		
-		roomController.exit();
+		roomController.clean();
 		roomController = null;
 		
-		gameView.exit();
+		gameView.clean();
 		gameView = null;
 		
-		gameModel.exit();
+		gameModel.clean();
 		gameModel = null;
 		
 		saveModel = null;

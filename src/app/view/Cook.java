@@ -258,8 +258,17 @@ public class Cook extends StackPane {
 		butEat.setVisible(done);
 	}
 	
-	public void changeResult(String s) {
-		result.setImage(new Image(s));
+	public void changeResult(String imagePath, String altPath) {
+		Image r;
+		
+		try {
+			r = (new Image(imagePath));
+			result.setImage(r);
+		} catch (Exception e ) {
+			r = (new Image(altPath));
+			result.setImage(r);
+			System.err.println(e);
+		}
 	}
 	
 	public void updateText() {

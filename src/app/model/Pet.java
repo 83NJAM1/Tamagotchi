@@ -1,13 +1,13 @@
 package app.model;
 
-import app.Componable;
+import app.Cleanable;
 
 /**
  * 
  * @author ben
  * Le compagnon à prendre soin
  */
-public abstract class Pet implements Componable  {
+public abstract class Pet implements Cleanable  {
 	
 	protected String type;
 	
@@ -271,7 +271,7 @@ public abstract class Pet implements Componable  {
 	}
 	
 	@Override
-	public void exit() {
+	public void clean() {
 		hunger = null;
 		thirst = null;
 		weight = null;

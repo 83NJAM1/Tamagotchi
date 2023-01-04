@@ -5,9 +5,9 @@ import java.util.HashMap;
 import javafx.animation.AnimationTimer;
 import javafx.scene.shape.Rectangle;
 
-import app.Componable;
+import app.Cleanable;
 
-public class AnimatedSprite extends Sprite implements Componable {
+public class AnimatedSprite extends Sprite implements Cleanable {
 
 	//########################### ATTRIBUTS #####################################
 
@@ -155,7 +155,7 @@ public class AnimatedSprite extends Sprite implements Componable {
 	}
 	
 	@Override
-	public void exit() {
+	public void clean() {
 		
 		getSheet().cancel();
 		

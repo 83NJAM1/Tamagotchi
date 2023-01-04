@@ -1,5 +1,6 @@
 package app.controller;
 
+import java.io.File;
 import java.nio.file.Paths;
 import java.util.Locale;
 
@@ -13,7 +14,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 import app.App;
-import app.Componable;
+import app.Cleanable;
 import app.Localisable;
 
 /**
@@ -22,11 +23,12 @@ import app.Localisable;
  * Controller principale encapsulant tout
  * il fait le lien avec le thread javafx
  */
-public class Main implements Componable, Localisable {
+public class Main implements Cleanable, Localisable {
 	 
 	//########################### ATTRIBUTS #####################################
 	
 	public static final String GAMEMUSICPATH = "res/game/musics/"; 
+	public static final String USERPATH = "user/";
 	
 	// l'ensemble des interfaces
 	private app.view.Main mainView;
@@ -41,7 +43,7 @@ public class Main implements Componable, Localisable {
 	private Media musicBackground;
 	private Media musicGameover;
 	private MediaPlayer mediaplayer;
-	
+		
 	//######################### EVENT-ACTION ####################################
 	
 	/**
@@ -101,7 +103,7 @@ public class Main implements Componable, Localisable {
 	private EventHandler<ActionEvent> new_game_generation = new EventHandler<ActionEvent>() {
 		public void handle(ActionEvent e) {
 			if ( gameController != null ) {
-				gameController.exit();
+				gameController.clean();
 			}
 			gameController = new Game(mainView.getChildCustomPet().getPetType(), "livingroom", menuController.getModelOption().getLastSave());
 			mainView.init(gameController.getView());
@@ -121,6 +123,12 @@ public class Main implements Componable, Localisable {
 	 * @param newGame vrai si nouvelle partie
 	 */
 	public Main(String saveName, boolean newGame) {
+		
+		File userDir = new File(Main.USERPATH);
+		
+		if ( !userDir.exists() ) {
+			userDir.mkdir();
+		}
 		
 		// instancier le menuController et initialiser les options
 		menuController = new Menu();
@@ -206,12 +214,13 @@ public class Main implements Componable, Localisable {
 	public Media loadMediaFile(String musicNameNoExt, String ext) {
 
 		Media result = null;
-		
+		String cp = System.getProperty("java.class.path").split(":")[0]+"/";
+		System.out.println( cp );
 		try {
 			if (ext.equals("mp3"))
-				result = new Media(Paths.get(GAMEMUSICPATH+musicNameNoExt+".mp3").toUri().toString());
+				result = new Media(Paths.get(cp+GAMEMUSICPATH+musicNameNoExt+".mp3").toUri().toString());
 			else if (ext.equals("wav"))
-				result = new Media(Paths.get(GAMEMUSICPATH+musicNameNoExt+".wav").toUri().toString());
+				result = new Media(Paths.get(cp+GAMEMUSICPATH+musicNameNoExt+".wav").toUri().toString());
 			
 		} catch(MediaException e) {
 			if (ext.equals("mp3")) {
@@ -222,7 +231,8 @@ public class Main implements Componable, Localisable {
 				// si autre format faire un autre appel
 				// sinon afficher erreur
 				System.err.println(e);
-				System.exit(1);
+				return result;
+				//System.exit(1);
 			}
 			else {
 				System.err.println(e);
@@ -238,20 +248,22 @@ public class Main implements Componable, Localisable {
 	 * affiche les metadatas via un autre thread.
 	 */
 	public void playBackgroundMusic() {
-		mediaplayer = new MediaPlayer(musicBackground);
-		mediaplayer.setOnReady( new Runnable() {
-	        @Override
-	        public void run() {
-	        	System.out.println("Play: " + musicBackground.getSource()); 
-    			System.out.println(("       title: " + musicBackground.getMetadata().get("title") + "\n"
-	        					   +"album artist: " + musicBackground.getMetadata().get("album artist") + "\n"
-	        					   +"      artist: " + musicBackground.getMetadata().get("artist")).indent(2));
-	        }
-	    });
-		mediaplayer.setStopTime(Duration.seconds(113));
-		mediaplayer.setCycleCount(MediaPlayer.INDEFINITE);
-		mediaplayer.play();
-		mediaplayer.setVolume(menuController.getModelOption().getVolume());
+		if ( musicBackground != null ) {
+			mediaplayer = new MediaPlayer(musicBackground);
+			mediaplayer.setOnReady( new Runnable() {
+		        @Override
+		        public void run() {
+		        	System.out.println("Play: " + musicBackground.getSource()); 
+	    			System.out.println(("       title: " + musicBackground.getMetadata().get("title") + "\n"
+		        					   +"album artist: " + musicBackground.getMetadata().get("album artist") + "\n"
+		        					   +"      artist: " + musicBackground.getMetadata().get("artist")).indent(2));
+		        }
+		    });
+			mediaplayer.setStopTime(Duration.seconds(113));
+			mediaplayer.setCycleCount(MediaPlayer.INDEFINITE);
+			mediaplayer.play();
+			mediaplayer.setVolume(menuController.getModelOption().getVolume());
+		}
 
 	}
 	
@@ -260,19 +272,21 @@ public class Main implements Componable, Localisable {
 	 * affiche les metadatas via un autre thread.
 	 */
 	public void playGameoverMusic() {
-		mediaplayer.stop();
-		mediaplayer = new MediaPlayer(musicGameover);
-		mediaplayer.setOnReady( new Runnable() {
-	        @Override
-	        public void run() {
-	        	System.out.println("Play: " + musicGameover.getSource()); 
-    			System.out.println(("      title : " + musicGameover.getMetadata().get("title") + "\n"
-	        					   +"album artist: " + musicGameover.getMetadata().get("album artist") + "\n"
-	        					   +"     artist : " + musicGameover.getMetadata().get("artist")).indent(2));
-	        }
-	    });
-		mediaplayer.play();
-		mediaplayer.setVolume(menuController.getModelOption().getVolume());
+		if ( musicGameover != null ) {
+			mediaplayer.stop();
+			mediaplayer = new MediaPlayer(musicGameover);
+			mediaplayer.setOnReady( new Runnable() {
+		        @Override
+		        public void run() {
+		        	System.out.println("Play: " + musicGameover.getSource()); 
+	    			System.out.println(("      title : " + musicGameover.getMetadata().get("title") + "\n"
+		        					   +"album artist: " + musicGameover.getMetadata().get("album artist") + "\n"
+		        					   +"     artist : " + musicGameover.getMetadata().get("artist")).indent(2));
+		        }
+		    });
+			mediaplayer.play();
+			mediaplayer.setVolume(menuController.getModelOption().getVolume());
+		}
 	}
 	
 	/**
@@ -323,21 +337,23 @@ public class Main implements Componable, Localisable {
 	}
 	
 	@Override
-	public void exit() {
+	public void clean() {
 
 		if ( gameController != null ) {
-			gameController.exit();
+			gameController.clean();
 			gameController = null;
 		}
 		
-		menuController.exit();
+		menuController.clean();
 		menuController = null;
 		
-		mainView.exit();
+		mainView.clean();
 		mainView = null;
 		
-		mediaplayer.stop();
-		mediaplayer=null;
+		if ( mediaplayer != null ) {
+			mediaplayer.stop();
+			mediaplayer=null;
+		}
 		
 		choose_lang = null;
 		musicBackground=null;

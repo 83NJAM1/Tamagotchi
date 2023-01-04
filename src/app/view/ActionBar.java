@@ -10,7 +10,7 @@ import javafx.scene.control.CustomMenuItem;
 import javafx.scene.layout.HBox;
 
 import app.App;
-import app.Componable;
+import app.Cleanable;
 import app.Localisable;
 
 /**
@@ -18,7 +18,7 @@ import app.Localisable;
  * @author ben
  * permet de selectionner les actions du jeu et d'aller au menu
  */
-public class ActionBar extends HBox implements Componable, Localisable {
+public class ActionBar extends HBox implements Cleanable, Localisable {
 	 
 	//########################### ATTRIBUTS #####################################
 	
@@ -294,7 +294,7 @@ public class ActionBar extends HBox implements Componable, Localisable {
 	}
 	
 	@Override
-	public void exit() {
+	public void clean() {
 		butMenu = null;
 		butStat = null;
 		butMenuRoom = null;
